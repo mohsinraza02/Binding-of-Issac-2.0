@@ -21,6 +21,8 @@ public class Item {
 	* 
 	*
 	*/
+	// new get methods for each of the variables
+	
 	public Item getItem() {
 		Item box = new Item(this.name, this.value, this.type, this.time);
 		return box;
