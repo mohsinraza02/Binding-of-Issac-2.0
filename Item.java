@@ -28,16 +28,4 @@ public class Item {
 		return box;
 	}
 	
-	public static void main(String[] args){
-		//Strength
-		Item book = new Item("Book", 1, 0, 2.0);
-		Item ta = new Item("TA", 3, 0, 5.0);
-		//Defence
-		Item games = new Item("Games", 1, 1, 3.5);
-		Item Sleep = new Item("Sleep", 5, 1, 8.0);
-		//Luck
-		Item sacrifice = new Item("Sacifice to the Gods!", 5, 2, 5.5);
-		Item charm= new Item("Charm", 3, 2, 0.5);
-		
-	}
 }
