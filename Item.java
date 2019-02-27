@@ -23,9 +23,18 @@ public class Item {
 	*/
 	// new get methods for each of the variables
 	
-	public Item getItem() {
-		Item box = new Item(this.name, this.value, this.type, this.time);
-		return box;
+	public Item getName(){
+		return this.name;
 	}
+	public Item getValue(){
+		return this.value;
+	}
+	public Item getType(){
+		return this.type;
+	}
+	public Item getTime(){
+		return this.time;
+	}
+	
 	
 }
