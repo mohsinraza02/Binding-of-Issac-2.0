@@ -24,7 +24,7 @@ public class Enemy {
 		}
 	}
 	
-	public void enemyAttack(Character player) {
+	public void enemyAttack(Player player) {
 		player.health = player.health - this.attack;
 		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
 		System.out.println("You have " + player.health + " sanity left.");
