@@ -7,7 +7,7 @@ public class Item {
 	private double time; // time taken from total map time
 	
 	/**
-        * This constructor takes the 4 parameter values and sets the first parameter
+        * This constructor takes the 4 parameter values and sets the afirst parameter
         * to the instance variable name, the second parameter to the instance
         * variable value,the third parameter to the instance variable type and the fourth parameter
 	* to the instance variable time.
