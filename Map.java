@@ -163,16 +163,18 @@ public class Map {
 		gameScreen(playerInput);
 		
 		//Item Creation
-		//Strength
+		//Strength [0]
 		Item book = new Item("Book", 1, 0, 2.0);
 		Item ta = new Item("TA", 3, 0, 5.0);
-		//Defence
+		//Defence [1]
 		Item games = new Item("Games", 1, 1, 3.5);
 		Item Sleep = new Item("Sleep", 5, 1, 8.0);
-		//Luck
+		//Luck [2]
 		Item sacrifice = new Item("Sacifice to the Gods!", 5, 2, 5.5);
 		Item charm= new Item("Charm", 3, 2, 0.5);
-		//Attack?
-		//Speed?
+		//Attack [3] 
+		Item sharpener = new Item("Sharpener",2,3,0.5);
+		//Speed [4]
+		Item cheatSheet = new Item("Totaly not Cheating", 5, 4, 2.5);
 	}
 }
