@@ -29,7 +29,7 @@ public class Item {
         * Item.
         * @return instance variable name
         */
-	public Item getName(){
+	public String getName(){
 		return this.name;
 	}
 	/**
@@ -37,7 +37,7 @@ public class Item {
         * Item.
         * @return instance variable value
         */
-	public Item getValue(){
+	public int getValue(){
 		return this.value;
 	}
 	/**
@@ -45,7 +45,7 @@ public class Item {
         * Item.
         * @return instance variable type
         */
-	public Item getType(){
+	public int getType(){
 		return this.type;
 	}
 	/**
@@ -53,7 +53,7 @@ public class Item {
         * Item.
         * @return instance variable time
         */
-	public Item getTime(){
+	public double getTime(){
 		return this.time;
 	}
 	
