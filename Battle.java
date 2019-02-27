@@ -10,7 +10,7 @@ public class Battle {
 	 * The fight method. As of now, it only does turn by turn attacks.
 	 * @param player // The player passed in.
 	 */
-	public void start(Player player) {
+	public static void start(Player player) {
 
 		Enemy boss = Enemy.getRandomEnemy();
 		boolean playerEnd = false;
@@ -25,7 +25,7 @@ public class Battle {
 				System.out.println("What will you do?\n(a) Attack/Answer Question");
 				String decision = kb.nextLine();
 				if (decision.equals("a")) { // Then attack
-					Player.attack(boss);
+					player.attack(boss);
 					kb.nextLine();
 					playerEnd = true;
 					fight = checkFailOrPass(player, boss);
@@ -47,7 +47,7 @@ public class Battle {
 	 * @param p //Player passed in
 	 * @param e //Enemy passed in
 	 */
-	public void checkWinner(Player p, Enemy e) {
+	public static void checkWinner(Player p, Enemy e) {
 		if (p.health <= 0) {
 			System.out.println("You have failed the exam. Prepare better next time.");
 		} else {
@@ -64,7 +64,7 @@ public class Battle {
 	 *            Enemy passed in
 	 * @return boolean if the fight needs to be stopped.
 	 */
-	public boolean checkFailOrPass(Player p, Enemy e) {
+	public static boolean checkFailOrPass(Player p, Enemy e) {
 		if (p.health <= 0) {
 			return false;
 		} else if (e.health <= 0) {
