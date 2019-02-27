@@ -7,6 +7,7 @@ public class Player {
     ArrayList<Item> inventory = new ArrayList<Item>();
     int health = 100;// default health
     int attack = 50;//default attack damage
+    Map currentRoom;
     /*
       Generate 5 random stats for each category:
       Strength, Defense, Attack, Luck, Speed
@@ -36,6 +37,11 @@ public class Player {
 
     }
 
+    //public void addItemStatToPlayer(Item itemValue){
+
+    //}
+
+
     public void updateHealth(){
         // Adds health depending on the stats that you get in the beginning
         int newHealth = health + (stats[1]*10);
@@ -52,8 +58,13 @@ public class Player {
         System.out.println("The " + enemy.name + " has " + enemy.health + " health left.");
     }
 
+    public Map getCurrentRoom(){
+        return this.currentRoom;
+    }
 
-
+    public void setCurrentRoom(Map currentRoom){
+        this.currentRoom = currentRoom;
+    }
 
 
 
