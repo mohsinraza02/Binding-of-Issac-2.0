@@ -1,10 +1,7 @@
-package cpsc233;
 
 import java.util.Scanner;
 
 public class Battle {
-	
-	public Scanner kb = new Scanner(System.in);
 	
 	/**
 	 * The fight method. As of now, it only does turn by turn attacks.
@@ -13,8 +10,10 @@ public class Battle {
 	public static void start(Player player) {
 
 		Enemy boss = Enemy.getRandomEnemy();
+		
 		boolean playerEnd = false;
 		boolean fight = true;
+		Scanner kb = new Scanner(System.in);
 
 		System.out.println("It is time to take the test.");
 		kb.nextLine();
@@ -31,7 +30,7 @@ public class Battle {
 					fight = checkFailOrPass(player, boss);
 				}
 			} while (playerEnd == false);
-			if (boss.health >= 1) {
+			if (boss.getHealth() >= 1) {
 				System.out.println("The test inflicts it's difficulty upon you.");
 				kb.nextLine();
 				boss.enemyAttack(player);
@@ -48,7 +47,7 @@ public class Battle {
 	 * @param e //Enemy passed in
 	 */
 	public static void checkWinner(Player p, Enemy e) {
-		if (p.health <= 0) {
+		if (p.getHealth() <= 0) {
 			System.out.println("You have failed the exam. Prepare better next time.");
 		} else {
 			System.out.println("You have passed the exam. Well done.");
@@ -65,9 +64,9 @@ public class Battle {
 	 * @return boolean if the fight needs to be stopped.
 	 */
 	public static boolean checkFailOrPass(Player p, Enemy e) {
-		if (p.health <= 0) {
+		if (p.getHealth() <= 0) {
 			return false;
-		} else if (e.health <= 0) {
+		} else if (e.getHealth() <= 0) {
 			return false;
 		} else {
 			return true;

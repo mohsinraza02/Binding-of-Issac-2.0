@@ -1,10 +1,33 @@
-package cpsc233;
 
 public class Enemy {
-	String name;
-	int health;
-	int attack;
+	private String name;
+	private int health;
+	private int attack;
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getHealth() {
+		return this.health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getAttack() {
+		return attack;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
 	public Enemy(String name, int health, int attack) {
 		this.name = name;
 		this.health = health;
@@ -25,9 +48,9 @@ public class Enemy {
 	}
 	
 	public void enemyAttack(Player player) {
-		player.health = player.health - this.attack;
+		player.setHealth(player.getHealth() - (this.attack - player.getStat(1)));
 		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
-		System.out.println("You have " + player.health + " sanity left.");
+		System.out.println("You have " + player.getHealth() + " sanity left.");
 	}
 	
 }
