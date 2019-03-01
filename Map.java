@@ -14,8 +14,6 @@ public class Map {
 	private static int currentRoom = 0;
 	private static Item[] itemList = new Item[8];
 
-	// private Stats[]
-
 	/**
 	 * Generate random items to each room
 	 */
@@ -131,7 +129,6 @@ public class Map {
 			if (room.size() + 1 != Integer.parseInt(input)) {
 				try {
 					player.addItemToInventory(room.get(itemIndex));
-//					player.addStat(room.get(itemIndex));
 					System.out.println("You gained " + room.get(itemIndex).getDesc());
 					timeLeft -= room.get(itemIndex).getTime();
 					room.remove(itemIndex);
@@ -175,7 +172,7 @@ public class Map {
 	 * Game screen, handles moving into different rooms and printing out choices the
 	 * player can make
 	 * 
-	 * @param playerInput
+	 * @param player - player that will be playing the game
 	 */
 	public static void gameScreen(Player player) {
 		Scanner kb = new Scanner(System.in);
