@@ -129,6 +129,7 @@ public class Map {
 			if (room.size() + 1 != Integer.parseInt(input)) {
 				try {
 					player.addItemToInventory(room.get(itemIndex));
+					player.addStat(room.get(itemIndex));
 					System.out.println("You gained " + room.get(itemIndex).getDesc());
 					timeLeft -= room.get(itemIndex).getTime();
 					room.remove(itemIndex);
