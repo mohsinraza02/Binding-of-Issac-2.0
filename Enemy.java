@@ -49,7 +49,11 @@ public class Enemy {
 	
 	public void enemyAttack(Player player) {
 		// defense reduces the boss's base damage
-		player.setHealth(player.getHealth() - (this.attack * (player.getStat(1)/100)));
+		if (player.getStat(1) == 0) {
+			player.setHealth(player.getHealth() - this.attack);
+		} else {
+			player.setHealth(player.getHealth() - (this.attack * (player.getStat(1) / 100)));
+		}
 		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
 		System.out.println("You have " + player.getHealth() + " sanity left.");
 	}
