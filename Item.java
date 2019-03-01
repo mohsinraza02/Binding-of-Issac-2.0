@@ -3,11 +3,11 @@ public class Item {
 
 	private String name; // display name on map
 	private String desc;
-	private int value; // value being appended in player array
+	private double value; // value being appended in player array
 	private int type; // location in player array
 	private double time; // time taken from total map time
 	private final String[][] ITEM_NAME_AND_DESC = {
-			{ "Book", "Games", "TA", "Sleep", "Sharpener", "GUIDE: Sacrifice to the Gods!", "Cheat Sheet",
+			{ "Book", "Game", "TA", "Sleep", "Sharpener", "GUIDE: Sacrifice to the Gods!", "Cheat Sheet",
 					"Lucky Charm" },
 			{ "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense" } };
@@ -27,7 +27,7 @@ public class Item {
 	 * @param time
 	 *            this parameter is set to the instance variable time
 	 */
-	public Item(int nameIndex, int value, int type, double time) {
+	public Item(int nameIndex, double value, int type, double time) {
 		this.name = getItemNameFromList(nameIndex);
 		this.desc = getItemDescFromList(nameIndex);
 		this.value = value;
@@ -76,7 +76,7 @@ public class Item {
 	 * 
 	 * @return instance variable value
 	 */
-	public int getValue() {
+	public double getValue() {
 		return this.value;
 	}
 

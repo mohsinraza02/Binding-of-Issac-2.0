@@ -10,7 +10,7 @@ public class Battle {
 	public static void start(Player player) {
 
 		Enemy boss = Enemy.getRandomEnemy();
-		player.setAttack(player.updateAttack());
+		player.updateAttack();
 		
 		boolean playerEnd = false;
 		boolean fight = true;

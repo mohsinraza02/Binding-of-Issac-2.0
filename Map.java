@@ -2,7 +2,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * TODO: - all done for the demo
+ * TODO: - generate items in each room - method to check for items in the room,
+ * must print out description of items | NEED ITEM CLASS - adding items to
+ * player inventory when user picks up an item | NEED PLAYER CLASS - deducting
+ * time for each interaction
  * 
  * @author TUT 06: G3
  *
@@ -10,21 +13,26 @@ import java.util.Scanner;
 public class Map {
 
 	private static ArrayList<Item>[] room = new ArrayList[5];
-	private static double timeLeft = 12.00;
+//	private static ArrayList<ArrayList<Item>> room = new ArrayList<ArrayList<Item>>();
+	private static double timeLeft = 12.00; //
 	private static int currentRoom = 0;
 	private static Item[] itemList = new Item[8];
+
+	// private Stats[]
 
 	/**
 	 * Generate random items to each room
 	 */
 	public static void addRoomItems() {
 		int randomNumber;
+		int pickItem;
+		
 		// fill the item list with items so we can use it to fill the room with items
 		for (int i = 0; i < itemList.length; i++) {
 			// the type parameter wants a 0 or a 1, luckily the itemList is sorted so i
 			// could convert the index into either 1 or 2 by
 			// taking the mod of i
-			itemList[i] = new Item(i, 10, (i % 2), 3.00);
+			itemList[i] = new Item(i, 10.0, (i % 2), 3.00);
 		}
 		// fill all 5 rooms
 		for (int i = 0; i < room.length; i++) {
@@ -32,8 +40,8 @@ public class Map {
 			randomNumber = (int) (Math.random() * 4) + 1;
 			room[i] = new ArrayList<Item>();
 			for (int j = 0; j < randomNumber; j++) {
-				randomNumber = (int) (Math.random() * 8) + 0;
-				room[i].add(itemList[randomNumber]);
+				pickItem = (int) (Math.random() * 8) + 0;
+				room[i].add(itemList[pickItem]);
 			}
 		}
 	}
@@ -42,18 +50,21 @@ public class Map {
 	 * Scans the room and prints out the items in the room
 	 * 
 	 * @param roomNum
-	 *            - room the player is currently in
+	 *            - room the player is currently in UNFINISHED!!!!
 	 */
 	public static boolean searchRoom(ArrayList<Item> room) {
-		System.out.println("You search the room for items..");
+		System.out.println("You search the room for items..\n");
 		if (room.size() == 0) {
-			System.out.println("This room is empty");
+			System.out.println("This room is empty\n");
 			return false;
 		} else {
 			System.out.print("You found ");
 			for (int i = 0; i < room.size(); i++) {
 				if (i == room.size() - 1) {
-					System.out.println("and a " + room.get(i).getName() + ".");
+					if (room.size() > 1) {
+						System.out.print("and ");
+					}
+					System.out.println("a " + room.get(i).getName() + ".");
 				} else {
 					System.out.print("a " + room.get(i).getName() + ", ");
 				}
@@ -128,11 +139,12 @@ public class Map {
 			itemIndex = Integer.parseInt(input) - 1;
 			if (room.size() + 1 != Integer.parseInt(input)) {
 				try {
+					System.out.println("-------------------------------------------");
 					player.addItemToInventory(room.get(itemIndex));
-					player.addStat(room.get(itemIndex));
-					System.out.println("You gained " + room.get(itemIndex).getDesc());
+					System.out.println("You gained " + room.get(itemIndex).getDesc() + "\n");
 					timeLeft -= room.get(itemIndex).getTime();
 					room.remove(itemIndex);
+					player.printStats();
 					break;
 				} catch (Exception e) {
 					System.out.println("Please enter a different number.");
@@ -173,7 +185,7 @@ public class Map {
 	 * Game screen, handles moving into different rooms and printing out choices the
 	 * player can make
 	 * 
-	 * @param player - player that will be playing the game
+	 * @param playerInput
 	 */
 	public static void gameScreen(Player player) {
 		Scanner kb = new Scanner(System.in);
@@ -218,7 +230,7 @@ public class Map {
 
 	public static void main(String[] args) {
 		int playerInput;
-		Player player = new Player(50, 3);
+		Player player = new Player(50.0, 3.0);
 		// menu
 		playerInput = mainMenu();
 
@@ -228,5 +240,24 @@ public class Map {
 			gameScreen(player);
 			Battle.start(player);
 		} // else do nothing and terminate the program
+
+		// Item Creation
+		// Strength [0]
+		// Item book = new Item("Book", 1, 0, 2.0);
+		// Item ta = new Item("TA", 3, 0, 5.0);
+		// // Defence [1]
+		// Item games = new Item("Games", 1, 1, 3.5);
+		// Item Sleep = new Item("Sleep", 5, 1, 8.0);
+		// // Luck [2]
+		// Item sacrifice = new Item("Sacifice to the Gods!", 5, 2, 5.5);
+		// Item charm = new Item("Charm", 3, 2, 0.5);
+		// // Attack [3]
+		// Item sharpener = new Item("Sharpener", 2, 3, 0.5);
+		// // Speed [4]
+		// Item cheatSheet = new Item("Totaly not Cheating", 5, 4, 2.5);
 	}
+
+	// public Player getPlayer() {
+	// return player;
+	// }
 }

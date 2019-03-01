@@ -1,9 +1,9 @@
 
 public class Enemy {
 	private String name;
-	private int health;
+	private double health;
 	private int attack;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -12,12 +12,12 @@ public class Enemy {
 		this.name = name;
 	}
 
-	public int getHealth() {
+	public double getHealth() {
 		return this.health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
+	public void setHealth(double d) {
+		this.health = d;
 	}
 
 	public int getAttack() {
@@ -33,7 +33,7 @@ public class Enemy {
 		this.health = health;
 		this.attack = attack;
 	}
-	
+
 	public static Enemy getRandomEnemy() {
 		int n = (int) (Math.random() * 3 + 1);
 		if (n == 1) {
@@ -43,19 +43,21 @@ public class Enemy {
 		} else if (n == 3) {
 			return new Enemy("Science Test", 65, 8);
 		} else {
-			return new Enemy("Neverpick", 999,999);
+			return new Enemy("Neverpick", 999, 999);
 		}
 	}
-	
+
 	public void enemyAttack(Player player) {
 		// defense reduces the boss's base damage
 		if (player.getStat(1) == 0) {
 			player.setHealth(player.getHealth() - this.attack);
 		} else {
-			player.setHealth(player.getHealth() - (this.attack * (player.getStat(1) / 100)));
+			this.attack -= this.attack * (player.getStat(1) / 100); //move
+			player.setHealth(player.getHealth() - this.attack);
 		}
+		
 		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
 		System.out.println("You have " + player.getHealth() + " sanity left.");
 	}
-	
+
 }

@@ -6,28 +6,27 @@ import java.util.Scanner;
 public class Player {
 	private int[] stats = new int[2];
 	private ArrayList<Item> inventory = new ArrayList<Item>();
-	private int health = 100;// default health
-	private int attack = 50;// default attack damage
+	private double health = 100.0;// default health
+	private double attack = 50.0;// default attack damage
 
-	public Player(int health, int attack) {
+	public Player(double health, double attack) {
 		this.health = health;
 		this.attack = attack;
 	}
 
 	public int getStat(int index) {
-		int[] copyStats = this.stats.clone();
-		return copyStats[index];
+		return this.stats[index];
 	}
 
-	public int getHealth() {
+	public double getHealth() {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
+	public void setHealth(double d) {
+		this.health = d;
 	}
 
-	public int getAttack() {
+	public double getAttack() {
 		return attack;
 	}
 
@@ -51,13 +50,13 @@ public class Player {
 	
 	public void addStat(Item item) {
 		int index = item.getType();
-		int value = item.getValue();
+		double value = item.getValue();
 		stats[index] += value;
 	}
 
-	public void printStats(int[] stats) {
-		System.out.println("Attack:" + stats[0]);
-		System.out.println("Defense:" + stats[1]);
+	public void printStats() {
+		System.out.println("Attack:" + this.stats[0]);
+		System.out.println("Defense:" + this.stats[1]);
 		// System.out.println("Speed:"+stats[2]);
 		// System.out.println("Luck:"+stats[3]);
 		// System.out.println("Strength:"+stats[4]);
@@ -79,10 +78,10 @@ public class Player {
 	// int newHealth = health + (stats[1] * 10);
 	// }
 
-	public int updateAttack() {
+	public void updateAttack() {
 		// Adds damage depending on the stats that you get in the beginning
 		// int newAttack = attack + (stats[0]);
-		return attack + (stats[0]);
+		this.attack += (stats[0]);
 	}
 
 	public void attack(Enemy enemy) {
