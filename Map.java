@@ -128,19 +128,23 @@ public class Map {
 		String input;
 		int itemIndex;
 		Scanner kb = new Scanner(System.in);
+		
 		while (true) {
 			input = kb.nextLine();
 			itemIndex = Integer.parseInt(input) - 1;
-			if (room.size() != Integer.parseInt(input)) {
+			if (room.size() + 1 != Integer.parseInt(input)) {
 				try {
 					player.addItemToInventory(room.get(itemIndex));
-					System.out.println("You gained " + room.get(itemIndex).getItemDescFromList(itemIndex));
+//					player.addStat(room.get(itemIndex));
+					System.out.println("You gained " + room.get(itemIndex).getDesc());
 					timeLeft -= room.get(itemIndex).getTime();
 					room.remove(itemIndex);
 					break;
 				} catch (Exception e) {
 					System.out.println("Please enter a different number.");
 				}
+			} else {
+				break;
 			}
 		}
 	}

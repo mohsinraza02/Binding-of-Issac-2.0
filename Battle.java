@@ -10,17 +10,21 @@ public class Battle {
 	public static void start(Player player) {
 
 		Enemy boss = Enemy.getRandomEnemy();
+		player.setAttack(player.updateAttack());
 		
 		boolean playerEnd = false;
 		boolean fight = true;
 		Scanner kb = new Scanner(System.in);
-
-		System.out.println("It is time to take the test.");
+		
+		System.out.println("It is time to take the test. Hit any key to continue");
 		kb.nextLine();
 
 		do {
 			playerEnd = false;
 			do {
+				System.out.println("You have " + player.getHealth() + " health, " + player.getAttack() + " attack, and " + player.getStat(1) + " defense.");
+				System.out.println("The test has " + boss.getHealth() + " health.");
+				System.out.println("---------------------------------");
 				System.out.println("What will you do?\n(a) Attack/Answer Question");
 				String decision = kb.nextLine();
 				if (decision.equals("a")) { // Then attack
@@ -31,7 +35,7 @@ public class Battle {
 				}
 			} while (playerEnd == false);
 			if (boss.getHealth() >= 1) {
-				System.out.println("The test inflicts it's difficulty upon you.");
+				System.out.println("The test inflicts its difficulty upon you.");
 				kb.nextLine();
 				boss.enemyAttack(player);
 				kb.nextLine();

@@ -2,6 +2,7 @@
 public class Item {
 
 	private String name; // display name on map
+	private String desc;
 	private int value; // value being appended in player array
 	private int type; // location in player array
 	private double time; // time taken from total map time
@@ -28,6 +29,7 @@ public class Item {
 	 */
 	public Item(int nameIndex, int value, int type, double time) {
 		this.name = getItemNameFromList(nameIndex);
+		this.desc = getItemDescFromList(nameIndex);
 		this.value = value;
 		this.type = type;
 		this.time = time;
@@ -41,6 +43,14 @@ public class Item {
 	 */
 	public String getName() {
 		return this.name;
+	}
+	
+	/**
+	 * Getter for the item's description
+	 * @return the item's description
+	 */
+	public String getDesc() {
+		return this.desc;
 	}
 	
 	/**
