@@ -52,7 +52,7 @@ public class Player {
 	public void addStat(Item item) {
 		int index = item.getType();
 		int value = item.getValue();
-		stats[index] = value;
+		stats[index] += value;
 	}
 
 	public void printStats(int[] stats) {
