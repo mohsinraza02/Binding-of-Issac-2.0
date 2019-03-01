@@ -8,7 +8,6 @@ public class Player {
 	private ArrayList<Item> inventory = new ArrayList<Item>();
 	private int health = 100;// default health
 	private int attack = 50;// default attack damage
-	private int currentRoom;
 
 	public Player(int health, int attack) {
 		this.health = health;
@@ -25,7 +24,7 @@ public class Player {
 	}
 
 	public void setHealth(int health) {
-		this.health += health;
+		this.health = health;
 	}
 
 	public int getAttack() {
@@ -48,6 +47,12 @@ public class Player {
 			stats[i] = randomStat;
 
 		}
+	}
+	
+	public void addStat(Item item) {
+		int index = item.getType();
+		int value = item.getValue();
+		stats[index] = value;
 	}
 
 	public void printStats(int[] stats) {
@@ -82,17 +87,9 @@ public class Player {
 
 	public void attack(Enemy enemy) {
 		// enemy.setHealth(getHealth() - );
-		enemy.setHealth(enemy.getHealth() - updateAttack());
+		enemy.setHealth(enemy.getHealth() - this.attack);
 		System.out.println("You did " + attack + " damage to the " + enemy.getName());
 		System.out.println("The " + enemy.getName() + " has " + enemy.getHealth() + " health left.");
-	}
-
-	public int getCurrentRoom() {
-		return this.currentRoom;
-	}
-
-	public void setCurrentRoom(int currentRoom) {
-		this.currentRoom = currentRoom;
 	}
 
 }
