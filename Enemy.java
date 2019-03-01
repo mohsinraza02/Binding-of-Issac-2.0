@@ -37,18 +37,19 @@ public class Enemy {
 	public static Enemy getRandomEnemy() {
 		int n = (int) (Math.random() * 3 + 1);
 		if (n == 1) {
-			return new Enemy("Math Test", 50, 4);
+			return new Enemy("Math Test", 50, 12);
 		} else if (n == 2) {
-			return new Enemy("CPSC Test", 45, 5);
+			return new Enemy("CPSC Test", 45, 10);
 		} else if (n == 3) {
-			return new Enemy("Science Test", 65, 2);
+			return new Enemy("Science Test", 65, 8);
 		} else {
 			return new Enemy("Neverpick", 999,999);
 		}
 	}
 	
 	public void enemyAttack(Player player) {
-		player.setHealth(player.getHealth() - (this.attack - player.getStat(1)));
+		// defense reduces the boss's base damage
+		player.setHealth(player.getHealth() - (this.attack * (player.getStat(1)/100)));
 		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
 		System.out.println("You have " + player.getHealth() + " sanity left.");
 	}
