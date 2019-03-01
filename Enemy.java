@@ -56,8 +56,8 @@ public class Enemy {
 			player.setHealth(player.getHealth() - this.attack);
 		}
 		
-		System.out.println("The test attacks your sanity for " + this.attack + " damage!");
-		System.out.println("You have " + player.getHealth() + " sanity left.");
+		System.out.println("The test attacks your health for " + this.attack + " damage!");
+		System.out.println("You have " + player.getHealth() + " health left.");
 	}
 
 }
