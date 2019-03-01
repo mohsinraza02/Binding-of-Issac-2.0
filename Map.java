@@ -2,10 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * TODO: - generate items in each room - method to check for items in the room,
- * must print out description of items | NEED ITEM CLASS - adding items to
- * player inventory when user picks up an item | NEED PLAYER CLASS - deducting
- * time for each interaction
+ * TODO: - all done for the demo
  * 
  * @author TUT 06: G3
  *
@@ -13,8 +10,7 @@ import java.util.Scanner;
 public class Map {
 
 	private static ArrayList<Item>[] room = new ArrayList[5];
-//	private static ArrayList<ArrayList<Item>> room = new ArrayList<ArrayList<Item>>();
-	private static double timeLeft = 12.00; //
+	private static double timeLeft = 12.00;
 	private static int currentRoom = 0;
 	private static Item[] itemList = new Item[8];
 
@@ -48,7 +44,7 @@ public class Map {
 	 * Scans the room and prints out the items in the room
 	 * 
 	 * @param roomNum
-	 *            - room the player is currently in UNFINISHED!!!!
+	 *            - room the player is currently in
 	 */
 	public static boolean searchRoom(ArrayList<Item> room) {
 		System.out.println("You search the room for items..");
@@ -234,24 +230,5 @@ public class Map {
 			gameScreen(player);
 			Battle.start(player);
 		} // else do nothing and terminate the program
-
-		// Item Creation
-		// Strength [0]
-		// Item book = new Item("Book", 1, 0, 2.0);
-		// Item ta = new Item("TA", 3, 0, 5.0);
-		// // Defence [1]
-		// Item games = new Item("Games", 1, 1, 3.5);
-		// Item Sleep = new Item("Sleep", 5, 1, 8.0);
-		// // Luck [2]
-		// Item sacrifice = new Item("Sacifice to the Gods!", 5, 2, 5.5);
-		// Item charm = new Item("Charm", 3, 2, 0.5);
-		// // Attack [3]
-		// Item sharpener = new Item("Sharpener", 2, 3, 0.5);
-		// // Speed [4]
-		// Item cheatSheet = new Item("Totaly not Cheating", 5, 4, 2.5);
 	}
-
-	// public Player getPlayer() {
-	// return player;
-	// }
 }
