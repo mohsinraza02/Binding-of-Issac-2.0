@@ -6,14 +6,15 @@ public class Item {
 	private double value; // value being appended in player array
 	private int type; // location in player array
 	private double time; // time taken from total map time
-	private final String[][] INSTENT_ITEM_NAME_AND_DESC = {
-			{ "Book", "Game", "TA", "Sleep", "Sharpener", "GUIDE: Sacrifice to the Gods!", "Cheat Sheet",
+	
+	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
+			{ "Game", "TA", "Sleep", "GUIDE: Sacrifice to the Gods!", 
 					"Lucky Charm" },
-			{ "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
+			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense" } };
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
-		{},
-		{}};
+		{"Book", "Cheat Sheet","Sharpener",},
+		{"+10 Attack", "+10 Defense", "+10 Attack"}};
 
 	/**
 	 * This constructor takes the 4 parameter values and sets the afirst parameter
@@ -31,8 +32,8 @@ public class Item {
 	 *            this parameter is set to the instance variable time
 	 */
 	public Item(int nameIndex, double value, int type, double time) {
-		this.name = getItemNameFromListInstent(nameIndex);
-		this.desc = getItemDescFromListInstent(nameIndex);
+		this.name = getItemNameFromListInstant(nameIndex);
+		this.desc = getItemDescFromListInstant(nameIndex);
 		this.value = value;
 		this.type = type;
 		this.time = time;
@@ -64,7 +65,7 @@ public class Item {
 	}
 	
 	/**
-	 * This method takes a name from the "Item and Description" list
+	 * This method takes a name from the "Collectables Item and Description" list
 	 * @param index - index of the name in the array
 	 * @return the name pulled from the array
 	 */
@@ -73,7 +74,7 @@ public class Item {
 	}
 	
 	/**
-	 * This method takes a name from the "Item and Description" list
+	 * This method takes a name from the "Collectables Item and Description" list
 	 * @param index - index of the description in the array
 	 * @return - the description from the array
 	 */
@@ -82,21 +83,21 @@ public class Item {
 	}
 	
 	/**
-	 * This method takes a name from the "Item and Description" list
+	 * This method takes a name from the "Instant Item and Description" list
 	 * @param index - index of the name in the array
 	 * @return the name pulled from the array
 	 */
-	public String getItemNameFromListInstent(int index) {
-		return INSTENT_ITEM_NAME_AND_DESC[0][index];
+	public String getItemNameFromListInstant(int index) {
+		return INSTANT_ITEM_NAME_AND_DESC[0][index];
 	}
 	
 	/**
-	 * This method takes a name from the "Item and Description" list
+	 * This method takes a name from the "Instant Item and Description" list
 	 * @param index - index of the description in the array
 	 * @return - the description from the array
 	 */
-	public String getItemDescFromListInstent(int index) {
-		return INSTENT_ITEM_NAME_AND_DESC[1][index];
+	public String getItemDescFromListInstant(int index) {
+		return INSTANT_ITEM_NAME_AND_DESC[1][index];
 	}
 	
 	/**
