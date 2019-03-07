@@ -11,7 +11,9 @@ public class Item {
 					"Lucky Charm" },
 			{ "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense" } };
-	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {};
+	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
+		{},
+		{}};
 
 	/**
 	 * This constructor takes the 4 parameter values and sets the afirst parameter
