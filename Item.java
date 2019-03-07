@@ -35,6 +35,13 @@ public class Item {
 		this.time = time;
 	}
 	
+	public Item(int nameIndex, double value, int type){
+		this.name = getItemNameFromList(nameIndex);
+		this.desc = getItemDescFromList(nameIndex);
+		this.value = value;
+		this.type = type;
+	}
+	
 	/**
 	 * The method getName returns the instance variable name of type String from the
 	 * class Item.
