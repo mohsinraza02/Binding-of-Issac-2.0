@@ -6,11 +6,12 @@ public class Item {
 	private double value; // value being appended in player array
 	private int type; // location in player array
 	private double time; // time taken from total map time
-	private final String[][] ITEM_NAME_AND_DESC = {
+	private final String[][] INSTENT_ITEM_NAME_AND_DESC = {
 			{ "Book", "Game", "TA", "Sleep", "Sharpener", "GUIDE: Sacrifice to the Gods!", "Cheat Sheet",
 					"Lucky Charm" },
 			{ "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense" } };
+	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {};
 
 	/**
 	 * This constructor takes the 4 parameter values and sets the afirst parameter
@@ -28,16 +29,16 @@ public class Item {
 	 *            this parameter is set to the instance variable time
 	 */
 	public Item(int nameIndex, double value, int type, double time) {
-		this.name = getItemNameFromList(nameIndex);
-		this.desc = getItemDescFromList(nameIndex);
+		this.name = getItemNameFromListInstent(nameIndex);
+		this.desc = getItemDescFromListInstent(nameIndex);
 		this.value = value;
 		this.type = type;
 		this.time = time;
 	}
 	
 	public Item(int nameIndex, double value, int type){
-		this.name = getItemNameFromList(nameIndex);
-		this.desc = getItemDescFromList(nameIndex);
+		this.name = getItemNameFromListCollectable(nameIndex);
+		this.desc = getItemDescFromListCollectable(nameIndex);
 		this.value = value;
 		this.type = type;
 	}
@@ -65,8 +66,8 @@ public class Item {
 	 * @param index - index of the name in the array
 	 * @return the name pulled from the array
 	 */
-	public String getItemNameFromList(int index) {
-		return ITEM_NAME_AND_DESC[0][index];
+	public String getItemNameFromListCollectable(int index) {
+		return COLLECTABLE_ITEM_NAME_AND_DESC[0][index];
 	}
 	
 	/**
@@ -74,9 +75,28 @@ public class Item {
 	 * @param index - index of the description in the array
 	 * @return - the description from the array
 	 */
-	public String getItemDescFromList(int index) {
-		return ITEM_NAME_AND_DESC[1][index];
+	public String getItemDescFromListCollectable(int index) {
+		return COLLECTABLE_ITEM_NAME_AND_DESC[1][index];
 	}
+	
+	/**
+	 * This method takes a name from the "Item and Description" list
+	 * @param index - index of the name in the array
+	 * @return the name pulled from the array
+	 */
+	public String getItemNameFromListInstent(int index) {
+		return INSTENT_ITEM_NAME_AND_DESC[0][index];
+	}
+	
+	/**
+	 * This method takes a name from the "Item and Description" list
+	 * @param index - index of the description in the array
+	 * @return - the description from the array
+	 */
+	public String getItemDescFromListInstent(int index) {
+		return INSTENT_ITEM_NAME_AND_DESC[1][index];
+	}
+	
 	/**
 	 * The method getValue returns the instance variable value of type int from the
 	 * class Item.
