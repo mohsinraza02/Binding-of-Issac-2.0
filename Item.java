@@ -7,6 +7,7 @@ public class Item {
 	private int type; // location in player array
 	private double time; // time taken from total map time
 	
+
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
 			{ "Game", "TA", "Sleep", "GUIDE: Sacrifice to the Gods!", 
 					"Lucky Charm", "Study Guide", "Chicken Wings" },
