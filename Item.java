@@ -9,7 +9,7 @@ public class Item {
 	
 
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
-			{ "Game", "TA", "Sleep", "GUIDE: Sacrifice to the Gods!", 
+			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", 
 					"Lucky Charm", "Study Guide", "Chicken Wings","" },
 			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense", "+10 Attack", "+10 Defense"} };
