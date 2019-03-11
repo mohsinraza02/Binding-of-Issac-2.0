@@ -1,10 +1,11 @@
+
 import javax.xml.stream.events.EndElement;
 import java.util.*;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Player {
-	private int[] stats = new int[2];
+	private int[] stats = new int[4];
 	private ArrayList<Item> inventory = new ArrayList<Item>();
 	private double health = 100.0;// default health
 	private double attack = 50.0;// default attack damage
@@ -35,18 +36,33 @@ public class Player {
 	}
 
 	/*
-	 * Generate 5 random stats for each category: Strength, Defense, Attack, Luck,
+	 * Generate 4 random stats for each category: Strength, Defense, Attack, Luck,
 	 * Speed
+	 * The sum of the stats that is possible is 30 because it would be too unbalanced to get perfect
+	 * rolls. The sum of the stats will always be 30 as well, so when you start the game it will always
+	 * be perfectly balanced.
 	 */
 	public void generateStats() {
-		Random randStat = new Random();
-		for (int i = 0; i < 2; i++) {
+		
+        Random randStat = new Random();
+		int maxStat = 30;
+		
+		while(maxStat != 0) {
+		for (int i = 0; i < 4; i++) {
 			int randomStat = randStat.nextInt(10);
 			randomStat += 1;
 			stats[i] = randomStat;
-
+			maxStat -= randomStat;
+			}
+		if(maxStat != 0) {
+			maxStat = 30;
 		}
+		}
+		
+	
 	}
+	
+	
 	
 	public void addStat(Item item) {
 		int index = item.getType();
@@ -57,9 +73,9 @@ public class Player {
 	public void printStats() {
 		System.out.println("Attack:" + this.stats[0]);
 		System.out.println("Defense:" + this.stats[1]);
-		// System.out.println("Speed:"+stats[2]);
-		// System.out.println("Luck:"+stats[3]);
-		// System.out.println("Strength:"+stats[4]);
+		System.out.println("Speed:"+this.stats[2]);
+		System.out.println("Luck:"+this.stats[3]);
+		
 	}
 
 	public void addItemToInventory(Item item) {
