@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 import javax.xml.stream.events.EndElement;
 import java.util.*;
 import java.util.Random;
@@ -41,27 +41,38 @@ public class Player {
 	 * The sum of the stats that is possible is 30 because it would be too unbalanced to get perfect
 	 * rolls. The sum of the stats will always be 30 as well, so when you start the game it will always
 	 * be perfectly balanced.
+	 * Added a reroll method (credit to Josh)
 	 */
 	public void generateStats() {
 		
         Random randStat = new Random();
 		int maxStat = 30;
+		Scanner kb = new Scanner(System.in);
 		
-		while(maxStat != 0) {
+		boolean reroll;
+		do {
+		reroll = false;
 		for (int i = 0; i < 4; i++) {
 			int randomStat = randStat.nextInt(10);
 			randomStat += 1;
 			stats[i] = randomStat;
 			maxStat -= randomStat;
 			}
+		String input = kb.nextLine();
+		if (input.equals("y")) {
+			reroll = true;
+		}
+		
 		if(maxStat != 0) {
 			maxStat = 30;
 		}
-		}
+		
+		}while(maxStat != 0 && reroll == true);
 		
 	
 	}
-	
+
+		
 	
 	
 	public void addStat(Item item) {
