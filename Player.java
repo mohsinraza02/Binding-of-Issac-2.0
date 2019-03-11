@@ -43,7 +43,7 @@ public class Player {
 	 * be perfectly balanced.
 	 * Added a reroll method (credit to Josh)
 	 */
-	public void generateStats() {
+	public int[] generateStats() {
 		
         Random randStat = new Random();
 		int maxStat = 30;
@@ -58,6 +58,11 @@ public class Player {
 			stats[i] = randomStat;
 			maxStat -= randomStat;
 			}
+		System.out.println("Attack:" + stats[0]);
+		System.out.println("Defense:" + stats[1]);
+		System.out.println("Speed:"+stats[2]);
+		System.out.println("Luck:"+stats[3]);
+		System.out.println("Do you want to reroll your stats? (y/n)");
 		String input = kb.nextLine();
 		if (input.equals("y")) {
 			reroll = true;
@@ -70,6 +75,7 @@ public class Player {
 		}while(maxStat != 0 && reroll == true);
 		
 	
+	return stats;
 	}
 
 		
@@ -96,9 +102,6 @@ public class Player {
 
 	}
 
-	// public void addItemStatToPlayer(Item itemValue){
-
-	// }
 
 	// public void updateHealth() {
 	// // Adds health depending on the stats that you get in the beginning
