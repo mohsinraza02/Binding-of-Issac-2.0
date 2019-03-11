@@ -38,39 +38,59 @@ public class Player {
 	/*
 	 * Generate 4 random stats for each category: Strength, Defense, Attack, Luck,
 	 * Speed
-	 * The sum of the stats that is possible is 30 because it would be too unbalanced to get perfect
-	 * rolls. The sum of the stats will always be 30 as well, so when you start the game it will always
+	 * The sum of the stats that is possible is 25 because it would be too unbalanced to get perfect
+	 * rolls. The sum of the stats will always be 25 as well, so when you start the game it will always
 	 * be perfectly balanced.
 	 * Added a reroll method (credit to Josh)
 	 */
-	public void generateStats() {
+	public int[] generateStats() {
 		
-        Random randStat = new Random();
-		int maxStat = 30;
+		Random randStat = new Random();
+		int maxStat = 25;
 		Scanner kb = new Scanner(System.in);
 		
 		boolean reroll;
 		do {
 		reroll = false;
+		while (maxStat  != 0) { 
 		for (int i = 0; i < 4; i++) {
 			int randomStat = randStat.nextInt(10);
 			randomStat += 1;
 			stats[i] = randomStat;
 			maxStat -= randomStat;
 			}
-		String input = kb.nextLine();
-		if (input.equals("y")) {
-			reroll = true;
+			
+		if(maxStat != 0) {
+			maxStat = 25;
 		}
 		
-		if(maxStat != 0) {
-			maxStat = 30;
 		}
+		System.out.println("Attack:" + stats[0]);
+		System.out.println("Defense:" + stats[1]);
+		System.out.println("Speed:"+stats[2]);
+		System.out.println("Luck:"+stats[3]);
+		System.out.println("Do you want to reroll your stats? (y/n)");
+		String input = kb.nextLine();
+		if (input.equals("y")) {
+			
+			reroll = true;
+			maxStat = 25;
+		}
+		
+		
 		
 		}while(maxStat != 0 && reroll == true);
 		
+		return stats;
+
+}
+
+
+
+
 	
-	}
+	
+	
 
 		
 	
@@ -96,9 +116,6 @@ public class Player {
 
 	}
 
-	// public void addItemStatToPlayer(Item itemValue){
-
-	// }
 
 	// public void updateHealth() {
 	// // Adds health depending on the stats that you get in the beginning

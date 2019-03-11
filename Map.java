@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ import java.util.Scanner;
  */
 public class Map {
 
+	
 	private static ArrayList<Item>[] room = new ArrayList[5];
 //	private static ArrayList<ArrayList<Item>> room = new ArrayList<ArrayList<Item>>();
 	private static double timeLeft = 12.00; //
@@ -228,15 +230,28 @@ public class Map {
 		}
 	}
 
+	
+	public static void statScreen(Player player) {
+		int [] stats = player.generateStats();
+		System.out.println("-------------------------------------------");
+		System.out.println("Your stats are:");
+		System.out.println("Attack:" + stats[0]);
+		System.out.println("Defense:" + stats[1]);
+		System.out.println("Speed:"+stats[2]);
+		System.out.println("Luck:"+stats[3]);
+	}
+	
+	
 	public static void main(String[] args) {
 		int playerInput;
-		Player player = new Player(50.0, 3.0);
+		Player player = new Player(100.0, 0.0);
 		// menu
 		playerInput = mainMenu();
 
 		// game screen
 		// if the player chose to play the game, start the game.
 		if (playerInput != 2) {
+			statScreen(player);
 			gameScreen(player);
 			Battle.start(player);
 		} // else do nothing and terminate the program
