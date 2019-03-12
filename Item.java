@@ -9,13 +9,11 @@ public class Item {
 	
 
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
-			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", 
-					"Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
-			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
-					"+10 Defense", "+10 Attack", "+10 Defense"} };
+			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
+			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack","+10 Defense", "+10 Attack", "+10 Defense", "+10 Defence"}};
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
-		{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen","","" },
-		{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense" }};
+		{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen","Water bottle","Calculator" },
+		{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Attack", "+10 Defence", "+10 Defence"}};
 
 	/**
 	 * This constructor takes the 4 parameter values and sets the afirst parameter
