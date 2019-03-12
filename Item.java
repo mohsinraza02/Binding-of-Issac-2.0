@@ -10,7 +10,7 @@ public class Item {
 
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
 			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", 
-					"Lucky Charm", "Study Guide", "Pizza","" },
+					"Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
 			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack",
 					"+10 Defense", "+10 Attack", "+10 Defense"} };
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
