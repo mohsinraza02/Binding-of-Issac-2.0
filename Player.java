@@ -1,18 +1,45 @@
-import java.util.Scanner;
-import javax.xml.stream.events.EndElement;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Player {
 	private int[] stats = new int[4];
-	private ArrayList<Item> inventory = new ArrayList<Item>();
-	private double health = 100.0;// default health
-	private double attack = 50.0;// default attack damage
+	//private ArrayList<Item> inventory = new ArrayList<Item>();
+	private double health;// default health
+	private double attack;// default attack damage
+	private int attackCap, defenseCap, healthCap, skillP;
 
-	public Player(double health, double attack) {
+	public Player(double health, double attack, int maxAttack, int maxDefense, int maxHealth, int skillP) {
 		this.health = health;
 		this.attack = attack;
+		this.attackCap = maxAttack;
+		this.defenseCap = maxDefense;
+		this.healthCap = maxHealth;
+		this.skillP = skillP;
+	}
+
+	public int getAttackCap() {
+		return attackCap;
+	}
+
+	public void setAttackCap(int attackCap) {
+		this.attackCap = attackCap;
+	}
+
+	public int getDefenseCap() {
+		return defenseCap;
+	}
+
+	public void setDefenseCap(int defenseCap) {
+		this.defenseCap = defenseCap;
+	}
+
+	public int getHealthCap() {
+		return healthCap;
+	}
+
+	public void setHealthCap(int healthCap) {
+		this.healthCap = healthCap;
 	}
 
 	public int getStat(int index) {
@@ -34,105 +61,180 @@ public class Player {
 	public void setAttack(int attack) {
 		this.attack = attack;
 	}
+	
+	public void setSkillP(int s) {
+		this.skillP = s;
+	}
+	
+	public int getSkillP() {
+		return this.skillP;
+	}
 
 	/*
 	 * Generate 4 random stats for each category: Strength, Defense, Attack, Luck,
-	 * Speed
-	 * The sum of the stats that is possible is 25 because it would be too unbalanced to get perfect
-	 * rolls. The sum of the stats will always be 25 as well, so when you start the game it will always
-	 * be perfectly balanced.
-	 * Added a reroll method (credit to Josh)
+	 * Speed The sum of the stats that is possible is 25 because it would be too
+	 * unbalanced to get perfect rolls. The sum of the stats will always be 25 as
+	 * well, so when you start the game it will always be perfectly balanced. Added
+	 * a reroll method (credit to Josh)
 	 */
 	public int[] generateStats() {
-		
+
 		Random randStat = new Random();
 		int maxStat = 25;
 		Scanner kb = new Scanner(System.in);
-		
+
 		boolean reroll;
 		do {
-		reroll = false;
-		while (maxStat  != 0) { 
-		for (int i = 0; i < 4; i++) {
-			int randomStat = randStat.nextInt(10);
-			randomStat += 1;
-			stats[i] = randomStat;
-			maxStat -= randomStat;
+			reroll = false;
+			while (maxStat != 0) {
+				for (int i = 0; i < 4; i++) {
+					int randomStat = randStat.nextInt(10);
+					randomStat += 1;
+					stats[i] = randomStat;
+					maxStat -= randomStat;
+				}
+
+				if (maxStat != 0) {
+					maxStat = 25;
+				}
+
 			}
-			
-		if(maxStat != 0) {
-			maxStat = 25;
-		}
-		
-		}
-		System.out.println("Attack:" + stats[0]);
-		System.out.println("Defense:" + stats[1]);
-		System.out.println("Speed:"+stats[2]);
-		System.out.println("Luck:"+stats[3]);
-		System.out.println("Do you want to reroll your stats? (y/n)");
-		String input = kb.nextLine();
-		if (input.equals("y")) {
-			
-			reroll = true;
-			maxStat = 25;
-		}
-		
-		
-		
-		}while(maxStat != 0 && reroll == true);
-		
+			System.out.println("Attack:" + stats[0]);
+			System.out.println("Defense:" + stats[1]);
+			System.out.println("Speed:" + stats[2]);
+			System.out.println("Luck:" + stats[3]);
+			System.out.println("Do you want to reroll your stats? (y/n)");
+			String input = kb.nextLine();
+			if (input.equals("y")) {
+
+				reroll = true;
+				maxStat = 25;
+			}
+
+		} while (maxStat != 0 && reroll == true);
+
 		return stats;
 
-}
-
-
-
-
-	
-	
-	
-
-		
-	
-	
-	public void addStat(Item item) {
-		int index = item.getType();
-		double value = item.getValue();
-		stats[index] += value;
 	}
 
+	/**
+	 * Add item statistic value to the player
+	 * 
+	 * @param item
+	 */
+//	public void addStat(Item item) {
+//		int index = item.getType();
+//		double value = item.getValue();
+//		stats[index] += value;
+//	}
+
+	/**
+	 * Print statistics of the player
+	 */
 	public void printStats() {
 		System.out.println("Attack:" + this.stats[0]);
 		System.out.println("Defense:" + this.stats[1]);
-		System.out.println("Speed:"+this.stats[2]);
-		System.out.println("Luck:"+this.stats[3]);
-		
-	}
-
-	public void addItemToInventory(Item item) {
-		System.out.println("you picked up: " + item.getName());
-		inventory.add(item);
-		stats[item.getType()] += item.getValue();
+		System.out.println("Speed:" + this.stats[2]);
+		System.out.println("Luck:" + this.stats[3]);
 
 	}
 
+	/**
+	 * Add and item to the player's inventory.
+	 * 
+	 * @param item
+	 */
+//	public void addItemToInventory(Item item) {
+//		System.out.println("you picked up: " + item.getName());
+//		inventory.add(item);
+//		stats[item.getType()] += item.getValue();
+//
+//	}
 
-	// public void updateHealth() {
-	// // Adds health depending on the stats that you get in the beginning
-	// int newHealth = health + (stats[1] * 10);
-	// }
 
+	/**
+	 * Update the attack with adding the item bonuses
+	 */
 	public void updateAttack() {
 		// Adds damage depending on the stats that you get in the beginning
 		// int newAttack = attack + (stats[0]);
 		this.attack += (stats[0]);
 	}
 
+	/**
+	 * Attack an enemy that is passed in.
+	 * 
+	 * @param enemy
+	 */
 	public void attack(Enemy enemy) {
 		// enemy.setHealth(getHealth() - );
+		Scanner skip = new Scanner(System.in);		
+		System.out.println("You strike a shot at a question.");
+		skip.nextLine();
 		enemy.setHealth(enemy.getHealth() - this.attack);
-		System.out.println("You did " + attack + " damage to the " + enemy.getName());
+		System.out.println("You did " + this.attack + " damage to the " + enemy.getName());
 		System.out.println("The " + enemy.getName() + " has " + enemy.getHealth() + " health left.");
 	}
 
+	/**
+	 * Lower the test's defense.
+	 * @param enemy
+	 */
+	public void deepBreath(Enemy enemy) {
+		Scanner skip = new Scanner(System.in);
+		int defenseMod = (int) (this.getAttack() * 0.20);
+		//System.out.println(defenseMod);
+		enemy.setDefense(enemy.getDefense() - defenseMod);
+		if (defenseMod == 0) {
+			System.out.println("You try to take a deep breath, but the test just sits there with almost the same intimidation factor as before.");
+			System.out.println("The test looks very slightly weaker.");
+			enemy.setDefense(enemy.getDefense() - 1);
+		} else {
+			System.out.println("You take a quick breather. The test's intimidation is lowered.");
+			System.out.println("The test's defense was lowered a bit due to your resolve.");
+		}
+	}
+	
+	/**
+	 * Heal yourself for a small amount.
+	 */
+	public void stretch() {
+		int healMod = (int) ((this.getAttack() * 0.20) + (this.getHealth() * 0.10));
+		if ((this.getHealth() + healMod) > this.getHealthCap()) {
+			this.setHealth(this.getHealthCap());
+		} else {
+			this.setHealth(this.getHealth() + healMod);
+		}
+		System.out.println("You stretch a little, telling yourself it'll be okay. Hopefully.");
+		System.out.println("You heal yourself for " + healMod + " health.");
+	}
+
+	/**
+	 * Choose a skill to use!
+	 * @param enemy
+	 * @return if the user picked a skill or no.
+	 */
+	public boolean skill(Enemy enemy) {
+		Scanner kb = new Scanner(System.in);
+		boolean pick = false; 
+		boolean valid = false;
+		do {
+			System.out.println("What skill would you like to use?\n(a) Take a Breather(Lower Enemy Defense)\n(b) Stretch (Heal)\n(x) Back");
+			String input = kb.nextLine();
+			if (input.toLowerCase().equals("a")) {
+				deepBreath(enemy);
+				pick = true;
+				valid = true;
+			} else if(input.toLowerCase().equals("b")) {
+				stretch();
+				pick = true;
+				valid = true;
+			} else if (input.toLowerCase().equals("x")) {
+				valid = true;
+			}
+		} while(valid == false);
+		return pick;
+	}
+
+	
 }
