@@ -18,17 +18,26 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	private Pane root = new Pane();
+	int WIDTH = 1200;
+	int HEIGHT = 800;
 
 	// the following are used for event listeners
-	boolean goLeft = false;
-	boolean goRight = false;
-	boolean goUp = false;
-	boolean goDown = false;
-
-	private Objects player = new Objects(500, 500, 50, 100, "player", Color.BLUE, "player.png");
-	private Objects npc = new Objects(870, 500, 30, 40, "interaction", Color.BLUE, null);
-	private Objects bubble;
-
+	private boolean goLeft = false;
+	private boolean goRight = false;
+	private boolean goUp = false;
+	private boolean goDown = false;
+	
+	// Entities
+	private Player player = new Player(500, 500, 100, 150, "player", Color.BLUE, "player.png");
+	private Entities itemExample = new Entities(870, 500, 30, 40, "interaction", Color.BLUE, null);
+	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", Color.BLACK, "stats1.png");
+	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", Color.BLACK, "stats2.png");
+	
+	private Map map;
+	
+	private int[][] playerCurrentRoom = {{0}, {0}};
+	
+	private Entities bubble;
 	private Text t = new Text("press <space> to interact");
 
 	/**
@@ -38,12 +47,13 @@ public class Main extends Application {
 	 * @return
 	 */
 	private Parent createContent() {
-		root.setPrefSize(1200, 800);
+		root.setPrefSize(WIDTH, HEIGHT);
 		// adding the player, and enemies?
 		root.getChildren().add(player);
 		// maybe move adding npc to the map
-		root.getChildren().add(npc);
-
+		root.getChildren().add(itemExample);
+		//add HUDS
+		root.getChildren().add(statsUndropped);
 		// An animation timer is used for smoother movements
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
@@ -75,17 +85,27 @@ public class Main extends Application {
 			player.moveRight();
 		}
 		
+		// if player room moves to a different room, update playerCurrentRoom and change the background
+		if (playerCurrentRoom[0][0] != player.getCurrentRoomX() || playerCurrentRoom[1][0] != player.getCurrentRoomY()) {
+			playerCurrentRoom[0][0] = player.getCurrentRoomX();
+			playerCurrentRoom[1][0] = player.getCurrentRoomY();
+			
+			changeRoom(player.getCurrentRoomX(), player.getCurrentRoomY());
+		}
+		
 		// if player is intersecting with the npc, show a dialogue
-		if (player.getBoundsInParent().intersects(npc.getBoundsInParent())) {
+		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
 			// nested loop so the text doesn't flicker
 			if (!root.getChildren().contains(t)) {
-				t.setX(npc.getTranslateX());
-				t.setY(npc.getTranslateY());
+				t.setX(itemExample.getTranslateX());
+				t.setY(itemExample.getTranslateY());
 				root.getChildren().add(t);
 			}
 		} else {
 			root.getChildren().remove(t);
 		}
+		
+		
 
 	}
 	
@@ -95,9 +115,9 @@ public class Main extends Application {
 	 */
 	private void interact() {
 		// check if player can interact with npc (in range)
-		if (player.getBoundsInParent().intersects(npc.getBoundsInParent())) {
+		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
 			if (!root.getChildren().contains(bubble)) {
-				bubble = new Objects((int) npc.getTranslateX(), (int) npc.getTranslateY() - 80, 80, 80, "bubble",
+				bubble = new Entities((int) itemExample.getTranslateX(), (int) itemExample.getTranslateY() - 80, 80, 80, "bubble",
 						Color.BLACK, "text.png");
 				root.getChildren().add(bubble);
 			} else {
@@ -108,11 +128,40 @@ public class Main extends Application {
 	}
 	
 	/**
+	 * Opens or closes the stats box
+	 */
+	private void showStats() {
+		
+		// if it is closed, remove the unopened node and add the opened node
+		if (root.getChildren().contains(statsUndropped)) {
+			root.getChildren().remove(statsUndropped);
+			root.getChildren().add(statsDropped);
+		} else {
+			root.getChildren().remove(statsDropped);
+			root.getChildren().add(statsUndropped);
+		}
+	}
+	
+	/**
+	 * Changes the backround image to match the currentRoom
+	 * @param x - column of the room
+	 * @param y - row of the room
+	 */
+	private void changeRoom(int x, int y) {
+		String roomName = "'" + map.getImageName(x, y) + ".jpg'";
+		
+		root.setStyle("-fx-background-image: url("
+				+ roomName
+				+ "); " + "-fx-background-size: cover;");
+	}
+	
+	/**
 	 * yall know what goes down here
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		Scene scene = new Scene(createContent());
+		map = new Map();
 
 		// Key pressed listener. To bind a new key, add a new case statement
 		scene.setOnKeyPressed(e -> {
@@ -132,7 +181,10 @@ public class Main extends Application {
 			case SPACE:
 				interact();
 				break;
-			}
+			case P:
+				showStats();
+				break;
+			}	
 		});
 
 		// Key release listener
@@ -153,12 +205,8 @@ public class Main extends Application {
 			}
 		});
 		
-		// Changing the CSS of the pane for an easier way to set the background 
-		// how ever, using online pictures takes very long to render
-		// so TODO: download pictures/ have the hard copy of pictures
-		root.setStyle("-fx-background-image: url("
-				+ "'https://s3.amazonaws.com/cartoonsmartstreaming/wp-content/uploads/2017/05/30123103/Castle-top-down-royalty-free-game-art.jpg'"
-				+ "); " + "-fx-background-size: cover;");
+		// render the first room at start up
+		changeRoom(0,0);
 		stage.setScene(scene);
 		stage.setTitle("BEST PROJECT IN CPSC 233 LECTURE 02");
 		stage.show();
