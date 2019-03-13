@@ -12,7 +12,7 @@ public class Item {
 			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
 			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack","+10 Defense", "+10 Attack", "+10 Defense", "+10 Defence"}};
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
-		{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen","Water bottle","Calculator" },
+		{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen","Water Bottle","Calculator" },
 		{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Attack", "+10 Defence", "+10 Defence"}};
 
 	/**
