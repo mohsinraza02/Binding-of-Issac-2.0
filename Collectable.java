@@ -5,7 +5,10 @@ public class Collectable {
 	private String desc;
 	private double value; // value being appended in player array
 	private int type; // location in player array
-
+	/**
+	 * This is a 2D array called the "Collectable Item and Description" list which has 8 items and 8 descriptions in it.
+	 * These items are meant to be collected by the player when found in the map and can be used in the Final Battle.
+	 */
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
 			{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen", "Water Bottle", "Calculator" },
 			{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defence", "+10 Attack", "+10 Defence"}};
