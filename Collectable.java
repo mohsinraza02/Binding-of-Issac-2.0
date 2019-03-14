@@ -7,9 +7,21 @@ public class Collectable {
 	private int type; // location in player array
 
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
-			{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen","Water Bottle","Calculator" },
-			{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Attack", "+10 Defence", "+10 Defence"}};
+			{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen", "Water Bottle", "Calculator" },
+			{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defence", "+10 Attack", "+10 Defence"}};
 	
+	
+	/**
+         * This constructor takes 3 parameter values and sets the first parameter
+         * to the instance variables name and desc,the second parameter to the instance
+         * variable value and the third parameter to the instance variable type.
+	 * 
+         * @param nameIndex - this parameter is set to the instance variable name and the instance variable desc
+	 *
+         * @param value - this parameter is set to the instance variable value
+	 *
+	 * @param type - this parameter is set to the instance variable type
+         */
 	public Collectable(int nameIndex, double value, int type){
 		this.name = getItemNameFromListCollectable(nameIndex);
 		this.desc = getItemDescFromListCollectable(nameIndex);
@@ -19,7 +31,9 @@ public class Collectable {
 	
 	/**
 	 * This method takes a name from the "Collectable Item and Description" list
+	 *
 	 * @param index - index of the name in the array
+	 *
 	 * @return the name pulled from the array
 	 */
 	public String getItemNameFromListCollectable(int index) {
@@ -27,35 +41,36 @@ public class Collectable {
 	}
 	
 	/**
-	 * This method takes a name from the "Collectables Item and Description" list
+	 * This method takes a description from the "Collectables Item and Description" list
+	 *
 	 * @param index - index of the description in the array
-	 * @return - the description from the array
+	 *
+	 * @return - the description pulled from the array
 	 */
 	public String getItemDescFromListCollectable(int index) {
 		return COLLECTABLE_ITEM_NAME_AND_DESC[1][index];
 	}
 	
 	/**
-	 * The method getName returns the instance variable name of type String from the
-	 * class Item.
+	 * The method getName returns the instance variable name of type String.
 	 * 
 	 * @return instance variable name
 	 */
 	public String getName() {
 		return this.name;
 	}
-	
 	/**
-	 * Getter for the item's description
-	 * @return the item's description
+	 * The method getDesc returns the instance variable desc of type String.
+	 * 
+	 * @return instance variable desc
 	 */
+	
 	public String getDesc() {
 		return this.desc;
 	}
 	
 	/**
-	 * The method getValue returns the instance variable value of type int from the
-	 * class Item.
+	 * The method getValue returns the instance variable value of type int.
 	 * 
 	 * @return instance variable value
 	 */
@@ -64,8 +79,7 @@ public class Collectable {
 	}
 
 	/**
-	 * The method getType returns the instance variable type of type int from the
-	 * class Item.
+	 * The method getType returns the instance variable type which is an int.
 	 * 
 	 * @return instance variable type
 	 */
