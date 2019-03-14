@@ -7,6 +7,10 @@ public class Instant {
 	private int type; // location in player array
 	private double time; // time taken from total map time
 	
+	/**
+	 * This is a 2D array called the "Instant Item and Description" list which has 8 items and 8 descriptions in it.
+	 * These items are meant to be used instantly by the player when found in the map.
+	 */
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
 			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
 			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack","+10 Defense", "+10 Attack", "+10 Defense", "+10 Defence"}};
