@@ -16,11 +16,12 @@ public class Collectable {
          * to the instance variables name and desc,the second parameter to the instance
          * variable value and the third parameter to the instance variable type.
 	 * 
-         * @param nameIndex - this parameter is set to the instance variable name and the instance variable desc
-	 *
-         * @param value - this parameter is set to the instance variable value
-	 *
-	 * @param type - this parameter is set to the instance variable type
+         * @param nameIndex  
+	 * 		   this parameter is set to the instance variable name and the instance variable desc
+         * @param value
+	 *		   this parameter is set to the instance variable value
+	 * @param type 
+	 *		   this parameter is set to the instance variable type
          */
 	public Collectable(int nameIndex, double value, int type){
 		this.name = getItemNameFromListCollectable(nameIndex);
