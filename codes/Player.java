@@ -3,6 +3,7 @@ package codes;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import javafx.scene.text.Text;
 
 public class Player extends Entities{
 	
@@ -13,7 +14,7 @@ public class Player extends Entities{
 	public int timeLft = 0;
 	public String facing = "east";
 	//LOGIC
-	private int[] stats = new int[4];
+	private int[] stats = {0, 0, 0, 0};
 	private ArrayList<Collectable> inventory = new ArrayList<Collectable>();
 	private double health;// default health
 	private double attack;// default attack damage
@@ -99,13 +100,13 @@ public class Player extends Entities{
 			System.out.println("Defense:" + stats[1]);
 			System.out.println("Speed:" + stats[2]);
 			System.out.println("Luck:" + stats[3]);
-			System.out.println("Press 'r' to reroll your stats, if you are satisfied press any key to continue");
-			String input = kb.nextLine();
-			if (input.equals("r")) {
-
-				reroll = true;
-				maxStat = 25;
-			}
+//			System.out.println("Press 'r' to reroll your stats, if you are satisfied press any key to continue");
+//			String input = kb.nextLine();
+//			if (input.equals("r")) {
+//
+//				reroll = true;
+//				maxStat = 25;
+//			}
 
 		} while (maxStat != 0 && reroll == true);
 
@@ -116,11 +117,14 @@ public class Player extends Entities{
 	/**
 	 * Print statistics of the player
 	 */
-	public void printStats() {
-		System.out.println("Attack:" + this.stats[0]);
-		System.out.println("Defense:" + this.stats[1]);
-		System.out.println("Speed:" + this.stats[2]);
-		System.out.println("Luck:" + this.stats[3]);
+	public Text[] updateStatsText(Text[] t) {
+		
+		t[0].setText("Attack: 	" + stats[0]);
+		t[1].setText("Defense: 	" + stats[1]);
+		t[2].setText("Speed: 	" + stats[2]);
+		t[3].setText("Luck: 	" + stats[3]);
+
+		return t;
 	}
 	
 	/**
@@ -129,13 +133,13 @@ public class Player extends Entities{
 	 * @param item
 	 */
 	public void addCollectableToInventory(Collectable cb) {
-		System.out.println("you picked up: " + cb.getName());
+		System.out.println("Added to inventory: " + cb.getName());
 		inventory.add(cb);
 		stats[cb.getType()] += cb.getValue();
 	}
 	
 	public void interactWithItem(Instant instant) {
-		System.out.println("you used/picked up" + instant.getName());
+		System.out.println("you used/picked up " + instant.getName());
 		stats[instant.getType()] += instant.getValue();
 	}
 	

@@ -7,7 +7,7 @@ public class Rooms {
 	// room names should be the name of the room's picture
 	private String[][] roomNames = {{"room11", "room12"}, {"room21", "room22"}};
 	private int[] roomCoord = new int[2]; 
-	private ArrayList<Entities> roomContents = new ArrayList();
+	private ArrayList<Entities> roomContents = new ArrayList<Entities>();
 	
 	public ArrayList<Entities> getRoomContents() {
 		ArrayList<Entities> roomContentsToCopy = roomContents;
@@ -39,10 +39,6 @@ public class Rooms {
 				roomContents.add(new Collectable(itemIndex, 10.0, 1));
 			}
 		}
-	}
-	
-	public void removeItem(int index) {
-		roomContents.remove(index);
 	}
 	
 }

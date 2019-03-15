@@ -34,16 +34,14 @@ public class Main extends Application {
 	private Player player = new Player(100.0, 0.0,100,50);
 	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", "stats1.png");
 	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", "stats2.png");
-	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList();
+	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 	
 	private Rooms[][] room = new Rooms[2][2];
 	
 	private int[][] playerCurrentRoom = {{0}, {0}};
 	
-	private Text itemName = new Text() { {
-		this.setFont(new Font("Comic Sans MS", 18));
-	}
-	};
+	private Text[] statsText = new Text[4];
+	private Text itemName = new Text();
 
 	/**
 	 * This function modifies our Pane before its passed down as a parameter when we create a new Scene
@@ -61,7 +59,21 @@ public class Main extends Application {
 				room[i][j] = new Rooms(i, j);
 			}
 		}
-				// render the first room at start up
+		
+		itemName.setFont(new Font("Comic Sans MS", 18));
+		
+		player.generateStats();
+		for (int i = 0; i < 4; i++) {
+			statsText[i] = new Text();
+			
+			statsText[i].setFont(new Font("Comic Sans MS", 22));
+			statsText[i].setTranslateX(960);
+			statsText[i].setTranslateY(110 + (i*40)); // 30 is the gap between the stats
+		}
+		statsText = player.updateStatsText(statsText);
+		
+		
+		// render the first room at start up
 		changeRoom(0,0);
 		// adding the player, and enemies?
 		root.getChildren().add(player);
@@ -129,25 +141,25 @@ public class Main extends Application {
 	}
 	
 	/**
-	 * when called, an interaction with an npc shows up
-	 * in this case, a text bubble shows up when the space bar is pressed
+	 * Handles interaction with items/npcs
 	 */
 	private void interact() {
+		// if the player is intersecting with an item, pick up the item
 		if (intersectingWith != -1) {
-			root.getChildren().remove(itemsInCurrentRoom.get(intersectingWith));
+			Entities item = itemsInCurrentRoom.get(intersectingWith);
+			
+			if (item.getEntityType() == "Collectable") {
+				player.addCollectableToInventory((Collectable) item);
+			} else {
+				player.interactWithItem((Instant) item);
+			}
+			player.updateStatsText(statsText);
+			
+			root.getChildren().remove(item);
 			itemsInCurrentRoom.remove(intersectingWith);
-//			room[player.getCurrentRoomX()][player.getCurrentRoomY()].removeItem(intersectingWith);
 			intersectingWith = -1;
+			root.getChildren().remove(itemName);
 		}
-//		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
-//			if (!root.getChildren().contains(bubble)) {
-//				bubble = new Entities((int) itemExample.getTranslateX(), (int) itemExample.getTranslateY() - 80, 80, 80, "bubble", "text.png");
-//				root.getChildren().add(bubble);
-//			} else {
-//				root.getChildren().remove(bubble);
-//			}
-//
-//		}
 	}
 	
 	/**
@@ -159,8 +171,16 @@ public class Main extends Application {
 		if (root.getChildren().contains(statsUndropped)) {
 			root.getChildren().remove(statsUndropped);
 			root.getChildren().add(statsDropped);
+			root.getChildren().add(statsText[0]);
+			root.getChildren().add(statsText[1]);
+			root.getChildren().add(statsText[2]);
+			root.getChildren().add(statsText[3]);
 		} else {
 			root.getChildren().remove(statsDropped);
+			root.getChildren().remove(statsText[0]);
+			root.getChildren().remove(statsText[1]);
+			root.getChildren().remove(statsText[2]);
+			root.getChildren().remove(statsText[3]);
 			root.getChildren().add(statsUndropped);
 		}
 	}
@@ -195,14 +215,12 @@ public class Main extends Application {
 		playerCurrentRoom[1][0] = player.getCurrentRoomY();
 	}
 	
-	/**
-	 * yall know what goes down here
-	 */
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		
 		Scene scene = new Scene(initialGameContent());
-
+		
 		// Key pressed listener. To bind a new key, add a new case statement
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()) {

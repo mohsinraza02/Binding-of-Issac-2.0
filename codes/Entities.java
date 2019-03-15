@@ -14,8 +14,7 @@ import javafx.scene.shape.Rectangle;
  *
  */
 public class Entities extends Rectangle {
-	private boolean isVisible = false;
-	private String itemType;
+	private String entityType;
 	private Image objectImage;
 	
 	/**
@@ -31,7 +30,7 @@ public class Entities extends Rectangle {
 		// creating a new rectangle
 		super(w, h);
 		
-		this.itemType = type;
+		this.entityType = type;
 		
 		// if object has a sprite, add sprite.
 		updateImage(image);
@@ -47,7 +46,7 @@ public class Entities extends Rectangle {
 	 */
 	public Entities(int w, int h, String type) {
 		super(w, h);
-		this.itemType = type;
+		this.entityType = type;
 	}
 	
 	public void updateImage(String imageName) {
@@ -71,9 +70,12 @@ public class Entities extends Rectangle {
 		return pos;
 	}
 	
+	// When we change Entities to abstract, make this function abstract
 	public String getName() {
-		return itemType;
-		
+		return entityType;
 	}
 	
+	public String getEntityType() {
+		return entityType;
+	}
 }
