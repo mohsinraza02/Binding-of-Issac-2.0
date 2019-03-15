@@ -146,7 +146,7 @@ public class Map {
 					player.interactWithItem(room.get(InstantIndex));
 					System.out.println("You gained " + room.get(InstantIndex).getDesc() + "\n");
 					
-					timeLeft -= room.get(InstantIndex).getTime()-(player.getStat(2)*0.10);
+					timeLeft -= room.get(InstantIndex).getTime()-(player.getStat(2)*0.05);
 					room.remove(InstantIndex);
 					player.printStats();
 					break;
