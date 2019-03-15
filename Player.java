@@ -1,3 +1,5 @@
+package cpsc233;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -181,7 +183,7 @@ public class Player {
 	 * Heal yourself for a small amount.
 	 */
 	public void stretch() {
-		int healMod = (int) ((this.getAttack() * 0.20) + (this.getHealth() * 0.10));
+		int healMod = (int) ((this.getAttack() * 0.25) + (this.getHealthCap() * 0.15));
 		if ((this.getHealth() + healMod) > this.getHealthCap()) {
 			this.setHealth(this.getHealthCap());
 		} else {
@@ -208,12 +210,29 @@ public class Player {
 	}
 	
 	
+	public void cry(Enemy enemy) {
+		int damageMod = (int)(this.getAttack() * 0.20);
+		enemy.setAttack(enemy.getAttack() - damageMod);
+		if (damageMod == 0) {
+			System.out.println("You cry...alot, but the test just sits there with almost the same intimidation factor as before.");
+			System.out.println("It wasn't very effective");
+			enemy.setAttack(enemy.getAttack() - 1);
+		}
+		else{
+			System.out.println("You cry...alot, everyone around starts looking at you, but luckily \n there is a kind soul who slides his scantron to the \n side of his desk for you to look at");
+			System.out.println("The tests damage was lowered due to tears");
+		
+		}
+		
+	}
+	
+	
 	public boolean skill(Enemy enemy) {
 		Scanner kb = new Scanner(System.in);
 		boolean pick = false; 
 		boolean valid = false;
 		do {
-			System.out.println("What skill would you like to use?\n(a) Take a Breather(Lower Enemy Defense)\n(b) Stretch (Heal)\n(c) Cheat (Guaranteed Critical Strike)\n(x) Back");
+			System.out.println("What skill would you like to use?\n(a) Take a Breather(Lower Enemy Defense)\n(b) Stretch (Heal)\n(c) Cheat (Guaranteed Critical Strike)\n(d) Cry (Lower Enemy Attack)\n(x) Back");
 			String input = kb.nextLine();
 			if (input.toLowerCase().equals("a")) {
 				deepBreath(enemy);
@@ -228,6 +247,13 @@ public class Player {
 				cheat(enemy);
 				pick = true;
 				valid = true;
+			
+			}else if (input.toLowerCase().equals("d")){
+				cry(enemy);
+				pick = true;
+				valid = true;
+			
+			
 			
 			}else if (input.toLowerCase().equals("x")) {
 				valid = true; 
