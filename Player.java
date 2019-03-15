@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+
+
 public class Player {
 	private int[] stats = new int[4];
-	private ArrayList<Item> inventory = new ArrayList<Item>();
+	private ArrayList<Collectable> inventory = new ArrayList<Collectable>();
 	private double health;// default health
 	private double attack;// default attack damage
 	private int attackCap, defenseCap, healthCap, skillP;
@@ -81,10 +83,10 @@ public class Player {
 				}
 
 			}
-			System.out.println("Attack:" + stats[0]);
-			System.out.println("Defense:" + stats[1]);
-			System.out.println("Speed:" + stats[2]);
-			System.out.println("Luck:" + stats[3]);
+			System.out.println("Attack(increases attack power):" + stats[0]);
+			System.out.println("Defense(reduces damage taken):" + stats[1]);
+			System.out.println("Speed(reduces time consumed):" + stats[2]);
+			System.out.println("Luck(increases critical strike chance):" + stats[3]);
 			System.out.println("Press 'r' to reroll your stats, if you are satisfied press any key to continue");
 			String input = kb.nextLine();
 			if (input.equals("r")) {
@@ -126,14 +128,22 @@ public class Player {
 	 * 
 	 * @param item
 	 */
-	public void addItemToInventory(Item item) {
-		System.out.println("you picked up: " + item.getName());
-		inventory.add(item);
-		stats[item.getType()] += item.getValue();
+	public void addCollectableToInventory(Collectable cb) {
+		System.out.println("you picked up: " + cb.getName());
+		inventory.add(cb);
+		stats[cb.getType()] += cb.getValue();
 
 	}
 
 
+	
+	public void interactWithItem(Instant instant) {
+		System.out.println("you used/picked up " + instant.getName());
+		stats[instant.getType()] += instant.getValue();
+	}
+	
+	
+	
 	/**
 	 * Update the attack with adding the item bonuses
 	 */
@@ -152,11 +162,19 @@ public class Player {
 		// enemy.setHealth(getHealth() - );
 		Scanner skip = new Scanner(System.in);		
 		System.out.println("You strike a shot at a question.");
+		
+		if(criticalStrike(enemy) == true) {
+			enemy.setHealth(enemy.getHealth() - (this.attack * 2.5));
+			System.out.println("BOOM! Lucky Guess!");
+			System.out.println("You did "+ (this.attack *2.5)+ " damage!");
+		}
+		else { 
 		skip.nextLine();
 		enemy.setHealth(enemy.getHealth() - this.attack);
 		System.out.println("You did " + this.attack + " damage to the " + enemy.getName());
 		System.out.println("The " + enemy.getName() + " has " + enemy.getHealth() + " health left.");
-	}
+		}
+		}
 
 	/**
 	 * Lower the test's defense.
@@ -181,7 +199,7 @@ public class Player {
 	 * Heal yourself for a small amount.
 	 */
 	public void stretch() {
-		int healMod = (int) ((this.getAttack() * 0.20) + (this.getHealth() * 0.10));
+		int healMod = (int) ((this.getAttack() * 0.25) + (this.getHealthCap() * 0.15));
 		if ((this.getHealth() + healMod) > this.getHealthCap()) {
 			this.setHealth(this.getHealthCap());
 		} else {
@@ -191,11 +209,25 @@ public class Player {
 		System.out.println("You heal yourself for " + healMod + " health.");
 	}
 
-	/**
-	 * Choose a skill to use!
-	 * @param enemy
-	 * @return if the user picked a skill or no.
-	 */
+
+	public boolean criticalStrike(Enemy enemy) {
+		boolean crit = false;
+		Random rand = new Random();
+		int critNumber = rand.nextInt(100);
+		critNumber += 1;
+		for(int i = 0; i <= 1 + stats[3];i++) {
+			int critChance = rand.nextInt(100);
+			critChance += 1;
+			if (critChance == critNumber) {
+				crit = true;
+				break;
+			}
+		}
+		
+		return crit;
+		
+	}
+	
 	
 	
 	public void cheat(Enemy enemy) {
@@ -203,9 +235,32 @@ public class Player {
 		enemy.setHealth(enemy.getHealth() - attackMod);
 		
 		System.out.println("Your minds telling you 'no', but your body is telling you 'yea'");
-		System.out.println("BOOM! Critical Strike!");
+		System.out.println("BOOM! Lucky Guess!");
 		System.out.println("You dealt " + attackMod + " damage!");
 	}
+	
+	
+	public void cry(Enemy enemy) {
+		int damageMod = (int)(this.getAttack() * 0.20);
+		enemy.setAttack(enemy.getAttack() - damageMod);
+		if (damageMod == 0) {
+			System.out.println("You cry...alot, but the test just sits there with almost the same intimidation factor as before.");
+			System.out.println("It wasn't very effective");
+			enemy.setAttack(enemy.getAttack() - 1);
+		}
+		else{
+			System.out.println("You cry...alot, everyone around starts looking at you, but luckily\nthere is a kind soul who slides his scantron to the\nside of his desk for you to look at");
+			System.out.println("The tests damage was lowered due to tears");
+		
+		}
+		
+	}
+	
+	/**
+	 * Choose a skill to use!
+	 * @param enemy
+	 * @return if the user picked a skill or no.
+	 */
 	
 	
 	public boolean skill(Enemy enemy) {
@@ -213,7 +268,7 @@ public class Player {
 		boolean pick = false; 
 		boolean valid = false;
 		do {
-			System.out.println("What skill would you like to use?\n(a) Take a Breather(Lower Enemy Defense)\n(b) Stretch (Heal)\n(c) Cheat (Guaranteed Critical Strike)\n(x) Back");
+			System.out.println("What skill would you like to use?\n(a) Take a Breather(Lower Enemy Defense)\n(b) Stretch (Heal)\n(c) Cheat (Guaranteed Critical Strike)\n(d) Cry (Lower Enemy Attack)\n(x) Back");
 			String input = kb.nextLine();
 			if (input.toLowerCase().equals("a")) {
 				deepBreath(enemy);
@@ -228,6 +283,13 @@ public class Player {
 				cheat(enemy);
 				pick = true;
 				valid = true;
+			
+			}else if (input.toLowerCase().equals("d")){
+				cry(enemy);
+				pick = true;
+				valid = true;
+			
+			
 			
 			}else if (input.toLowerCase().equals("x")) {
 				valid = true; 
