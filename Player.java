@@ -158,7 +158,7 @@ public class Player {
 	 * 
 	 * @param enemy
 	 */
-	public void attack(Enemy enemy) {
+	public void attack() {
 		// enemy.setHealth(getHealth() - );
 		Scanner skip = new Scanner(System.in);		
 		System.out.println("You strike a shot at a question.");
@@ -210,7 +210,7 @@ public class Player {
 	}
 
 
-	public boolean criticalStrike(Enemy enemy) {
+	public boolean criticalStrike() {
 		boolean crit = false;
 		Random rand = new Random();
 		int critNumber = rand.nextInt(100);
