@@ -75,7 +75,7 @@ public class Battle {
 	 *            Enemy passed in
 	 * @return boolean if the fight needs to be stopped.
 	 */
-	public static boolean checkFailOrPass(Player p, Enemy e) {
+	public static boolean checkEnd(Player p, Enemy e) {
 		if (p.getHealth() <= 0) {
 			return false;
 		} else if (e.getHealth() <= 0) {
