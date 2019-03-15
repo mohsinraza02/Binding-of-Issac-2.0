@@ -6,6 +6,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -34,6 +35,7 @@ public class Main extends Application {
 	private Player player = new Player(100.0, 0.0,100,50);
 	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", "stats1.png");
 	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", "stats2.png");
+	private Entities mainMenu = new Entities(0, 0, WIDTH, HEIGHT, "mainMenu", "mainMenu.png");
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 	
 	private Rooms[][] room = new Rooms[2][2];
@@ -88,6 +90,9 @@ public class Main extends Application {
 				update();
 			}
 		};
+		
+		//add mainMenu
+		root.getChildren().add(mainMenu);
 
 		timer.start();
 		
@@ -198,14 +203,12 @@ public class Main extends Application {
 				+ roomName
 				+ "); " + "-fx-background-size: cover;");
 		
-//		ArrayList<Entities> oldRoomItems = room[playerCurrentRoom[0][0]][playerCurrentRoom[1][0]].getRoomContents();
 		ArrayList<Entities> oldRoomItems = itemsInCurrentRoom;
 		// remove all the items in the old room
 		for(int i = 0; i < oldRoomItems.size(); i++) {
 			root.getChildren().remove(oldRoomItems.get(i));
 		}
 		
-//		ArrayList<Entities> newRoomItems = room[x][y].getRoomContents();
 		itemsInCurrentRoom = room[x][y].getRoomContents();
 		// add all the new items from the new room
 		for(int i = 0; i < itemsInCurrentRoom.size(); i++) {
@@ -213,8 +216,11 @@ public class Main extends Application {
 		}
 		playerCurrentRoom[0][0] = player.getCurrentRoomX();
 		playerCurrentRoom[1][0] = player.getCurrentRoomY();
+		
+		// Opening and reopening stats so items don't spawn over it when user leaves it open when changing rooms
+//		showStats();
+//		showStats();
 	}
-	
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -242,6 +248,9 @@ public class Main extends Application {
 			case P:
 				showStats();
 				break;
+			case DIGIT1:
+				if(root.getChildren().contains(mainMenu))
+					root.getChildren().remove(mainMenu);
 			}	
 		});
 
@@ -262,6 +271,7 @@ public class Main extends Application {
 				break;
 			}
 		});
+		
 		
 		stage.setScene(scene);
 		stage.setTitle("BEST PROJECT IN CPSC 233 LECTURE 02");
