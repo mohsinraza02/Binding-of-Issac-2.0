@@ -163,7 +163,7 @@ public class Player {
 		Scanner skip = new Scanner(System.in);		
 		System.out.println("You strike a shot at a question.");
 		
-		if(criticalStrike(enemy) == true) {
+		if(criticalStrike() == true) {
 			enemy.setHealth(enemy.getHealth() - (this.attack * 2.5));
 			System.out.println("BOOM! Lucky Guess!");
 			System.out.println("You did "+ (this.attack *2.5)+ " damage!");
