@@ -1,59 +1,74 @@
 package codes;
 
+import java.util.ArrayList;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
  * 
- * @author TUT 06, GROUP 03 TODO: Move key listeners to Movements.java, Add
- *         comments, organize variables
+ * @author TUT 06, GROUP 03 
+ * TODO: STORE ITEMS' COORDINATES SO WE CAN CHECK INTERSECTION
  * 
  */
 public class Main extends Application {
 
 	private Pane root = new Pane();
-	int WIDTH = 1200;
-	int HEIGHT = 800;
+	private final int WIDTH = 1200;
+	private final int HEIGHT = 800;
 
 	// the following are used for event listeners
 	private boolean goLeft = false;
 	private boolean goRight = false;
 	private boolean goUp = false;
 	private boolean goDown = false;
+	private int intersectingWith = -1; // -1 means intersecting with nothing
 	
 	// Entities
-	private Player player = new Player(500, 500, 100, 150, "player", Color.BLUE, "player.png");
-	private Entities itemExample = new Entities(870, 500, 30, 40, "interaction", Color.BLUE, null);
-	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", Color.BLACK, "stats1.png");
-	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", Color.BLACK, "stats2.png");
+	private Player player = new Player(100.0, 0.0,100,50);
+	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", "stats1.png");
+	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", "stats2.png");
+	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList();
 	
-	private Map map;
+	private Rooms[][] room = new Rooms[2][2];
 	
 	private int[][] playerCurrentRoom = {{0}, {0}};
 	
-	private Entities bubble;
-	private Text t = new Text("press <space> to interact");
+	private Text itemName = new Text() { {
+		this.setFont(new Font("Comic Sans MS", 18));
+	}
+	};
 
 	/**
-	 * We pass this parameter when we create a new scene.
-	 * This simplifies our code and allows us to add more nodes in the beginning
-	 * and other actions
-	 * @return
+	 * This function modifies our Pane before its passed down as a parameter when we create a new Scene
+	 * It eliminates clutter in our code and allows us to add a lot of things to root before it shows up in the Window
+	 * 
+	 * @return returns the instance variable Pane 
 	 */
-	private Parent createContent() {
+	private Parent initialGameContent() {
+		// set the size of our Pane layout
 		root.setPrefSize(WIDTH, HEIGHT);
+		
+		// create new room objects
+		for(int i = 0; i < 2; i++) {
+			for(int j = 0; j < 2; j++) {
+				room[i][j] = new Rooms(i, j);
+			}
+		}
+				// render the first room at start up
+		changeRoom(0,0);
 		// adding the player, and enemies?
 		root.getChildren().add(player);
-		// maybe move adding npc to the map
-		root.getChildren().add(itemExample);
+
 		//add HUDS
 		root.getChildren().add(statsUndropped);
+		
 		// An animation timer is used for smoother movements
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
@@ -63,6 +78,7 @@ public class Main extends Application {
 		};
 
 		timer.start();
+		
 		return root;
 	}
 
@@ -87,26 +103,29 @@ public class Main extends Application {
 		
 		// if player room moves to a different room, update playerCurrentRoom and change the background
 		if (playerCurrentRoom[0][0] != player.getCurrentRoomX() || playerCurrentRoom[1][0] != player.getCurrentRoomY()) {
-			playerCurrentRoom[0][0] = player.getCurrentRoomX();
-			playerCurrentRoom[1][0] = player.getCurrentRoomY();
-			
 			changeRoom(player.getCurrentRoomX(), player.getCurrentRoomY());
 		}
 		
-		// if player is intersecting with the npc, show a dialogue
-		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
-			// nested loop so the text doesn't flicker
-			if (!root.getChildren().contains(t)) {
-				t.setX(itemExample.getTranslateX());
-				t.setY(itemExample.getTranslateY());
-				root.getChildren().add(t);
+		checkForItemIntersection();
+	}
+	
+	private void checkForItemIntersection() {
+		for(int i = 0; i < itemsInCurrentRoom.size(); i++) {
+			if (player.getBoundsInParent().intersects(itemsInCurrentRoom.get(i).getBoundsInParent())) {
+				intersectingWith = i;
+				// nested loop so the text doesn't flicker
+				if (!root.getChildren().contains(itemName)) {
+					itemName.setX(itemsInCurrentRoom.get(i).getTranslateX());
+					itemName.setY(itemsInCurrentRoom.get(i).getTranslateY());
+					itemName.setText(itemsInCurrentRoom.get(i).getName());
+					root.getChildren().add(itemName);
+				}
+				break;
+			} else {
+				root.getChildren().remove(itemName);
+				intersectingWith = -1;
 			}
-		} else {
-			root.getChildren().remove(t);
 		}
-		
-		
-
 	}
 	
 	/**
@@ -114,17 +133,21 @@ public class Main extends Application {
 	 * in this case, a text bubble shows up when the space bar is pressed
 	 */
 	private void interact() {
-		// check if player can interact with npc (in range)
-		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
-			if (!root.getChildren().contains(bubble)) {
-				bubble = new Entities((int) itemExample.getTranslateX(), (int) itemExample.getTranslateY() - 80, 80, 80, "bubble",
-						Color.BLACK, "text.png");
-				root.getChildren().add(bubble);
-			} else {
-				root.getChildren().remove(bubble);
-			}
-
+		if (intersectingWith != -1) {
+			root.getChildren().remove(itemsInCurrentRoom.get(intersectingWith));
+			itemsInCurrentRoom.remove(intersectingWith);
+//			room[player.getCurrentRoomX()][player.getCurrentRoomY()].removeItem(intersectingWith);
+			intersectingWith = -1;
 		}
+//		if (player.getBoundsInParent().intersects(itemExample.getBoundsInParent())) {
+//			if (!root.getChildren().contains(bubble)) {
+//				bubble = new Entities((int) itemExample.getTranslateX(), (int) itemExample.getTranslateY() - 80, 80, 80, "bubble", "text.png");
+//				root.getChildren().add(bubble);
+//			} else {
+//				root.getChildren().remove(bubble);
+//			}
+//
+//		}
 	}
 	
 	/**
@@ -148,11 +171,28 @@ public class Main extends Application {
 	 * @param y - row of the room
 	 */
 	private void changeRoom(int x, int y) {
-		String roomName = "'" + map.getImageName(x, y) + ".jpg'";
+		String roomName = "'" + room[x][y].getImageName() + ".jpg'";
+		
 		
 		root.setStyle("-fx-background-image: url("
 				+ roomName
 				+ "); " + "-fx-background-size: cover;");
+		
+//		ArrayList<Entities> oldRoomItems = room[playerCurrentRoom[0][0]][playerCurrentRoom[1][0]].getRoomContents();
+		ArrayList<Entities> oldRoomItems = itemsInCurrentRoom;
+		// remove all the items in the old room
+		for(int i = 0; i < oldRoomItems.size(); i++) {
+			root.getChildren().remove(oldRoomItems.get(i));
+		}
+		
+//		ArrayList<Entities> newRoomItems = room[x][y].getRoomContents();
+		itemsInCurrentRoom = room[x][y].getRoomContents();
+		// add all the new items from the new room
+		for(int i = 0; i < itemsInCurrentRoom.size(); i++) {
+			root.getChildren().add(itemsInCurrentRoom.get(i));
+		}
+		playerCurrentRoom[0][0] = player.getCurrentRoomX();
+		playerCurrentRoom[1][0] = player.getCurrentRoomY();
 	}
 	
 	/**
@@ -160,8 +200,8 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
-		Scene scene = new Scene(createContent());
-		map = new Map();
+		
+		Scene scene = new Scene(initialGameContent());
 
 		// Key pressed listener. To bind a new key, add a new case statement
 		scene.setOnKeyPressed(e -> {
@@ -205,8 +245,6 @@ public class Main extends Application {
 			}
 		});
 		
-		// render the first room at start up
-		changeRoom(0,0);
 		stage.setScene(scene);
 		stage.setTitle("BEST PROJECT IN CPSC 233 LECTURE 02");
 		stage.show();
