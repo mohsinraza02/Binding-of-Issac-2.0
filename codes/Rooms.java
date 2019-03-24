@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Rooms {
 	// room names should be the name of the room's picture
+	//TODO: {{"LeftBot", "CT", "RT"}, {"LM", "CM", "RM"}, {"LT", "CT", "RT"}}
 	private String[][] roomNames = {{"room11", "room12"}, {"room21", "room22"}};
 	private int[] roomCoord = new int[2]; 
 	private ArrayList<Entities> roomContents = new ArrayList<Entities>();

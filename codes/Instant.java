@@ -35,7 +35,7 @@ public class Instant extends Entities {
 	 */
 	public Instant(int nameIndex, double value, int type, double time) {
 		super(60, 60, "Instant");
-		super.updateImage(INSTANT_ITEM_NAME_AND_DESC[0][nameIndex] + ".png");
+		super.changeSprite(INSTANT_ITEM_NAME_AND_DESC[0][nameIndex] + ".png");
 		position = super.getRandomPos();
 		super.setPosition(position[0], position[1]);
 		

@@ -33,7 +33,7 @@ public class Entities extends Rectangle {
 		this.entityType = type;
 		
 		// if object has a sprite, add sprite.
-		updateImage(image);
+		changeSprite(image);
 		
 		setPosition(x, y);
 	}
@@ -49,7 +49,8 @@ public class Entities extends Rectangle {
 		this.entityType = type;
 	}
 	
-	public void updateImage(String imageName) {
+	public void changeSprite(String imageName) {
+		imageName = "/sprites/" + imageName;
 		if (imageName != null) {
 			this.objectImage = new Image(imageName);
 			super.setFill(new ImagePattern(this.objectImage));

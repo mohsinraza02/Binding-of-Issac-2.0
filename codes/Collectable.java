@@ -32,7 +32,7 @@ public class Collectable extends Entities{
          */
 	public Collectable(int nameIndex, double value, int type){
 		super(60, 60, "Collectable");
-		super.updateImage(COLLECTABLE_ITEM_NAME_AND_DESC[0][nameIndex] + ".PNG");
+		super.changeSprite(COLLECTABLE_ITEM_NAME_AND_DESC[0][nameIndex] + ".PNG");
 		position = super.getRandomPos();
 		super.setPosition(position[0], position[1]);
 		

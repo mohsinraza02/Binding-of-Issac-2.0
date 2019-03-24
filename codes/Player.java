@@ -287,7 +287,7 @@ public class Player extends Entities{
 			setTranslateX(getTranslateX() - speed);
 		}
 		if (facing != "west") {
-			super.updateImage("player2.png");
+			super.changeSprite("player2.png");
 			facing = "west";
 		}
 	}
@@ -297,7 +297,7 @@ public class Player extends Entities{
 	 */
 	public void moveRight() {
 		if (getTranslateX() > 1150) {
-			if (currentRoomX != 1) {
+			if (currentRoomX != 2) {
 				setTranslateX(-39);
 				currentRoomX++;
 				setTranslateX(getTranslateX() + speed);
@@ -307,7 +307,7 @@ public class Player extends Entities{
 		}
 		
 		if (facing != "east") {
-			super.updateImage("player.png");
+			super.changeSprite("player.png");
 			facing = "east";
 		}
 	}
@@ -317,7 +317,7 @@ public class Player extends Entities{
 	 */
 	public void moveUp() {
 		if (getTranslateY() < 0) {
-			if (currentRoomY != 1) {
+			if (currentRoomY != 2) {
 				setTranslateY(800);
 				currentRoomY++;
 				setTranslateY(getTranslateY() - speed);
