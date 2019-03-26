@@ -21,7 +21,7 @@ public class Player extends Entities{
 	private int attackCap, defenseCap, healthCap, skillP;
 
 	public Player(double health, double attack, int maxHealth, int skillP) {
-		super(500, 500, 100, 150, "Player", "player.png");
+		super(500, 500, 80, 100, "Player", "player.png");
 		// TODO Auto-generated constructor stub
 		this.speed = 6;
 		
@@ -140,6 +140,7 @@ public class Player extends Entities{
 	
 	public void interactWithItem(Instant instant) {
 		System.out.println("you used/picked up " + instant.getName());
+		System.out.println("You gained " +  instant.getDesc()  + "\n");
 		stats[instant.getType()] += instant.getValue();
 	}
 	
@@ -287,7 +288,7 @@ public class Player extends Entities{
 			setTranslateX(getTranslateX() - speed);
 		}
 		if (facing != "west") {
-			super.changeSprite("player2.png");
+			super.flipSprite("left");
 			facing = "west";
 		}
 	}
@@ -306,8 +307,9 @@ public class Player extends Entities{
 			setTranslateX(getTranslateX() + speed);
 		}
 		
+		// if statement so the change only happens once
 		if (facing != "east") {
-			super.changeSprite("player.png");
+			super.flipSprite("right");
 			facing = "east";
 		}
 	}
@@ -340,6 +342,16 @@ public class Player extends Entities{
 		} else {
 			setTranslateY(getTranslateY() + speed);			
 		}
+	}
+
+	@Override
+	public String getName() {
+		return "Player";
+	}
+
+	@Override
+	public String getDesc() {
+		return "This is you!";
 	}
 
 }

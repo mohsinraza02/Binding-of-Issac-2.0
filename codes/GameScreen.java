@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class GameScreen extends Scene {
 
 	private static Pane root;
+//	private Main m = new Main();
 
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
@@ -24,11 +25,12 @@ public class GameScreen extends Scene {
 	private boolean goUp = false;
 	private boolean goDown = false;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
+	private double timeLeft = 12;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)
 	private Player player = new Player(100.0, 0.0, 100, 50);
-	private Entities statsUndropped = new Entities(0, 0, WIDTH, HEIGHT, "stats1", "stats1.png");
-	private Entities statsDropped = new Entities(0, 0, WIDTH, HEIGHT, "stats2", "stats2.png");
+	private HUDobjects statsUndropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats1.png");
+	private HUDobjects statsDropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats2.png");
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 	
 	//TODO: 3x3
@@ -220,6 +222,7 @@ public class GameScreen extends Scene {
 			} else {
 				player.interactWithItem((Instant) item);
 			}
+			
 
 			// update the player's stats after the interaction
 			player.updateStatsText(statsText);
@@ -264,7 +267,7 @@ public class GameScreen extends Scene {
 	 *            - row of the room
 	 */
 	private void changeRoom(int x, int y) {
-		String roomName = "'/sprites/" + room[x][y].getImageName() + ".jpg'";
+		String roomName = "'/codes/sprites/" + room[x][y].getImageName() + ".jpg'";
 
 		root.setStyle("-fx-background-image: url(" + roomName + "); " + "-fx-background-size: cover;");
 
@@ -284,8 +287,8 @@ public class GameScreen extends Scene {
 
 		// Opening and reopening stats so items don't spawn over it when user leaves it
 		// open when changing rooms
-		// showStats();
-		// showStats();
+//		 showStats();
+//		 showStats();
 	}
 	
 	public void addNode(Node n) {

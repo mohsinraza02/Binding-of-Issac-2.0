@@ -78,7 +78,7 @@ public class Collectable extends Entities{
 	 * 
 	 * @return instance variable desc
 	 */
-	
+	@Override
 	public String getDesc() {
 		return this.desc;
 	}

@@ -21,7 +21,7 @@ public class MenuScreen extends Scene {
 		root.setPrefSize(width, height);
 		
 		// changing the background
-		root.setStyle("-fx-background-image: url(/sprites/mainMenu.png); " 
+		root.setStyle("-fx-background-image: url(/codes/sprites/mainMenu.png); " 
 				+ "-fx-background-size: cover;");
 		
 	}

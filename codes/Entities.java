@@ -3,6 +3,7 @@ package codes;
 import java.util.Random;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -13,7 +14,7 @@ import javafx.scene.shape.Rectangle;
  * TODO: Make this abstract
  *
  */
-public class Entities extends Rectangle {
+public abstract class Entities extends Rectangle {
 	private String entityType;
 	private Image objectImage;
 	
@@ -37,7 +38,7 @@ public class Entities extends Rectangle {
 		
 		setPosition(x, y);
 	}
-	
+		
 	/**
 	 * This constructor creates an object, except it doesn't set its position and its sprite at the time of its creation.
 	 * @param w
@@ -50,10 +51,22 @@ public class Entities extends Rectangle {
 	}
 	
 	public void changeSprite(String imageName) {
-		imageName = "/sprites/" + imageName;
+		imageName = "/codes/sprites/" + imageName;
 		if (imageName != null) {
 			this.objectImage = new Image(imageName);
+			ImageView iv = new ImageView(objectImage);
+//			super.setFill(iv);
 			super.setFill(new ImagePattern(this.objectImage));
+		}
+	}
+	
+	// IGNORE
+	public void flipSprite(String direction) {
+		ImageView iv = new ImageView(objectImage);
+		if (direction == "left") {
+			iv.setScaleY(-1);			
+		} else {
+			iv.setScaleY(1);			
 		}
 	}
 	
@@ -71,10 +84,8 @@ public class Entities extends Rectangle {
 		return pos;
 	}
 	
-	// When we change Entities to abstract, make this function abstract
-	public String getName() {
-		return entityType;
-	}
+	public abstract String getName();
+	public abstract String getDesc();
 	
 	public String getEntityType() {
 		return entityType;

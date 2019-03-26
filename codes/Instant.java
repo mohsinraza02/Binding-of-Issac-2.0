@@ -76,12 +76,13 @@ public class Instant extends Entities {
 	public String getName() {
 		return this.name;
 	}
+	
 	/**
 	 * The method getDesc returns the instance variable desc of type String.
 	 * 
 	 * @return instance variable desc
 	 */
-	
+	@Override
 	public String getDesc() {
 		return this.desc;
 	}
