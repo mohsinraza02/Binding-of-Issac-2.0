@@ -5,13 +5,11 @@ import java.util.Random;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 /**
- * For now, the objects will be a rectangle. this will be changed once we got the sprites drawn (and once i figured
- * out how to add pictures)
  * @author Kean Arguelles
- * TODO: Make this abstract
  *
  */
 public abstract class Entities extends Rectangle {
@@ -31,8 +29,7 @@ public abstract class Entities extends Rectangle {
 		// creating a new rectangle
 		super(w, h);
 		
-		this.entityType = type;
-		
+		this.entityType = type;		
 		// if object has a sprite, add sprite.
 		changeSprite(image);
 		
@@ -55,18 +52,15 @@ public abstract class Entities extends Rectangle {
 		if (imageName != null) {
 			this.objectImage = new Image(imageName);
 			ImageView iv = new ImageView(objectImage);
-//			super.setFill(iv);
-			super.setFill(new ImagePattern(this.objectImage));
+			this.setFill(new ImagePattern(this.objectImage));
 		}
 	}
 	
-	// IGNORE
 	public void flipSprite(String direction) {
-		ImageView iv = new ImageView(objectImage);
 		if (direction == "left") {
-			iv.setScaleY(-1);			
+			this.setScaleX(-1);
 		} else {
-			iv.setScaleY(1);			
+			this.setScaleX(1);
 		}
 	}
 	
@@ -78,7 +72,7 @@ public abstract class Entities extends Rectangle {
 	public int[] getRandomPos() {
 		Random rand = new Random();
 		// size of the wall is roughly 25 pixels
-		int x = rand.nextInt(1100) + 50;
+		int x = rand.nextInt(700) + 50;
 		int y = rand.nextInt(700) + 50;
 		int[] pos = {x,y};
 		return pos;

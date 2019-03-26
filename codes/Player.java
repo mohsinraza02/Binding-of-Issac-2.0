@@ -23,7 +23,7 @@ public class Player extends Entities{
 	public Player(double health, double attack, int maxHealth, int skillP) {
 		super(500, 500, 80, 100, "Player", "player.png");
 		// TODO Auto-generated constructor stub
-		this.speed = 6;
+		this.speed = 4;
 		
 		this.health = health;
 		this.attack = attack;
@@ -280,7 +280,7 @@ public class Player extends Entities{
 		if (getTranslateX() < 0) {
 			// check if user is in the very left room. If they're not, move to the left room.
 			if (currentRoomX != 0) {
-				setTranslateX(1200);
+				setTranslateX(750);
 				currentRoomX--;
 				setTranslateX(getTranslateX() - speed);
 			}
@@ -297,7 +297,7 @@ public class Player extends Entities{
 	 * Moves the player to the right
 	 */
 	public void moveRight() {
-		if (getTranslateX() > 1150) {
+		if (getTranslateX() > 745) {
 			if (currentRoomX != 2) {
 				setTranslateX(-39);
 				currentRoomX++;

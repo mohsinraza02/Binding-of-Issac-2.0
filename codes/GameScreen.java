@@ -34,7 +34,7 @@ public class GameScreen extends Scene {
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 	
 	//TODO: 3x3
-	private Rooms[][] room = new Rooms[2][2];
+	private Rooms[][] room = new Rooms[3][3];
 
 	private int[][] playerCurrentRoom = { { 0 }, { 0 } };
 
@@ -104,10 +104,10 @@ public class GameScreen extends Scene {
 	private Pane initialGameContent() {
 		// set the size of our Pane layout
 		root.setPrefSize(WIDTH, HEIGHT);
-
+		
 		// create new room objects
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2; j++) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
 				room[i][j] = new Rooms(i, j);
 			}
 		}
@@ -259,7 +259,7 @@ public class GameScreen extends Scene {
 	}
 
 	/**
-	 * Changes the backround image to match the currentRoom
+	 * Changes the background image to match the currentRoom
 	 * 
 	 * @param x
 	 *            - column of the room
@@ -267,9 +267,9 @@ public class GameScreen extends Scene {
 	 *            - row of the room
 	 */
 	private void changeRoom(int x, int y) {
-		String roomName = "'/codes/sprites/" + room[x][y].getImageName() + ".jpg'";
+		String roomName = "'/codes/sprites/" + room[x][y].getImageName() + ".png'";
 
-		root.setStyle("-fx-background-image: url(" + roomName + "); " + "-fx-background-size: cover;");
+		root.setStyle("-fx-background-color: DarkSlateGray; -fx-background-image: url(" + roomName + "); " + "-fx-background-size: 800px 800px;" + "-fx-background-repeat: no-repeat;"); // cover to fill
 
 		ArrayList<Entities> oldRoomItems = itemsInCurrentRoom;
 		// remove all the items in the old room

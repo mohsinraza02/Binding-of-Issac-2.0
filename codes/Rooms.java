@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Rooms {
 	// room names should be the name of the room's picture
-	//TODO: {{"LeftBot", "CT", "RT"}, {"LM", "CM", "RM"}, {"LT", "CT", "RT"}}
-	private String[][] roomNames = {{"room11", "room12"}, {"room21", "room22"}};
+	private String[][] roomNames = {{"LB", "CB", "RB"}, {"LM", "CM", "RM"}, {"LT", "CT", "RT"}};
+//	private String[][] roomNames = {{"room11", "room12"}, {"room21", "room22"}};
 	private int[] roomCoord = new int[2]; 
 	private ArrayList<Entities> roomContents = new ArrayList<Entities>();
 	
@@ -32,7 +32,7 @@ public class Rooms {
 		int itemIndex;
 		
 		for (int i = 0; i < numOfItems; i++) {
-			itemType = rand.nextInt(2);
+			itemType = rand.nextInt(2); // change this when we have more stats
 			itemIndex = rand.nextInt(8);
 			if(itemType == 0) {
 				roomContents.add(new Instant(itemIndex, 10.0, 0, 4));
