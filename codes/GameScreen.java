@@ -3,13 +3,15 @@ package codes;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class GameScreen extends Scene {
 
@@ -18,6 +20,7 @@ public class GameScreen extends Scene {
 
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
+	private AnimationTimer timer;
 
 	// the following are used for event listeners
 	private boolean goLeft = false;
@@ -26,11 +29,15 @@ public class GameScreen extends Scene {
 	private boolean goDown = false;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
 	private double timeLeft = 12;
+	private boolean timeUp = false;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)
 	private Player player = new Player(100.0, 0.0, 100, 50);
 	private HUDobjects statsUndropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats1.png");
 	private HUDobjects statsDropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats2.png");
+	private HUDobjects clock = new HUDobjects(900, 120, 220, 120, "clock.png");
+	private HUDobjects timesUpWindow = new HUDobjects(600, 400, 600, 400, "timesUpWindow.png");
+	
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 	
 	//TODO: 3x3
@@ -40,6 +47,8 @@ public class GameScreen extends Scene {
 
 	private Text[] statsText = new Text[4];
 	private Text itemName = new Text();
+	private Text itemDesc = new Text();
+	private Text timeLeftText = new Text(Double.toString(timeLeft));
 	// END OF ENTITIES
 
 	/**
@@ -47,10 +56,9 @@ public class GameScreen extends Scene {
 	 */
 	public GameScreen() {
 		super(root = new Pane());
-		
-		root = initialGameContent();
 
 		// Key pressed listener. To bind a new key, add a new case statement
+		
 		this.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case W:
@@ -65,11 +73,14 @@ public class GameScreen extends Scene {
 			case D:
 				goRight = true;
 				break;
-			case SPACE:
+			case E:
 				interact();
 				break;
 			case P:
 				showStats();
+				break;
+				
+			default:
 				break;
 			}
 		});
@@ -89,64 +100,67 @@ public class GameScreen extends Scene {
 			case D:
 				goRight = false;
 				break;
+				
+			default:
+				break;
 			}
 		});
-
-	}
-
-	/**
-	 * This function modifies our Pane before its passed down as a parameter when we
-	 * create a new Scene It eliminates clutter in our code and allows us to add a
-	 * lot of things to root before it shows up in the Window
-	 * 
-	 * @return returns the instance variable Pane
-	 */
-	private Pane initialGameContent() {
+		
 		// set the size of our Pane layout
-		root.setPrefSize(WIDTH, HEIGHT);
-		
-		// create new room objects
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				room[i][j] = new Rooms(i, j);
-			}
-		}
+				root.setPrefSize(WIDTH, HEIGHT);
+				
+				// create new room objects
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+						room[i][j] = new Rooms(i, j);
+					}
+				}
 
-		itemName.setFont(new Font("Comic Sans MS", 18));
+				itemName.setFont(new Font("Comic Sans MS", 18));
+				itemDesc.setFont(new Font("Comic Sans MS", 16));
+				itemDesc.setFill(Color.RED);
+				
+				timeLeftText.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
+				timeLeftText.setX(950);
+				timeLeftText.setY(200);
+				timeLeftText.setFill(Color.GREEN);
+				
+				player.generateStats();
+				
+				for (int i = 0; i < 4; i++) {
+					statsText[i] = new Text();
 
-		player.generateStats();
-		
-		for (int i = 0; i < 4; i++) {
-			statsText[i] = new Text();
+					statsText[i].setFont(new Font("Comic Sans MS", 22));
+					statsText[i].setTranslateX(960);
+					statsText[i].setTranslateY(110 + (i * 40)); // 30 is the gap between the stats
+				}
+				statsText = player.updateStatsText(statsText);
 
-			statsText[i].setFont(new Font("Comic Sans MS", 22));
-			statsText[i].setTranslateX(960);
-			statsText[i].setTranslateY(110 + (i * 40)); // 30 is the gap between the stats
-		}
-		statsText = player.updateStatsText(statsText);
+				// render the first room at start up
+				changeRoom(0, 0);
+				// adding the player, and enemies?
+				root.getChildren().add(player);
 
-		// render the first room at start up
-		changeRoom(0, 0);
-		// adding the player, and enemies?
-		root.getChildren().add(player);
+				// add HUDS
+				root.getChildren().add(statsUndropped);
+				root.getChildren().add(clock);
+				root.getChildren().add(timeLeftText);
 
-		// add HUDS
-		root.getChildren().add(statsUndropped);
+				// An animation timer is used for smoother movements
+				timer = new AnimationTimer() {
+					@Override
+					public void handle(long now) {
+						update();
+						checkForItemIntersection();
+						// walk(timer)
+					}
+				};
 
-		// An animation timer is used for smoother movements
-		AnimationTimer timer = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				update();
-				checkForItemIntersection();
-			}
-		};
+				timer.start();
 
-		timer.start();
-
-		return root;
 	}
 
+	
 	/**
 	 * Main function for animations. This function gets called every frame of
 	 * AnimationTimer so its very fast. To add animations, simply add them here.
@@ -192,9 +206,15 @@ public class GameScreen extends Scene {
 				// Show the item name, if its already showing, then ignore.
 				if (!root.getChildren().contains(itemName)) {
 					itemName.setX(itemsInCurrentRoom.get(i).getTranslateX());
-					itemName.setY(itemsInCurrentRoom.get(i).getTranslateY());
+					itemName.setY(itemsInCurrentRoom.get(i).getTranslateY() - 25);
 					itemName.setText(itemsInCurrentRoom.get(i).getName());
+					
+					itemDesc.setX(itemsInCurrentRoom.get(i).getTranslateX());
+					itemDesc.setY(itemsInCurrentRoom.get(i).getTranslateY());
+					itemDesc.setText(itemsInCurrentRoom.get(i).getDesc());
+					
 					root.getChildren().add(itemName);
+					root.getChildren().add(itemDesc);
 				}
 				// stop the loop so it doesn't check the rest of the items
 				break;
@@ -202,6 +222,7 @@ public class GameScreen extends Scene {
 				// if there are no item intersection, remove the item name.
 				// NOTE: this step will be skipped if there is an intersection
 				root.getChildren().remove(itemName);
+				root.getChildren().remove(itemDesc);
 				intersectingWith = -1;
 			}
 		}
@@ -220,9 +241,17 @@ public class GameScreen extends Scene {
 			if (item.getEntityType() == "Collectable") {
 				player.addCollectableToInventory((Collectable) item);
 			} else {
-				player.interactWithItem((Instant) item);
+				Instant itemToInstant = (Instant) item;
+				player.interactWithItem(itemToInstant);
+				timeLeft -= itemToInstant.getTime()-(player.getStat(2)*0.05);
+				if (timeLeft <= 0.0) {
+					timeLeft = 0.00;
+					timeLeftText.setFill(Color.RED);
+				} else {					
+					timeLeft = Math.round(timeLeft * 100.0) / 100.0;
+				}
+				timeLeftText.setText(Double.toString(timeLeft));
 			}
-			
 
 			// update the player's stats after the interaction
 			player.updateStatsText(statsText);
@@ -232,10 +261,12 @@ public class GameScreen extends Scene {
 			itemsInCurrentRoom.remove(intersectingWith);
 			// remove the item's name from the screen
 			root.getChildren().remove(itemName);
+			root.getChildren().remove(itemDesc);
 			// reset index of intersection
 			intersectingWith = -1;
 		}
 	}
+	
 
 	/**
 	 * Opens or closes the stats box

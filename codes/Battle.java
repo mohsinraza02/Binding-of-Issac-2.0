@@ -20,6 +20,7 @@ public class Battle extends Scene {
 	/**
 	 * This adds all the stuff to the root when the battle starts.
 	 * You don't really need this but it's good to have so everything isn't in the constructor.
+	 * UPDATE: I removed this method in my gameScreen cause it only needs 1 constructor. therefore theres no point of using this.
 	 * @return the root after adding some stuff in it
 	 */
 	private Pane initialContent() {

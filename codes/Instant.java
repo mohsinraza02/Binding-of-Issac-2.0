@@ -16,7 +16,7 @@ public class Instant extends Entities {
 	 */
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
 			{ "Game", "TA", "Bed", "READ Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
-			{ "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack","+10 Defense", "+10 Attack", "+10 Defense", "+10 Defence"}};
+			{ "+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck","+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck"}};
 	
 	/**
 	 * This constructor takes the 4 parameter values and sets the first parameter

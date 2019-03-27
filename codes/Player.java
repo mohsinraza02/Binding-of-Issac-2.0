@@ -21,7 +21,7 @@ public class Player extends Entities{
 	private int attackCap, defenseCap, healthCap, skillP;
 
 	public Player(double health, double attack, int maxHealth, int skillP) {
-		super(500, 500, 80, 100, "Player", "player.png");
+		super(50, 650, 80, 100, "Player", "player.png");
 		// TODO Auto-generated constructor stub
 		this.speed = 4;
 		
@@ -69,7 +69,8 @@ public class Player extends Entities{
 		return this.skillP;
 	}
 	
-	/*
+	/**
+	 * TODO: Implement reroll feature.
 	 * Generate 4 random stats for each category: Strength, Defense, Attack, Luck,
 	 * Speed The sum of the stats that is possible is 25 because it would be too
 	 * unbalanced to get perfect rolls. The sum of the stats will always be 25 as

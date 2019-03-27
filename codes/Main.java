@@ -52,11 +52,12 @@ public class Main extends Application {
 		newGameButton.setBackground(buttonBg);
 		
 		backToMenuButton.setOnMouseClicked(e -> {stage.setScene(scenes.get(0));});
-		backToMenuButton.setTranslateX(1000);
-		backToMenuButton.setTranslateY(700);
-		backToMenuButton.setPrefSize(80, 50);
+		backToMenuButton.setTranslateX(950);
+		backToMenuButton.setTranslateY(730);
+		backToMenuButton.setPrefSize(100, 60);
 		backToMenuButton.setBackground(buttonBg);
 		
+		stage.setResizable(false);
 		stage.setTitle("CRAM before the EXAM");
 		stage.show();
 	}

@@ -5,7 +5,6 @@ import java.util.Random;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -59,7 +58,7 @@ public abstract class Entities extends Rectangle {
 	public void flipSprite(String direction) {
 		if (direction == "left") {
 			this.setScaleX(-1);
-		} else {
+		} else if (direction == "right") {
 			this.setScaleX(1);
 		}
 	}
