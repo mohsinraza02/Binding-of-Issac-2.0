@@ -13,7 +13,7 @@ public class Instant {
 	 */
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
 			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
-			{ "+10 Attack", "+10 Attack", "+10 Defense", "+10 Attack","+10 Defense", "+10 Attack", "+10 Defense", "+10 Defence"}};
+			{ "+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck","+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck"}};
 
 	
 	/**
