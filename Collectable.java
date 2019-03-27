@@ -11,7 +11,7 @@ public class Collectable {
 	 */
 	private final String[][] COLLECTABLE_ITEM_NAME_AND_DESC = {
 			{"Book", "Cheat Sheet","Sharpener", "Pencil", "Eraser","Pen", "Water Bottle", "Calculator" },
-			{"+10 Attack", "+10 Defense", "+10 Attack", "+10 Defense", "+10 Attack", "+10 Defence", "+10 Attack", "+10 Defence"}};
+			{"+10 Health", "+10 Health", "+10 Health", "+10 Health", "+10 Health", "+10 Health", "+10 Health", "+10 Health"}};
 	
 	
 	/**
