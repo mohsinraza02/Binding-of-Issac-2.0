@@ -3,10 +3,8 @@ package codes;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,7 +14,7 @@ import javafx.scene.text.Text;
 public class GameScreen extends Scene {
 
 	private static Pane root;
-//	private Main m = new Main();
+	// private Main m = new Main();
 
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
@@ -27,6 +25,7 @@ public class GameScreen extends Scene {
 	private boolean goRight = false;
 	private boolean goUp = false;
 	private boolean goDown = false;
+	private boolean moving;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
 	private double timeLeft = 12;
 	private boolean timeUp = false;
@@ -37,10 +36,10 @@ public class GameScreen extends Scene {
 	private HUDobjects statsDropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats2.png");
 	private HUDobjects clock = new HUDobjects(900, 120, 220, 120, "clock.png");
 	private HUDobjects timesUpWindow = new HUDobjects(600, 400, 600, 400, "timesUpWindow.png");
-	
+
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
-	
-	//TODO: 3x3
+
+	// TODO: 3x3
 	private Rooms[][] room = new Rooms[3][3];
 
 	private int[][] playerCurrentRoom = { { 0 }, { 0 } };
@@ -58,7 +57,7 @@ public class GameScreen extends Scene {
 		super(root = new Pane());
 
 		// Key pressed listener. To bind a new key, add a new case statement
-		
+
 		this.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case W:
@@ -79,7 +78,7 @@ public class GameScreen extends Scene {
 			case P:
 				showStats();
 				break;
-				
+
 			default:
 				break;
 			}
@@ -100,67 +99,77 @@ public class GameScreen extends Scene {
 			case D:
 				goRight = false;
 				break;
-				
+
 			default:
 				break;
 			}
 		});
-		
+
 		// set the size of our Pane layout
-				root.setPrefSize(WIDTH, HEIGHT);
-				
-				// create new room objects
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < 3; j++) {
-						room[i][j] = new Rooms(i, j);
+		root.setPrefSize(WIDTH, HEIGHT);
+
+		// create new room objects
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				room[i][j] = new Rooms(i, j);
+			}
+		}
+
+		itemName.setFont(new Font("Comic Sans MS", 18));
+		itemDesc.setFont(new Font("Comic Sans MS", 16));
+		itemDesc.setFill(Color.RED);
+
+		timeLeftText.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
+		timeLeftText.setX(950);
+		timeLeftText.setY(200);
+		timeLeftText.setFill(Color.GREEN);
+
+		player.generateStats();
+
+		for (int i = 0; i < 4; i++) {
+			statsText[i] = new Text();
+
+			statsText[i].setFont(new Font("Comic Sans MS", 22));
+			statsText[i].setTranslateX(960);
+			statsText[i].setTranslateY(110 + (i * 40)); // 30 is the gap between the stats
+		}
+		statsText = player.updateStatsText(statsText);
+
+		// render the first room at start up
+		changeRoom(0, 0);
+		// adding the player, and enemies?
+		root.getChildren().add(player);
+
+		// add HUDS
+		root.getChildren().add(statsUndropped);
+		root.getChildren().add(clock);
+		root.getChildren().add(timeLeftText);
+
+		// An animation timer is used for smoother movements
+		timer = new AnimationTimer() {
+			long lastUpdate = 0;
+
+			@Override
+			public void handle(long now) {
+				update();
+				checkForItemIntersection();
+				moving = goLeft || goRight || goUp || goDown;
+				if (moving) {
+					if (now - lastUpdate >= 90_000_000) {
+						walkAnimation(now);
+						lastUpdate = now;
 					}
+				} else {
+					now = 0;
+					player.changeSprite("player4.png"); // reset to idle position
 				}
+			}
+		};
 
-				itemName.setFont(new Font("Comic Sans MS", 18));
-				itemDesc.setFont(new Font("Comic Sans MS", 16));
-				itemDesc.setFill(Color.RED);
-				
-				timeLeftText.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
-				timeLeftText.setX(950);
-				timeLeftText.setY(200);
-				timeLeftText.setFill(Color.GREEN);
-				
-				player.generateStats();
-				
-				for (int i = 0; i < 4; i++) {
-					statsText[i] = new Text();
-
-					statsText[i].setFont(new Font("Comic Sans MS", 22));
-					statsText[i].setTranslateX(960);
-					statsText[i].setTranslateY(110 + (i * 40)); // 30 is the gap between the stats
-				}
-				statsText = player.updateStatsText(statsText);
-
-				// render the first room at start up
-				changeRoom(0, 0);
-				// adding the player, and enemies?
-				root.getChildren().add(player);
-
-				// add HUDS
-				root.getChildren().add(statsUndropped);
-				root.getChildren().add(clock);
-				root.getChildren().add(timeLeftText);
-
-				// An animation timer is used for smoother movements
-				timer = new AnimationTimer() {
-					@Override
-					public void handle(long now) {
-						update();
-						checkForItemIntersection();
-						// walk(timer)
-					}
-				};
-
-				timer.start();
+		timer.start();
 
 	}
 
-	
 	/**
 	 * Main function for animations. This function gets called every frame of
 	 * AnimationTimer so its very fast. To add animations, simply add them here.
@@ -180,7 +189,7 @@ public class GameScreen extends Scene {
 		if (goRight) {
 			player.moveRight();
 		}
-		
+
 		// if player room moves to a different room, update playerCurrentRoom and change
 		// the background
 		if (playerCurrentRoom[0][0] != player.getCurrentRoomX()
@@ -188,6 +197,17 @@ public class GameScreen extends Scene {
 			changeRoom(player.getCurrentRoomX(), player.getCurrentRoomY());
 		}
 
+	}
+
+	/**
+	 * Changes the sprite of the player to produce a walking animation
+	 * @param frame - current frame
+	 */
+	private void walkAnimation(long frame) {
+		frame /= 90_000_000; // cut it down to ones
+		int walkIndex = (int) ((frame + 4) % 4) + 1; // counts from 1 to 4, then resets to 1 when we reach 4
+		String spriteName = "player" + walkIndex + ".png";
+		player.changeSprite(spriteName);
 	}
 
 	/**
@@ -208,11 +228,11 @@ public class GameScreen extends Scene {
 					itemName.setX(itemsInCurrentRoom.get(i).getTranslateX());
 					itemName.setY(itemsInCurrentRoom.get(i).getTranslateY() - 25);
 					itemName.setText(itemsInCurrentRoom.get(i).getName());
-					
+
 					itemDesc.setX(itemsInCurrentRoom.get(i).getTranslateX());
 					itemDesc.setY(itemsInCurrentRoom.get(i).getTranslateY());
 					itemDesc.setText(itemsInCurrentRoom.get(i).getDesc());
-					
+
 					root.getChildren().add(itemName);
 					root.getChildren().add(itemDesc);
 				}
@@ -243,11 +263,11 @@ public class GameScreen extends Scene {
 			} else {
 				Instant itemToInstant = (Instant) item;
 				player.interactWithItem(itemToInstant);
-				timeLeft -= itemToInstant.getTime()-(player.getStat(2)*0.05);
+				timeLeft -= itemToInstant.getTime() - (player.getStat(2) * 0.05);
 				if (timeLeft <= 0.0) {
 					timeLeft = 0.00;
 					timeLeftText.setFill(Color.RED);
-				} else {					
+				} else {
 					timeLeft = Math.round(timeLeft * 100.0) / 100.0;
 				}
 				timeLeftText.setText(Double.toString(timeLeft));
@@ -266,7 +286,6 @@ public class GameScreen extends Scene {
 			intersectingWith = -1;
 		}
 	}
-	
 
 	/**
 	 * Opens or closes the stats box
@@ -300,7 +319,8 @@ public class GameScreen extends Scene {
 	private void changeRoom(int x, int y) {
 		String roomName = "'/codes/sprites/" + room[x][y].getImageName() + ".png'";
 
-		root.setStyle("-fx-background-color: DarkSlateGray; -fx-background-image: url(" + roomName + "); " + "-fx-background-size: 800px 800px;" + "-fx-background-repeat: no-repeat;"); // cover to fill
+		root.setStyle("-fx-background-color: DarkSlateGray; -fx-background-image: url(" + roomName + "); "
+				+ "-fx-background-size: 800px 800px;" + "-fx-background-repeat: no-repeat;"); // cover to fill
 
 		ArrayList<Entities> oldRoomItems = itemsInCurrentRoom;
 		// remove all the items in the old room
@@ -318,10 +338,10 @@ public class GameScreen extends Scene {
 
 		// Opening and reopening stats so items don't spawn over it when user leaves it
 		// open when changing rooms
-//		 showStats();
-//		 showStats();
+		// showStats();
+		// showStats();
 	}
-	
+
 	public void addNode(Node n) {
 		root.getChildren().add(n);
 	}

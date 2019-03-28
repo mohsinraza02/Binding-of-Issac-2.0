@@ -57,6 +57,14 @@ public class Main extends Application {
 		backToMenuButton.setPrefSize(100, 60);
 		backToMenuButton.setBackground(buttonBg);
 		
+		//temporary
+		Button debug = new Button("debugBattle");
+		debug.setTranslateX(120);
+		debug.setTranslateY(700);
+		debug.setPrefSize(150, 40);
+		debug.setOnMouseClicked(e -> {stage.setScene(scenes.get(3));});
+		((MenuScreen) scenes.get(0)).addNode(debug);
+		
 		stage.setResizable(false);
 		stage.setTitle("CRAM before the EXAM");
 		stage.show();
@@ -67,6 +75,7 @@ public class Main extends Application {
 		scenes.add(new MenuScreen(WIDTH, HEIGHT));
 		scenes.add(new SetupScreen());
 		scenes.add(new GameScreen());
+		scenes.add(new Battle());
 	}
 	
 	public void newGame() {

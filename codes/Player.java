@@ -9,10 +9,11 @@ public class Player extends Entities{
 	
 	//GUI
 	private int speed;
-	public int currentRoomX = 0;
-	public int currentRoomY = 0;
-	public int timeLft = 0;
-	public String facing = "east";
+	private int currentRoomX = 0;
+	private int currentRoomY = 0;
+	private int timeLft = 0;
+	private String facing = "east";
+	
 	//LOGIC
 	private int[] stats = {0, 0, 0, 0};
 	private ArrayList<Collectable> inventory = new ArrayList<Collectable>();
@@ -21,7 +22,7 @@ public class Player extends Entities{
 	private int attackCap, defenseCap, healthCap, skillP;
 
 	public Player(double health, double attack, int maxHealth, int skillP) {
-		super(50, 650, 80, 100, "Player", "player.png");
+		super(50, 650, 80, 100, "Player", "player4.png");
 		// TODO Auto-generated constructor stub
 		this.speed = 4;
 		
