@@ -32,7 +32,7 @@ public class GameScreen extends Scene {
 	private boolean goDown = false;
 	private boolean moving;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
-	private double timeLeft = 0;
+	private double timeLeft = 18;
 	private boolean timeUp = false;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)

@@ -45,14 +45,15 @@ public class Battle extends Scene {
 	private EventHandler<KeyEvent> mainPrompt;
 	private EventHandler<KeyEvent> skillPrompt;
 	private EventHandler<KeyEvent> continuePrompt;
+	
 
 	/**
 	 * NOT FINISHED!!! IT'LL BREAK!!! Just saying. - Josh
 	 */
 	public Battle(Player player) {
 		super(root = new Pane());
-		root = initialContent();
 		this.player = player;
+		root = initialContent();
 		
 		mainPrompt = new EventHandler<KeyEvent>() {
 			@Override
@@ -152,14 +153,22 @@ public class Battle extends Scene {
 		}
 	}
 
+	
+	
 	/**
-	 * 
+	 * Remove text in the box.
 	 */
 	private void remove() {
 		root.getChildren().remove(text1);
 		root.getChildren().remove(text2);
 	}
-
+	
+	private void bossHealth() {
+		root.getChildren().remove(enemyHealth);
+		enemyHealth.setText("Boss Test\nHealth: " + enemy.getHealth());
+		root.getChildren().add(enemyHealth);
+		}
+	
 	/**
 	 * Remove the boss prompt
 	 */
@@ -172,19 +181,25 @@ public class Battle extends Scene {
 	 */
 	private void attack() {
 		
-		player.attack(enemy);
-		enemy.setHealth(enemy.getHealth() - player.getAttack());
 		
+		player.attack(enemy);
+		
+		enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
-		text1.setText("You attack the test. You have dealt\n" + (int) player.getAttack() + " damage.");
+		text1.setText("You attack the test. You have dealt\n" + player.getStat(1) + " damage.");
+		
+		bossHealth();
+		
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		text1.setX(50);
 		text1.setY(665);
 		text1.setFill(Color.BLACK);
+		
+		
 
 	}
 
@@ -199,6 +214,30 @@ public class Battle extends Scene {
 		text1.setX(50);
 		text1.setY(665);
 		text1.setFill(Color.BLACK);
+		
+		String input = "c";
+		boolean pick = false; 
+		boolean valid = false;
+		
+		if (input.toLowerCase().equals("a")) {
+			player.deepBreath(enemy);
+			pick = true;
+			valid = true;
+		} else if(input.toLowerCase().equals("b")) {
+			player.stretch();
+			pick = true;
+			valid = true;
+
+		}else if (input.toLowerCase().equals("c")){
+			player.cheat(enemy);
+			pick = true;
+			valid = true;
+
+		}else if (input.toLowerCase().equals("d")){
+			player.cry(enemy);
+			pick = true;
+			valid = true;
+		}
 	}
 
 	/**
@@ -223,7 +262,7 @@ public class Battle extends Scene {
 		bossPrompt.setY(170);
 		bossPrompt.setFill(Color.RED);
 		
-		int damageMod = (int)(player.getAttack() * 0.20);
+		int damageMod = (int)(player.getStat(1) * 0.20);
 		enemy.setAttack(enemy.getAttack() - damageMod);
 		if (damageMod == 0) {
 			enemy.setAttack(enemy.getAttack() - 1);
@@ -237,7 +276,7 @@ public class Battle extends Scene {
 	 * Player uses stretch skill - LOGIC DONE
 	 */
 	private void stretch() {
-		int healMod = (int) ((player.getAttack() * 0.25) + (player.getHealthCap() * 0.15));
+		int healMod = (int) ((player.getStat(1) * 0.25) + (player.getHealthCap() * 0.15));
 		if ((player.getHealth() + healMod) > player.getHealthCap()) {
 			player.setHealth(player.getHealthCap());
 		} else {
@@ -263,10 +302,11 @@ public class Battle extends Scene {
 		
 		int attackMod = (int)(player.getAttack() * 2.5);
 		enemy.setHealth(enemy.getHealth() - attackMod);
+		bossHealth();
 		
 		remove();
 		text1 = new Text(
-				"Your use the eagle vision technique,\nand look around with amazing accuracy.\nBOOM! Critical Strike!!\nYou have dealt " + attackMod + " damage to the test.");
+				"You use the eagle vision technique,\nand look around with amazing accuracy.\nBOOM! Critical Strike!!\nYou have dealt " + attackMod + " damage to the test.");
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
@@ -281,7 +321,7 @@ public class Battle extends Scene {
 	private void breathe() {
 		
 		Scanner skip = new Scanner(System.in);
-		int defenseMod = (int) (player.getAttack() * 0.20);
+		int defenseMod = (int) (player.getStat(1) * 0.20);
 		//System.out.println(defenseMod);
 		enemy.setDefense(enemy.getDefense() - defenseMod);
 		if (defenseMod == 0) {
@@ -419,6 +459,7 @@ public class Battle extends Scene {
 	private Pane initialContent() {
 		root.setPrefSize(WIDTH, HEIGHT); // makes the screen 1200x800px
 
+		player.updateAttack();
 		enemyHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		enemyHealth.setX(410);
 		enemyHealth.setY(80);
