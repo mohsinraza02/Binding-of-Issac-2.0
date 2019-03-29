@@ -151,10 +151,8 @@ public class Player extends Entities{
 	 * 
 	 */
 	public void attack(Enemy enemy) {
-		// enemy.setHealth(getHealth() - );
-		Scanner skip = new Scanner(System.in);		
+		// enemy.setHealth(getHealth() - );		
 		System.out.println("You strike a shot at a question.");
-		skip.nextLine();
 		enemy.setHealth(enemy.getHealth() - this.attack);
 		System.out.println("You did " + this.attack + " damage to the " + enemy.getName());
 		System.out.println("The " + enemy.getName() + " has " + enemy.getHealth() + " health left.");

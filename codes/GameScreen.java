@@ -86,7 +86,7 @@ public class GameScreen extends Scene {
 				interact();
 				break;
 			case B:
-				showStats();
+				openInventory();
 				break;
 
 			default:
@@ -269,7 +269,7 @@ public class GameScreen extends Scene {
 			}
 		}
 	}
-
+	
 	/**
 	 * This function handles interaction with items/npcs
 	 */
@@ -282,6 +282,14 @@ public class GameScreen extends Scene {
 			// Check if the item is a collectable or an instant
 			if (item.getEntityType() == "Collectable") {
 				player.addCollectableToInventory((Collectable) item);
+				
+				backpackList.add(new Text(item.getName()));
+				
+				System.out.println(backpackList);
+				backpackList.get(backpackList.size()-1).setX(600);
+				backpackList.get(backpackList.size()-1).setY(290 + ((backpackList.size()-1) * 30));
+				backpackList.get(backpackList.size()-1).setFont(Font.font("Comic Sans MS", 30));
+				
 			} else {
 				Instant itemToInstant = (Instant) item;
 				player.interactWithItem(itemToInstant);
@@ -315,15 +323,18 @@ public class GameScreen extends Scene {
 	/**
 	 * Opens or closes the inventory
 	 */
-	private void showStats() {
+	private void openInventory() {
 
 		// if it is closed, remove the unopened node and add the opened node
 		if (root.getChildren().contains(backpackFrame)) {
 			root.getChildren().remove(backpackFrame);
+			for (int i = 0; i < backpackList.size(); i++) {
+				root.getChildren().remove(backpackList.get(i));
+			}
 		} else {
 			root.getChildren().add(backpackFrame);
 			for (int i = 0; i < backpackList.size(); i++) {
-//				root.getChildren().add(backpackList[i]);
+				root.getChildren().add(backpackList.get(i));
 			}
 		}
 	}

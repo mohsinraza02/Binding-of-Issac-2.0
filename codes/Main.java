@@ -78,15 +78,15 @@ public class Main extends Application {
 			stage.setScene(((GameScreen) scenes.get(1)).getBattle());
 		});
 
-		// temporary
-		Button debug = new Button("debugBattle");
-		debug.setTranslateX(120);
-		debug.setTranslateY(700);
-		debug.setPrefSize(150, 40);
-		debug.setOnMouseClicked(e -> {
-			stage.setScene(scenes.get(3));
-		});
-		((MenuScreen) scenes.get(0)).addNode(debug);
+//		// temporary
+//		Button debug = new Button("debugBattle");
+//		debug.setTranslateX(120);
+//		debug.setTranslateY(700);
+//		debug.setPrefSize(150, 40);
+//		debug.setOnMouseClicked(e -> {
+//			stage.setScene(scenes.get(3));
+//		});
+//		((MenuScreen) scenes.get(0)).addNode(debug);
 
 		stage.setResizable(false);
 		stage.setTitle("CRAM before the EXAM");

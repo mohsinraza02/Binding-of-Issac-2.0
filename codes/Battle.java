@@ -14,7 +14,8 @@ import javafx.scene.text.FontWeight;
 
 public class Battle extends Scene {
 
-	Enemy enemy = new Enemy("Test", 10, 10, 10, 10, true, 10);
+	
+	Enemy enemy = new Enemy("CPSC Test", 100, 10, 10, 10, true, 10);
 	Player player;
 
 	private static Pane root;
@@ -172,6 +173,7 @@ public class Battle extends Scene {
 	private void attack() {
 		
 		player.attack(enemy);
+		enemy.setHealth(enemy.getHealth() - player.getAttack());
 		
 		remove();
 
@@ -318,7 +320,7 @@ public class Battle extends Scene {
 		text1.setY(655);
 		text1.setFill(Color.BLACK);
 		
-		int attackMod = (enemy.getAttack() -= (enemy.getAttack() * (player.getStat(1) / 100)));
+		int attackMod = (enemy.getAttack() - (enemy.getAttack() * (player.getStat(1) / 100)));
 		
 		if (player.getStat(1) == 0) {
 			player.setHealth(player.getHealth() - enemy.getAttack());
