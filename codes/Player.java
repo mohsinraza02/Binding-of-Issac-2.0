@@ -137,7 +137,6 @@ public class Player extends Entities{
 	public void addCollectableToInventory(Collectable cb) {
 		System.out.println("Added to inventory: " + cb.getName());
 		inventory.add(cb);
-		stats[cb.getType()] += cb.getValue();
 	}
 	
 	public void interactWithItem(Instant instant) {

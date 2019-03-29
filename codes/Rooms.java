@@ -39,12 +39,14 @@ public class Rooms {
 		int numOfItems = rand.nextInt(9) + 1;
 		int itemType;
 		int itemIndex;
+		int instantSkillIndex;
 		
 		for (int i = 0; i < numOfItems; i++) {
 			itemType = rand.nextInt(2); // 0 if instant, 1 if collectible
 			itemIndex = rand.nextInt(8); // pick a number between 0 and 7
 			if(itemType == 0) {
-				roomContents.add(new Instant(itemIndex, 10.0, 0, 4));
+				instantSkillIndex = (itemIndex + 4) % 4;
+				roomContents.add(new Instant(itemIndex, 10.0, instantSkillIndex, 4));
 			} else {
 				roomContents.add(new Collectable(itemIndex, 10.0, 1));
 			}

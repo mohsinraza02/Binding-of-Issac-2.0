@@ -3,8 +3,11 @@ package codes;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -19,6 +22,8 @@ public class GameScreen extends Scene {
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
 	private AnimationTimer timer;
+	private Battle battle;
+	private Button battleButton;
 
 	// the following are used for event listeners
 	private boolean goLeft = false;
@@ -27,24 +32,29 @@ public class GameScreen extends Scene {
 	private boolean goDown = false;
 	private boolean moving;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
-	private double timeLeft = 12;
+	private double timeLeft = 0;
 	private boolean timeUp = false;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)
 	private Player player = new Player(100.0, 0.0, 100, 50);
 	private HUDobjects statsUndropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats1.png");
 	private HUDobjects statsDropped = new HUDobjects(0, 0, WIDTH, HEIGHT, "stats2.png");
-	private HUDobjects clock = new HUDobjects(900, 120, 220, 120, "clock.png");
-	private HUDobjects timesUpWindow = new HUDobjects(600, 400, 600, 400, "timesUpWindow.png");
-
+	private HUDobjects statsFrame = new HUDobjects(810, 305, 380, 480, "statsFrame.png");
+	private HUDobjects clock = new HUDobjects(935, 170, 220, 120, "clock.png");
+	private HUDobjects timesUpWindow = new HUDobjects(100, 200, 600, 400, "timesUpWindow.png");
+	private HUDobjects backpackIcon = new HUDobjects(820, 178, 100, 120, "backpackIcon.png");
+	private HUDobjects sidebarFrame = new HUDobjects(0, 0, WIDTH, HEIGHT, "sideBarFrame.png");
+	private HUDobjects backpackFrame = new HUDobjects(550, 178, 250, 290, "backpackFrame.png");
+	
 	private ArrayList<Entities> itemsInCurrentRoom = new ArrayList<Entities>();
 
-	// TODO: 3x3
 	private Rooms[][] room = new Rooms[3][3];
 
 	private int[][] playerCurrentRoom = { { 0 }, { 0 } };
 
 	private Text[] statsText = new Text[4];
+	private ArrayList<Text> backpackList = new ArrayList<Text>();
+//	private Text[] backpackList = {new Text("Book"), new Text("Cheat Sheet"),new Text("Sharpener"), new Text("Pencil"), new Text("Eraser"),new Text("Pen"), new Text("Water Bottle"), new Text("Calculator")};
 	private Text itemName = new Text();
 	private Text itemDesc = new Text();
 	private Text timeLeftText = new Text(Double.toString(timeLeft));
@@ -75,7 +85,7 @@ public class GameScreen extends Scene {
 			case E:
 				interact();
 				break;
-			case P:
+			case B:
 				showStats();
 				break;
 
@@ -120,20 +130,25 @@ public class GameScreen extends Scene {
 		itemDesc.setFill(Color.RED);
 
 		timeLeftText.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
-		timeLeftText.setX(950);
-		timeLeftText.setY(200);
+		timeLeftText.setX(985);
+		timeLeftText.setY(245);
 		timeLeftText.setFill(Color.GREEN);
 
 		player.generateStats();
-
+		// create the stats text
 		for (int i = 0; i < 4; i++) {
 			statsText[i] = new Text();
 
-			statsText[i].setFont(new Font("Comic Sans MS", 22));
-			statsText[i].setTranslateX(960);
-			statsText[i].setTranslateY(110 + (i * 40)); // 30 is the gap between the stats
+			statsText[i].setFont(new Font("Times", 38));
+			statsText[i].setTranslateX(900);
+			statsText[i].setTranslateY(460 + (i * 80)); // 30 is the gap between the stats
 		}
 		statsText = player.updateStatsText(statsText);
+		
+		// create backpack list
+		for (int i = 0; i < 8; i++) {
+//			backpackList[i].setText(rooms[0]);
+		}
 
 		// render the first room at start up
 		changeRoom(0, 0);
@@ -141,9 +156,16 @@ public class GameScreen extends Scene {
 		root.getChildren().add(player);
 
 		// add HUDS
-		root.getChildren().add(statsUndropped);
+//		root.getChildren().add(statsUndropped);
+		root.getChildren().add(sidebarFrame);
 		root.getChildren().add(clock);
 		root.getChildren().add(timeLeftText);
+		root.getChildren().add(backpackIcon);
+		root.getChildren().add(statsFrame);
+		
+		for (int i = 0; i < 4; i++) {
+			root.getChildren().add(statsText[i]);
+		}
 
 		// An animation timer is used for smoother movements
 		timer = new AnimationTimer() {
@@ -204,10 +226,10 @@ public class GameScreen extends Scene {
 	 * @param frame - current frame
 	 */
 	private void walkAnimation(long frame) {
-		frame /= 90_000_000; // cut it down to ones
-		int walkIndex = (int) ((frame + 4) % 4) + 1; // counts from 1 to 4, then resets to 1 when we reach 4
-		String spriteName = "player" + walkIndex + ".png";
-		player.changeSprite(spriteName);
+		frame /= 90_000_000; // the sprite changes every 90 ms. divide it by 90ms to reduce it down to ones
+		int walkIndex = (int) ((frame + 4) % 4) + 1; // an equation that takes the current frame and make it count from 1 to 4, then resets to 1 when we reach 4
+		String spriteName = "player" + walkIndex + ".png"; // create the filename of the sprite by adding the current walk index at the end
+		player.changeSprite(spriteName); // change the player's sprite
 	}
 
 	/**
@@ -264,12 +286,15 @@ public class GameScreen extends Scene {
 				Instant itemToInstant = (Instant) item;
 				player.interactWithItem(itemToInstant);
 				timeLeft -= itemToInstant.getTime() - (player.getStat(2) * 0.05);
+				
 				if (timeLeft <= 0.0) {
 					timeLeft = 0.00;
 					timeLeftText.setFill(Color.RED);
+					endGame();
 				} else {
 					timeLeft = Math.round(timeLeft * 100.0) / 100.0;
 				}
+				
 				timeLeftText.setText(Double.toString(timeLeft));
 			}
 
@@ -288,23 +313,18 @@ public class GameScreen extends Scene {
 	}
 
 	/**
-	 * Opens or closes the stats box
+	 * Opens or closes the inventory
 	 */
 	private void showStats() {
 
 		// if it is closed, remove the unopened node and add the opened node
-		if (root.getChildren().contains(statsUndropped)) {
-			root.getChildren().remove(statsUndropped);
-			root.getChildren().add(statsDropped);
-			for (int i = 0; i < 4; i++) {
-				root.getChildren().add(statsText[i]);
-			}
+		if (root.getChildren().contains(backpackFrame)) {
+			root.getChildren().remove(backpackFrame);
 		} else {
-			root.getChildren().remove(statsDropped);
-			for (int i = 0; i < 4; i++) {
-				root.getChildren().remove(statsText[i]);
+			root.getChildren().add(backpackFrame);
+			for (int i = 0; i < backpackList.size(); i++) {
+//				root.getChildren().add(backpackList[i]);
 			}
-			root.getChildren().add(statsUndropped);
 		}
 	}
 
@@ -340,6 +360,24 @@ public class GameScreen extends Scene {
 		// open when changing rooms
 		// showStats();
 		// showStats();
+	}
+	
+	private void endGame() {
+		this.setOnKeyPressed(null);
+		this.setOnKeyReleased(null);
+		goUp = false; goDown = false; goLeft = false; goRight = false;
+		
+		battle = new Battle(player);
+		root.getChildren().add(timesUpWindow);
+		root.getChildren().add(battleButton);
+	}
+	
+	public Battle getBattle() {
+		return battle;
+	}
+	
+	public void setBattleButton(Button b) {
+		this.battleButton = b;
 	}
 
 	public void addNode(Node n) {
