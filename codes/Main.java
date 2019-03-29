@@ -1,167 +1,110 @@
 package codes;
 
-import javafx.animation.AnimationTimer;
+import java.util.ArrayList;
+
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 
 /**
- * 
- * @author TUT 06, GROUP 03 TODO: Move key listeners to Movements.java, Add
- *         comments, organize variables
- * 
+ * @author TUT 06, GROUP 03
  */
 public class Main extends Application {
 
-	private Pane root = new Pane();
+	private final int WIDTH = 1200;
+	private final int HEIGHT = 800;
 
-	// the following are used for event listeners
-	boolean goLeft = false;
-	boolean goRight = false;
-	boolean goUp = false;
-	boolean goDown = false;
+	private ArrayList<Scene> scenes = new ArrayList<>(); // 0 = menu screen, 1 = game screen.
 
-	private Objects player = new Objects(500, 500, 50, 100, "player", Color.BLUE, "player.png");
-	private Objects npc = new Objects(870, 500, 30, 40, "interaction", Color.BLUE, null);
-	private Objects bubble;
+	private Button startGameButton = new Button("CONTINUE");
+	private Button newGameButton = new Button("NEW GAME");
+	private Button backToMenuButton = new Button("Main menu");
+	private Button startGame = new Button("START!");
+	private Button battleButton = new Button("Take the exam");
 
-	private Text t = new Text("press <space> to interact");
+	private BackgroundImage bImage = new BackgroundImage(new Image("/codes/sprites/button.png"),
+			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+			new BackgroundSize(newGameButton.getWidth(), newGameButton.getHeight(), true, true, true, false));
+	private Background buttonBg = new Background(bImage);
+	// private Background buttonbg = new Background(new BackgroundImage(new
+	// Image("/codes/sprites/button.png"), null, null, null, null));
 
-	/**
-	 * We pass this parameter when we create a new scene.
-	 * This simplifies our code and allows us to add more nodes in the beginning
-	 * and other actions
-	 * @return
-	 */
-	private Parent createContent() {
-		root.setPrefSize(1200, 800);
-		// adding the player, and enemies?
-		root.getChildren().add(player);
-		// maybe move adding npc to the map
-		root.getChildren().add(npc);
-
-		// An animation timer is used for smoother movements
-		AnimationTimer timer = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				update();
-			}
-		};
-
-		timer.start();
-		return root;
-	}
-
-	/**
-	 * Updates every frame of the animation (idk how animation timer works yet so idk what the fps is)
-	 */
-	private void update() {
-		// checks if keys are pressed and call these functions
-		// without using booleans, only 1 key presses will be accepted
-		if (goUp) {
-			player.moveUp();
-		}
-		if (goDown) {
-			player.moveDown();
-		}
-		if (goLeft) {
-			player.moveLeft();
-		}
-		if (goRight) {
-			player.moveRight();
-		}
-		
-		// if player is intersecting with the npc, show a dialogue
-		if (player.getBoundsInParent().intersects(npc.getBoundsInParent())) {
-			// nested loop so the text doesn't flicker
-			if (!root.getChildren().contains(t)) {
-				t.setX(npc.getTranslateX());
-				t.setY(npc.getTranslateY());
-				root.getChildren().add(t);
-			}
-		} else {
-			root.getChildren().remove(t);
-		}
-
-	}
-	
-	/**
-	 * when called, an interaction with an npc shows up
-	 * in this case, a text bubble shows up when the space bar is pressed
-	 */
-	private void interact() {
-		// check if player can interact with npc (in range)
-		if (player.getBoundsInParent().intersects(npc.getBoundsInParent())) {
-			if (!root.getChildren().contains(bubble)) {
-				bubble = new Objects((int) npc.getTranslateX(), (int) npc.getTranslateY() - 80, 80, 80, "bubble",
-						Color.BLACK, "text.png");
-				root.getChildren().add(bubble);
-			} else {
-				root.getChildren().remove(bubble);
-			}
-
-		}
-	}
-	
-	/**
-	 * yall know what goes down here
-	 */
 	@Override
 	public void start(Stage stage) throws Exception {
-		Scene scene = new Scene(createContent());
+		createScreens();
 
-		// Key pressed listener. To bind a new key, add a new case statement
-		scene.setOnKeyPressed(e -> {
-			switch (e.getCode()) {
-			case W:
-				goUp = true;
-				break;
-			case S:
-				goDown = true;
-				break;
-			case A:
-				goLeft = true;
-				break;
-			case D:
-				goRight = true;
-				break;
-			case SPACE:
-				interact();
-				break;
-			}
+		stage.setScene(scenes.get(0));
+
+		((MenuScreen) scenes.get(0)).addNode(startGameButton);
+		startGameButton.setOnMouseClicked(e -> {
+			stage.setScene(scenes.get(1));
+		});
+		startGameButton.setTranslateX(100);
+		startGameButton.setTranslateY(550);
+		startGameButton.setPrefSize(250, 100);
+		startGameButton.setBackground(buttonBg);
+
+		((MenuScreen) scenes.get(0)).addNode(newGameButton);
+		newGameButton.setOnMouseClicked(e -> {
+			newGame();
+			stage.setScene(scenes.get(1));
+		});
+		newGameButton.setTranslateX(100);
+		newGameButton.setTranslateY(400);
+		newGameButton.setPrefSize(250, 100);
+		newGameButton.setBackground(buttonBg);
+
+		backToMenuButton.setOnMouseClicked(e -> {
+			stage.setScene(scenes.get(0));
+		});
+		backToMenuButton.setTranslateX(950);
+		backToMenuButton.setTranslateY(730);
+		backToMenuButton.setPrefSize(100, 60);
+		backToMenuButton.setBackground(buttonBg);
+
+		battleButton.setTranslateX(275);
+		battleButton.setTranslateY(460);
+		battleButton.setPrefSize(250, 80);
+		battleButton.setBackground(buttonBg);
+
+		battleButton.setOnMouseClicked(e -> {
+			stage.setScene(((GameScreen) scenes.get(1)).getBattle());
 		});
 
-		// Key release listener
-		scene.setOnKeyReleased(e -> {
-			switch (e.getCode()) {
-			case W:
-				goUp = false;
-				break;
-			case S:
-				goDown = false;
-				break;
-			case A:
-				goLeft = false;
-				break;
-			case D:
-				goRight = false;
-				break;
-			}
+		// temporary
+		Button debug = new Button("debugBattle");
+		debug.setTranslateX(120);
+		debug.setTranslateY(700);
+		debug.setPrefSize(150, 40);
+		debug.setOnMouseClicked(e -> {
+			stage.setScene(scenes.get(3));
 		});
-		
-		// Changing the CSS of the pane for an easier way to set the background 
-		// how ever, using online pictures takes very long to render
-		// so TODO: download pictures/ have the hard copy of pictures
-		root.setStyle("-fx-background-image: url("
-				+ "'https://s3.amazonaws.com/cartoonsmartstreaming/wp-content/uploads/2017/05/30123103/Castle-top-down-royalty-free-game-art.jpg'"
-				+ "); " + "-fx-background-size: cover;");
-		stage.setScene(scene);
-		stage.setTitle("BEST PROJECT IN CPSC 233 LECTURE 02");
+		((MenuScreen) scenes.get(0)).addNode(debug);
+
+		stage.setResizable(false);
+		stage.setTitle("CRAM before the EXAM");
 		stage.show();
+	}
+
+	public void createScreens() {
+		scenes.add(new MenuScreen(WIDTH, HEIGHT));
+		scenes.add(new GameScreen());
+	}
+
+	public void newGame() {
+		if (scenes.get(1) != null) {
+			// ask user if they want to overwrite save data
+		}
+		scenes.set(1, new GameScreen());
+		((GameScreen) scenes.get(1)).addNode(backToMenuButton);
+		((GameScreen) scenes.get(1)).setBattleButton(battleButton);
 	}
 
 	public static void main(String[] args) {

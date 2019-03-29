@@ -1,3 +1,5 @@
+
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,11 +14,12 @@ import java.util.Scanner;
  */
 public class Map {
 
-	private static ArrayList<Item>[] room = new ArrayList[5];
+	
+	private static ArrayList<Instant>[] room = new ArrayList[5];
 //	private static ArrayList<ArrayList<Item>> room = new ArrayList<ArrayList<Item>>();
-	private static double timeLeft = 12.00; //
+	private static double timeLeft = 12; //
 	private static int currentRoom = 0;
-	private static Item[] itemList = new Item[8];
+	private static Instant[] itemList = new Instant[8];
 
 	// private Stats[]
 
@@ -32,13 +35,13 @@ public class Map {
 			// the type parameter wants a 0 or a 1, luckily the itemList is sorted so i
 			// could convert the index into either 1 or 2 by
 			// taking the mod of i
-			itemList[i] = new Item(i, 10.0, (i % 2), 3.00);
+			itemList[i] = new Instant(i, 10.0, ((i+4) % 4), 3.00);
 		}
 		// fill all 5 rooms
 		for (int i = 0; i < room.length; i++) {
 			// add between 0 and 4 items in a room
 			randomNumber = (int) (Math.random() * 4) + 1;
-			room[i] = new ArrayList<Item>();
+			room[i] = new ArrayList<Instant>();
 			for (int j = 0; j < randomNumber; j++) {
 				pickItem = (int) (Math.random() * 8) + 0;
 				room[i].add(itemList[pickItem]);
@@ -52,7 +55,7 @@ public class Map {
 	 * @param roomNum
 	 *            - room the player is currently in UNFINISHED!!!!
 	 */
-	public static boolean searchRoom(ArrayList<Item> room) {
+	public static boolean searchRoom(ArrayList<Instant> room) {
 		System.out.println("You search the room for items..\n");
 		if (room.size() == 0) {
 			System.out.println("This room is empty\n");
@@ -126,24 +129,28 @@ public class Map {
 	 * Picks up the item chosen by the player. Or does nothing when player changes
 	 * their mind.
 	 * 
+	 * TODO: 
+	 * 
 	 * @param room
 	 *            - current room the player is in
 	 */
-	public static void pickUpItem(ArrayList<Item> room, Player player) {
+	public static void pickUpItem(ArrayList<Instant> room, Player player) {
 		String input;
-		int itemIndex;
+		int InstantIndex;
 		Scanner kb = new Scanner(System.in);
 		
 		while (true) {
 			input = kb.nextLine();
-			itemIndex = Integer.parseInt(input) - 1;
+			InstantIndex = Integer.parseInt(input) - 1;
+			
 			if (room.size() + 1 != Integer.parseInt(input)) {
 				try {
 					System.out.println("-------------------------------------------");
-					player.addItemToInventory(room.get(itemIndex));
-					System.out.println("You gained " + room.get(itemIndex).getDesc() + "\n");
-					timeLeft -= room.get(itemIndex).getTime();
-					room.remove(itemIndex);
+					player.interactWithItem(room.get(InstantIndex));
+					System.out.println("You gained " + room.get(InstantIndex).getDesc() + "\n");
+					
+					timeLeft -= room.get(InstantIndex).getTime()-(player.getStat(2)*0.05);
+					room.remove(InstantIndex);
 					player.printStats();
 					break;
 				} catch (Exception e) {
@@ -162,7 +169,7 @@ public class Map {
 	 */
 	public static int mainMenu() {
 		Scanner kb = new Scanner(System.in);
-		ArrayList<String> currentOptions = new ArrayList();
+		ArrayList<String> currentOptions = new ArrayList<String>();
 		int playerInput;
 
 		// add two options "play game and quit"
@@ -189,7 +196,7 @@ public class Map {
 	 */
 	public static void gameScreen(Player player) {
 		Scanner kb = new Scanner(System.in);
-		ArrayList<String> currentOptions = new ArrayList();
+		ArrayList<String> currentOptions = new ArrayList<String>();
 		int playerInput;
 		
 		addRoomItems();
@@ -228,15 +235,28 @@ public class Map {
 		}
 	}
 
+	
+	public static void statScreen(Player player) {
+		int [] stats = player.generateStats();
+		System.out.println("-------------------------------------------");
+		System.out.println("Your stats are:");
+		System.out.println("Attack:" + stats[0]);
+		System.out.println("Defense:" + stats[1]);
+		System.out.println("Speed:"+stats[2]);
+		System.out.println("Luck:"+stats[3]);
+	}
+	
+	
 	public static void main(String[] args) {
 		int playerInput;
-		Player player = new Player(50.0, 3.0);
+		Player player = new Player(100.0, 0.0,100,50);
 		// menu
 		playerInput = mainMenu();
 
 		// game screen
 		// if the player chose to play the game, start the game.
 		if (playerInput != 2) {
+			statScreen(player);
 			gameScreen(player);
 			Battle.start(player);
 		} // else do nothing and terminate the program
