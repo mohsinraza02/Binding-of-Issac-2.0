@@ -12,8 +12,8 @@ public class Instant {
 	 * These items are meant to be used instantly by the player when found in the map.
 	 */
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
-			{ "Game", "TA", "Bed", "Lucky Charm", "GUIDE: Sacrifice to the Gods!", "Study Guide", "Pizza","Super Smoothie" },
-			{ "+10 Attack", "+10 Defense", "+10 Speed", "+10 Luck","+10 Attack", "+10 Defense", "+10 Speed", "+10 Luck"}};
+			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
+			{ "+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck","+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck"}};
 
 	
 	/**
