@@ -1,7 +1,10 @@
 package codes;
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Enemy {
+public class Enemy implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private double health;
 	private int attack, defense, maxAttack, maxDefense, maxHealth, sCounter;
@@ -119,6 +122,7 @@ public class Enemy {
 			return new Enemy("Neverpick", 999, 999, 999, 9999, true, 0);
 		}
 	}
+	
 
 	/**
 	 * Basic enemy attack on the player.

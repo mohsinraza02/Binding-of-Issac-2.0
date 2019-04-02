@@ -1,5 +1,6 @@
 package codes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
@@ -14,16 +15,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class GameScreen extends Scene {
-
+public class GameScreen extends Scene implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private static Pane root;
 	// private Main m = new Main();
 
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
-	private AnimationTimer timer;
+	private transient AnimationTimer timer;
 	private Battle battle;
-	private Button battleButton;
+	private transient Button battleButton;
 
 	// the following are used for event listeners
 	private boolean goLeft = false;
@@ -32,7 +34,7 @@ public class GameScreen extends Scene {
 	private boolean goDown = false;
 	private boolean moving;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
-	private double timeLeft = 18;
+	private double timeLeft = 12;
 	private boolean timeUp = false;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)
@@ -52,12 +54,11 @@ public class GameScreen extends Scene {
 
 	private int[][] playerCurrentRoom = { { 0 }, { 0 } };
 
-	private Text[] statsText = new Text[4];
-	private ArrayList<Text> backpackList = new ArrayList<Text>();
-//	private Text[] backpackList = {new Text("Book"), new Text("Cheat Sheet"),new Text("Sharpener"), new Text("Pencil"), new Text("Eraser"),new Text("Pen"), new Text("Water Bottle"), new Text("Calculator")};
-	private Text itemName = new Text();
-	private Text itemDesc = new Text();
-	private Text timeLeftText = new Text(Double.toString(timeLeft));
+	private transient Text[] statsText = new Text[4];
+	private transient ArrayList<Text> backpackList = new ArrayList<Text>();
+	private transient Text itemName = new Text();
+	private transient Text itemDesc = new Text();
+	private transient Text timeLeftText = new Text(Double.toString(timeLeft));
 	// END OF ENTITIES
 
 	/**
@@ -285,7 +286,6 @@ public class GameScreen extends Scene {
 				
 				backpackList.add(new Text(item.getName()));
 				
-				System.out.println(backpackList);
 				backpackList.get(backpackList.size()-1).setX(600);
 				backpackList.get(backpackList.size()-1).setY(290 + ((backpackList.size()-1) * 30));
 				backpackList.get(backpackList.size()-1).setFont(Font.font("Comic Sans MS", 30));

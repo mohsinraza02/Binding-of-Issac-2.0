@@ -1,9 +1,12 @@
 package codes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Rooms {
+public class Rooms implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	// room names should be the name of the room's picture
 	private String[][] roomNames = {{"LB", "CB", "RB"}, {"LM", "CM", "RM"}, {"LT", "CT", "RT"}};
 	private int[] roomCoord = new int[2]; 

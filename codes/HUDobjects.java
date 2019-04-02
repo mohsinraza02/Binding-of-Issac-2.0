@@ -1,7 +1,7 @@
 package codes;
 
-public class HUDobjects extends Entities {
-
+public class HUDobjects extends Entities{
+	
 	public HUDobjects(int x, int y, int w, int h, String image) {
 		super(x, y, w, h, "HUD", image);
 		// TODO Auto-generated constructor stub

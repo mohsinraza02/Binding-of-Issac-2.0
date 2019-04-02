@@ -1,6 +1,5 @@
 package codes;
 
-
 public class Instant extends Entities {
 
 	private String name; // display name on map

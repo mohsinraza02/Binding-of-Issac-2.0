@@ -1,11 +1,14 @@
 package codes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+
 import javafx.scene.text.Text;
 
-public class Player extends Entities{
+public class Player extends Entities implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	//GUI
 	private int speed;
@@ -33,7 +36,10 @@ public class Player extends Entities{
 	}
 	
 	// LOGIC CODES START HERE
-	
+	public void updatePlayer() {
+		attack = stats[0];
+	}
+
 	public int getHealthCap() {
 		return healthCap;
 	}
@@ -248,15 +254,6 @@ public class Player extends Entities{
 			} while(valid == false);
 			return pick;
 		}
-
-	/**
-	 * Update the attack with adding the item bonuses
-	 */
-	public void updateAttack() {
-		// Adds damage depending on the stats that you get in the beginning
-		// int newAttack = attack + (stats[0]);
-		this.attack += (stats[0]);
-	}
 
 	// LOGIC CODES END
 	// GUI CODES START HERE

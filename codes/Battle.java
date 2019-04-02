@@ -1,5 +1,6 @@
 package codes;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 import javafx.animation.AnimationTimer;
@@ -8,31 +9,32 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
-public class Battle extends Scene {
-
+public class Battle extends Scene implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
-	Enemy enemy = new Enemy("CPSC Test", 100, 10, 10, 10, true, 10);
+	Enemy enemy = new Enemy("CPSC Test", 500, 10, 10, 10, true, 10);
 	Player player;
 
 	private static Pane root;
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
 
-	// Texts
-	private Text enemyHealth = new Text("Boss Test\nHealth: " + enemy.getHealth());
+	// Texts TODO: Josh if you create more texts, make them transient.
+	private transient Text enemyHealth = new Text("Boss Test\nHealth: " + enemy.getHealth());
 
-	private Text text1 = new Text(
+	private transient Text text1 = new Text(
 			"This is the current text in the box. This will be universal so we can change it easier.");
-	private Text text2 = new Text();
+	private transient Text text2 = new Text();
 
-	private Text bossPrompt = new Text(
+	private transient Text bossPrompt = new Text(
 			"We'll use this universal text for when the player does something to the boss, to prompt the player.");
 
-	// HUD stuff
+	// HUD stuff 
+	//TODO: Make these private
 	HUDobjects textBox = new HUDobjects(0, 600, 1200, 200, "textbox.PNG"); // Textbox
 	HUDobjects enemyText = new HUDobjects(375, 25, 400, 200, "textbox.PNG"); // Textbox
 	HUDobjects playerBattle = new HUDobjects(0, 300, 600, 400, "PC-battle.PNG"); // Player sprite in battle
@@ -53,6 +55,7 @@ public class Battle extends Scene {
 	public Battle(Player player) {
 		super(root = new Pane());
 		this.player = player;
+		player.updatePlayer();
 		root = initialContent();
 		
 		mainPrompt = new EventHandler<KeyEvent>() {
@@ -184,11 +187,10 @@ public class Battle extends Scene {
 		
 		player.attack(enemy);
 		
-		enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
-		text1.setText("You attack the test. You have dealt\n" + player.getStat(1) + " damage.");
+		text1.setText("You attack the test. You have dealt\n" + player.getAttack() + " damage.");
 		
 		bossHealth();
 		
@@ -301,7 +303,7 @@ public class Battle extends Scene {
 	private void cheat() {
 		
 		int attackMod = (int)(player.getAttack() * 2.5);
-		enemy.setHealth(enemy.getHealth() - attackMod);
+//		enemy.setHealth(enemy.getHealth() - attackMod);
 		bossHealth();
 		
 		remove();
@@ -459,7 +461,6 @@ public class Battle extends Scene {
 	private Pane initialContent() {
 		root.setPrefSize(WIDTH, HEIGHT); // makes the screen 1200x800px
 
-		player.updateAttack();
 		enemyHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		enemyHealth.setX(410);
 		enemyHealth.setY(80);

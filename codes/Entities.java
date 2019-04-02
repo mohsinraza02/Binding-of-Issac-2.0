@@ -1,5 +1,6 @@
 package codes;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javafx.scene.image.Image;
@@ -11,9 +12,11 @@ import javafx.scene.shape.Rectangle;
  * @author Kean Arguelles
  *
  */
-public abstract class Entities extends Rectangle {
+public abstract class Entities extends Rectangle implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String entityType;
-	private Image objectImage;
+	private transient Image objectImage;
 	
 	/**
 	 * This constructor creates an object and sets its position in the map, size, its type, and its sprite. 
@@ -50,7 +53,6 @@ public abstract class Entities extends Rectangle {
 		imageName = "/codes/sprites/" + imageName;
 		if (imageName != null) {
 			this.objectImage = new Image(imageName);
-			ImageView iv = new ImageView(objectImage);
 			this.setFill(new ImagePattern(this.objectImage));
 		}
 	}

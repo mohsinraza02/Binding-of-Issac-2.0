@@ -1,7 +1,9 @@
 package codes;
 
+import java.io.Serializable;
 
-public class Collectable extends Entities{
+public class Collectable extends Entities {
+	private static final long serialVersionUID = 1L;
 	
 	private String name; // display name on map
 	private String desc;
