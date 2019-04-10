@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class Battle {
@@ -9,7 +10,7 @@ public class Battle {
 	public static void start(Player player) {
 
 		Enemy boss = Enemy.getRandomEnemy(player);
-		//player.updateAttack();
+		player.updateAttack();
 		
 		boolean playerEnd = false;
 		boolean fight = true;
@@ -91,6 +92,10 @@ public class Battle {
 		boolean valid = false;
 		Scanner kb = new Scanner(System.in);
 		boolean skill;
+	
+		
+		
+		
 		
 		player.setSkillP(player.getSkillP() + 1);
 		if(player.getSkillP() <= 3) {
@@ -104,7 +109,7 @@ public class Battle {
 			printSkill(player);
 			System.out.println("The test has " + boss.getHealth() + " health.");
 			System.out.println("---------------------------------");
-			System.out.println("What will you do?\n(a) Attack/Answer Question\n(b) Use Skill\n(c) Use Item");
+			System.out.println("What will you do?\n(a) Attack/Answer Question\n(b) Use Skill\n(c) Use Items");
 			String decision = kb.nextLine();
 			if (decision.toLowerCase().equals("a")) {
 				player.attack(boss);
@@ -122,9 +127,10 @@ public class Battle {
 					kb.nextLine();
 				}
 			} else if (decision.toLowerCase().equals("c")) {
-				//System.out.println("What item do you want to use");
-				//player.checkItem()
-				valid = true;
+				//System.out.println("Choice Three!");
+				
+				valid = player.useItem();
+			
 			}
 		} while(valid == false);
 	}

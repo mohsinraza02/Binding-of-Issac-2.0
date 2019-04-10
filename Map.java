@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  * TODO: - generate items in each room - method to check for items in the room,
  * must print out description of items | NEED ITEM CLASS - adding items to
@@ -15,12 +16,13 @@ import java.util.Scanner;
 public class Map {
 
 	
-	private static ArrayList<Instant>[] room = new ArrayList[5];
+	private static ArrayList<Instant>[] room = new ArrayList[7];
 //	private static ArrayList<ArrayList<Item>> room = new ArrayList<ArrayList<Item>>();
+	private static ArrayList<Collectable>[] room1 = new ArrayList[7];
 	private static double timeLeft = 12; //
 	private static int currentRoom = 0;
 	private static Instant[] itemList = new Instant[8];
-
+	private static Collectable[] cbList = new Collectable[8];
 	// private Stats[]
 
 	/**
@@ -29,24 +31,34 @@ public class Map {
 	public static void addRoomItems() {
 		int randomNumber;
 		int pickItem;
-		
+		int order;
 		// fill the item list with items so we can use it to fill the room with items
 		for (int i = 0; i < itemList.length; i++) {
 			// the type parameter wants a 0 or a 1, luckily the itemList is sorted so i
 			// could convert the index into either 1 or 2 by
 			// taking the mod of i
 			itemList[i] = new Instant(i, 10.0, ((i+4) % 4), 3.00);
+			
+		for (int a = 0; a < cbList.length; a ++) {
+			cbList[a] = new Collectable(a,10.0);
+		}
+		
+		
+		
 		}
 		// fill all 5 rooms
 		for (int i = 0; i < room.length; i++) {
 			// add between 0 and 4 items in a room
 			randomNumber = (int) (Math.random() * 4) + 1;
 			room[i] = new ArrayList<Instant>();
+			room1[i] = new ArrayList<Collectable>();
 			for (int j = 0; j < randomNumber; j++) {
 				pickItem = (int) (Math.random() * 8) + 0;
 				room[i].add(itemList[pickItem]);
+				room1[i].add(cbList[pickItem]);
+				
 			}
-		}
+			}
 	}
 
 	/**
@@ -55,9 +67,9 @@ public class Map {
 	 * @param roomNum
 	 *            - room the player is currently in UNFINISHED!!!!
 	 */
-	public static boolean searchRoom(ArrayList<Instant> room) {
+	public static boolean searchRoom(ArrayList<Instant> room, ArrayList<Collectable> room1) {
 		System.out.println("You search the room for items..\n");
-		if (room.size() == 0) {
+		if (room.size() == 0 && room1.size() == 0) {
 			System.out.println("This room is empty\n");
 			return false;
 		} else {
@@ -71,11 +83,22 @@ public class Map {
 				} else {
 					System.out.print("a " + room.get(i).getName() + ", ");
 				}
+			
 			}
+			for (int a = 0; a < room1.size(); a++) {
+				if (a == room1.size() - 1) {
+					if (room1.size() > 1) {
+						System.out.print("and ");
+					}
+					System.out.println("a " + room1.get(a).getName() + ".");
+				} else {
+					System.out.print("a " + room1.get(a).getName() + ", ");
+				}
+			
+		}
 			return true;
 		}
 	}
-
 	/**
 	 * Moves the player to a room according to their input
 	 * 
@@ -129,12 +152,10 @@ public class Map {
 	 * Picks up the item chosen by the player. Or does nothing when player changes
 	 * their mind.
 	 * 
-	 * TODO: 
-	 * 
 	 * @param room
 	 *            - current room the player is in
 	 */
-	public static void pickUpItem(ArrayList<Instant> room, Player player) {
+	public static void pickUpItem(ArrayList<Instant> room, Player player, ArrayList<Collectable> room1) {
 		String input;
 		int InstantIndex;
 		Scanner kb = new Scanner(System.in);
@@ -142,26 +163,50 @@ public class Map {
 		while (true) {
 			input = kb.nextLine();
 			InstantIndex = Integer.parseInt(input) - 1;
-			
-			if (room.size() + 1 != Integer.parseInt(input)) {
+			if (room.size() + room1.size() + 1 != Integer.parseInt(input)) {
 				try {
 					System.out.println("-------------------------------------------");
+					
+					if (InstantIndex < room.size()) {
+						
 					player.interactWithItem(room.get(InstantIndex));
+					
 					System.out.println("You gained " + room.get(InstantIndex).getDesc() + "\n");
 					
 					timeLeft -= room.get(InstantIndex).getTime()-(player.getStat(2)*0.05);
+		
 					room.remove(InstantIndex);
 					player.printStats();
 					break;
+					
+					}
+					
+					else {
+						player.addCollectableToInventory(room1.get(InstantIndex - room.size()));
+						room1.remove(InstantIndex - room.size());
+					break;
+					}
+					
+					
+					
+					
+				
+				
 				} catch (Exception e) {
 					System.out.println("Please enter a different number.");
-				}
-			} else {
-				break;
-			}
+				} 
+			
+			
+			}else break;
+			
+		
 		}
 	}
 
+	
+	
+	
+	
 	/**
 	 * Main menu method, user can either start the game or exit the program
 	 * 
@@ -198,7 +243,7 @@ public class Map {
 		Scanner kb = new Scanner(System.in);
 		ArrayList<String> currentOptions = new ArrayList<String>();
 		int playerInput;
-		
+		int order;
 		addRoomItems();
 		// will run until the player doesn't have any time left
 		while (timeLeft > 0) {
@@ -214,15 +259,25 @@ public class Map {
 				// TODO: finish room checking
 				if (playerInput == 1) {
 					// check room for items and print it out
-					if (searchRoom(room[currentRoom])) {
+					if (searchRoom(room[currentRoom],room1[currentRoom])) {
 						currentOptions.clear();
+						order = (int)(Math.random()*2);
 						for (int i = 0; i < room[currentRoom].size(); i++) {
 							currentOptions.add("Pick up " + room[currentRoom].get(i).getName());
 						}
+						for (int i = 0; i < room1[currentRoom].size(); i++) {
+							currentOptions.add("Pick up " + room1[currentRoom].get(i).getName());
+						}
 						currentOptions.add("Nevermind, go back.");
 						printMenu(currentOptions);
-						pickUpItem(room[currentRoom], player);
+						pickUpItem(room[currentRoom], player,room1[currentRoom]);
 					}
+				
+				
+				
+				
+				
+				
 				} else {
 					// move to the desired room
 					currentRoom = moveTo(currentOptions.get(playerInput - 1));

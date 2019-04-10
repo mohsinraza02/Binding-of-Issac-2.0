@@ -131,11 +131,27 @@ public class Player {
 	public void addCollectableToInventory(Collectable cb) {
 		System.out.println("you picked up: " + cb.getName());
 		inventory.add(cb);
-		stats[cb.getType()] += cb.getValue();
-
 	}
 
-
+	
+	public void useItem(int index) {
+		Collectable cb = inventory.get(index);
+		
+		if (getHealth() <= 90) {
+		System.out.println("You gained " + cb.getValue() + " health!" );
+		setHealth(getHealth() + cb.getValue());
+		}
+		
+		else {
+			setHealth(getHealth() + cb.getValue());
+			double a = getHealth()- 100;
+			System.out.println("You gained "+(10 - a) + " health!" );
+			setHealth(100.0);
+		}
+		
+		}
+		
+	
 	
 	public void interactWithItem(Instant instant) {
 		System.out.println("you used/picked up " + instant.getName());
@@ -254,6 +270,34 @@ public class Player {
 		
 		}
 		
+	}
+	
+	
+	public boolean useItem() {
+		Scanner kb = new Scanner(System.in);
+		boolean valid;
+		if (inventory.size() > 0) {
+		System.out.println("Select any item, press (x) to go back");
+		for(int i = 0; i < inventory.size(); i ++) {
+			Collectable cb = inventory.get(i);
+			System.out.println("("+ i + ")" + cb.getName());
+		}
+		String input = kb.nextLine();
+		if (input.toLowerCase().equals("x")) {
+			valid = false;
+		}
+		else {
+		int x = Integer.parseInt(input);
+		useItem(x);
+		
+		inventory.remove(x);
+		valid = true;
+		}
+		}
+		else
+			System.out.println("You have no items!");
+			valid = false;
+		return valid;
 	}
 	
 	/**
