@@ -1,3 +1,4 @@
+package codes;
 import java.util.Scanner;
 
 public class Enemy {
@@ -81,7 +82,7 @@ public class Enemy {
 	/**
 	 * Enemy constructor
 	 * @param name // Name of enemy
-	 * @param health // Health of eneny
+	 * @param health // Health of enemy
 	 * @param attack //Attack of enemy
 	 * @param defense //Defense of enemy
 	 * @param maxAttack //Max attack of enemy
@@ -168,6 +169,7 @@ public class Enemy {
 		player.setHealth(player.getHealth() - attackMod);
 		skip.nextLine();
 		System.out.println("You take heavy damage! You start to feel dizzy too!");
+		System.out.println("You take " + attackMod + " damage and have " + player.getHealth() + " health.");
 	}
 
 	/**
