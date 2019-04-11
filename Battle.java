@@ -45,7 +45,6 @@ public class Battle extends Scene {
 	private EventHandler<KeyEvent> mainPrompt;
 	private EventHandler<KeyEvent> skillPrompt;
 	private EventHandler<KeyEvent> continuePrompt;
-	private EventHandler<KeyEvent> itemPrompt;
 	
 
 	/**
@@ -62,6 +61,7 @@ public class Battle extends Scene {
 				switch (e.getCode()) {
 				case A:
 					attack();
+					enemyAttack();
 					changeListener(continuePrompt, mainPrompt);
 					break;
 				case B:
@@ -202,7 +202,7 @@ public class Battle extends Scene {
 		
 		player.attack(enemy);
 		
-		enemy.setHealth(enemy.getHealth() - player.getAttack());
+		//enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
@@ -222,7 +222,7 @@ public class Battle extends Scene {
 	}
 
 	/**
-	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!!
+	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!! TODO
 	 */
 	private void skill() {
 		remove();
@@ -384,7 +384,8 @@ public class Battle extends Scene {
 	 * When enemy attacks player - LOGIC DONE BUT ERROR HERE!!!
 	 */
 	private void enemyAttack() {
-
+		
+		enemy.enemyAttack(player);
 		remove();
 		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
 		root.getChildren().add(text1);
@@ -394,13 +395,7 @@ public class Battle extends Scene {
 		text1.setY(655);
 		text1.setFill(Color.BLACK);
 		
-		int attackMod = (enemy.getAttack() - (enemy.getAttack() * (player.getStat(1) / 100)));
 		
-		if (player.getStat(1) == 0) {
-			player.setHealth(player.getHealth() - enemy.getAttack());
-		} else {
-			player.setHealth(player.getHealth() - attackMod);
-		}
 	}
 
 	/**
