@@ -45,6 +45,7 @@ public class Battle extends Scene {
 	private EventHandler<KeyEvent> mainPrompt;
 	private EventHandler<KeyEvent> skillPrompt;
 	private EventHandler<KeyEvent> continuePrompt;
+	private EventHandler<KeyEvent> counterPrompt;
 	
 
 	/**
@@ -60,9 +61,8 @@ public class Battle extends Scene {
 			public void handle(KeyEvent e) {
 				switch (e.getCode()) {
 				case A:
-					attack();
-					enemyAttack();	
-					changeListener(continuePrompt, mainPrompt);
+					attack();	
+					changeListener(counterPrompt, mainPrompt);
 					break;
 				case B:
 					skill();
@@ -70,8 +70,7 @@ public class Battle extends Scene {
 					break;
 				case C:
 					item();
-					enemyAttack();
-					changeListener(continuePrompt, mainPrompt);
+					changeListener(counterPrompt, mainPrompt);
 					break;
 				default:
 					break;
@@ -86,21 +85,38 @@ public class Battle extends Scene {
 				switch (e.getCode()) {
 				case A:
 					breathe();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case B:
 					stretch();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case C:
 					cheat();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case D:
 					cry();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 
+				default:
+					break;
+				}
+			}
+		};
+		
+		counterPrompt = new EventHandler<KeyEvent>() {
+			// Note: when a text shows up and the user needs to hit enter to continue
+			// remove the current listener and add this one
+
+			@Override
+			public void handle(KeyEvent e) {
+				switch (e.getCode()) {
+				case ENTER:
+					enemyAttack();
+					changeListener(continuePrompt, counterPrompt);
+					break;
 				default:
 					break;
 				}
@@ -259,7 +275,7 @@ public class Battle extends Scene {
 		player.addHealth(player.getStat(0));
 		remove();
 
-		text1.setText("You used a Item to restore your health.");
+		text1.setText("You used "+ player.getStat(0)+" to restore your health.");
 		
 		bossHealth();
 		
@@ -384,14 +400,13 @@ public class Battle extends Scene {
 		
 		enemy.enemyAttack(player);
 		remove();
-		text2 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
-		root.getChildren().add(text2);
+		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
+		root.getChildren().add(text1);
 
-		text2.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
-		text2.setX(50);
-		text2.setY(655);
-		text2.setFill(Color.BLACK);
-		
+		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
+		text1.setX(50);
+		text1.setY(655);
+		text1.setFill(Color.BLACK);
 		
 	}
 
