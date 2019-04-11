@@ -1,14 +1,10 @@
-package codes;
 
-
-public class Collectable extends Entities{
+public class Collectable {
 	
 	private String name; // display name on map
 	private String desc;
 	private double value; // value being appended in player array
 	private int type; // location in player array
-	private int[] position;
-	
 	/**
 	 * This is a 2D array called the "Collectable Item and Description" list which has 8 items and 8 descriptions in it.
 	 * These items are meant to be collected by the player when found in the map and can be used in the Final Battle.
@@ -31,11 +27,6 @@ public class Collectable extends Entities{
 	 *		   this parameter is set to the instance variable type
          */
 	public Collectable(int nameIndex, double value, int type){
-		super(60, 60, "Collectable");
-		super.changeSprite(COLLECTABLE_ITEM_NAME_AND_DESC[0][nameIndex] + ".PNG");
-		position = super.getRandomPos();
-		super.setPosition(position[0], position[1]);
-		
 		this.name = getItemNameFromListCollectable(nameIndex);
 		this.desc = getItemDescFromListCollectable(nameIndex);
 		this.value = value;
@@ -69,7 +60,6 @@ public class Collectable extends Entities{
 	 * 
 	 * @return instance variable name
 	 */
-	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -78,7 +68,7 @@ public class Collectable extends Entities{
 	 * 
 	 * @return instance variable desc
 	 */
-	@Override
+	
 	public String getDesc() {
 		return this.desc;
 	}

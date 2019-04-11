@@ -1,22 +1,20 @@
-package codes;
 
-
-public class Instant extends Entities {
+public class Instant {
 
 	private String name; // display name on map
 	private String desc;
 	private double value; // value being appended in player array
 	private int type; // location in player array
 	private double time; // time taken from total map time
-	private int[] position;
 	
 	/**
 	 * This is a 2D array called the "Instant Item and Description" list which has 8 items and 8 descriptions in it.
 	 * These items are meant to be used instantly by the player when found in the map.
 	 */
 	private final String[][] INSTANT_ITEM_NAME_AND_DESC = {
-			{ "Game", "TA", "Bed", "READ Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
+			{ "Game", "TA", "Bed", "GUIDE: Sacrifice to the Gods!", "Lucky Charm", "Study Guide", "Pizza","Super Smoothie" },
 			{ "+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck","+10 Attack", "+10 Defence", "+10 Speed", "+10 Luck"}};
+
 	
 	/**
 	 * This constructor takes the 4 parameter values and sets the first parameter
@@ -34,18 +32,12 @@ public class Instant extends Entities {
 	 *            this parameter is set to the instance variable time
 	 */
 	public Instant(int nameIndex, double value, int type, double time) {
-		super(60, 60, "Instant");
-		super.changeSprite(INSTANT_ITEM_NAME_AND_DESC[0][nameIndex] + ".png");
-		position = super.getRandomPos();
-		super.setPosition(position[0], position[1]);
-		
 		this.name = getItemNameFromListInstant(nameIndex);
 		this.desc = getItemDescFromListInstant(nameIndex);
 		this.value = value;
 		this.type = type;
 		this.time = time;
 	}
-	
 	
 	/**
 	 * This method takes a name from the "Instant Item and Description" list
@@ -72,17 +64,15 @@ public class Instant extends Entities {
 	 * 
 	 * @return instance variable name
 	 */
-	@Override
 	public String getName() {
 		return this.name;
 	}
-	
 	/**
 	 * The method getDesc returns the instance variable desc of type String.
 	 * 
 	 * @return instance variable desc
 	 */
-	@Override
+	
 	public String getDesc() {
 		return this.desc;
 	}
