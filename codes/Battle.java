@@ -61,11 +61,17 @@ public class Battle extends Scene {
 				switch (e.getCode()) {
 				case A:
 					attack();
+					enemyAttack();	
 					changeListener(continuePrompt, mainPrompt);
 					break;
 				case B:
 					skill();
 					changeListener(skillPrompt, mainPrompt);
+					break;
+				case C:
+					item();
+					enemyAttack();
+					changeListener(continuePrompt, mainPrompt);
 					break;
 				default:
 					break;
@@ -100,6 +106,19 @@ public class Battle extends Scene {
 				}
 			}
 		};
+		
+		//Set up the items prompt listener
+		/*itemPrompt = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				switch (e.getCode()) {
+				case A:
+					
+				default:
+					break;
+				}
+			}
+		};*/
 
 		// SET UP THE CONTINUE PROMPT
 		continuePrompt = new EventHandler<KeyEvent>() {
@@ -152,8 +171,6 @@ public class Battle extends Scene {
 			changeListener(mainPrompt, continuePrompt);
 		}
 	}
-
-	
 	
 	/**
 	 * Remove text in the box.
@@ -184,7 +201,7 @@ public class Battle extends Scene {
 		
 		player.attack(enemy);
 		
-		enemy.setHealth(enemy.getHealth() - player.getAttack());
+		//enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
@@ -198,13 +215,11 @@ public class Battle extends Scene {
 		text1.setX(50);
 		text1.setY(665);
 		text1.setFill(Color.BLACK);
-		
-		
 
 	}
 
 	/**
-	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!!
+	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!! TODO
 	 */
 	private void skill() {
 		remove();
@@ -238,6 +253,22 @@ public class Battle extends Scene {
 			pick = true;
 			valid = true;
 		}
+	}
+	
+	private void item() {
+		player.addHealth(player.getStat(0));
+		remove();
+
+		text1.setText("You used a Item to restore your health.");
+		
+		bossHealth();
+		
+		root.getChildren().add(text1);
+
+		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
+		text1.setX(50);
+		text1.setY(665);
+		text1.setFill(Color.BLACK);
 	}
 
 	/**
@@ -350,23 +381,18 @@ public class Battle extends Scene {
 	 * When enemy attacks player - LOGIC DONE BUT ERROR HERE!!!
 	 */
 	private void enemyAttack() {
-
+		
+		enemy.enemyAttack(player);
 		remove();
-		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
-		root.getChildren().add(text1);
+		text2 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
+		root.getChildren().add(text2);
 
-		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
-		text1.setX(50);
-		text1.setY(655);
-		text1.setFill(Color.BLACK);
+		text2.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
+		text2.setX(50);
+		text2.setY(655);
+		text2.setFill(Color.BLACK);
 		
-		int attackMod = (enemy.getAttack() - (enemy.getAttack() * (player.getStat(1) / 100)));
 		
-		if (player.getStat(1) == 0) {
-			player.setHealth(player.getHealth() - enemy.getAttack());
-		} else {
-			player.setHealth(player.getHealth() - attackMod);
-		}
 	}
 
 	/**
@@ -486,7 +512,7 @@ public class Battle extends Scene {
 		text2.setX(50);
 		text2.setY(665);
 		text2.setFill(Color.BLACK);
-		text2.setText("What would you like to do?\n(a) Attack\n(b) Skills");
+		text2.setText("What would you like to do?\n(a) Attack		(c) Items\n(b) Skills");
 
 		// text1.setText(enemy.getName() + " has appeared. Good luck.");
 
