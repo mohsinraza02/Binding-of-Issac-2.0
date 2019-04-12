@@ -300,7 +300,11 @@ public class Battle extends Scene {
 		remove();
 		
 		if (player.getInventory().size() != 0) {
-			player.addHealth(player.getStat(0));
+			player.setHealth(player.getHealth()+ Collectable.getValue());
+			if (player.getHealth() > 100) {
+				player.setHealth(100.0);
+			}
+			updatePlayerHealth();
 			text1.setText("You used "+ player.getLastItem() +" to restore your health.");			
 			bossHealth();
 		} else {
