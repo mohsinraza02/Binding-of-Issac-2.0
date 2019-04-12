@@ -20,7 +20,20 @@ public class Player extends Entities{
 	private double health;// default health
 	private double attack;// default attack damage
 	private int attackCap, defenseCap, healthCap, skillP;
-
+	
+	/**
+         * This constructor takes 4 parameter values and sets them to the instance variables 
+	 * health, attack, maxHealth and skillP.
+	 * 
+	 * @param maxHealth // maxHealth of player
+	 * 
+	 * @param health // Health of player
+	 *
+	 * @param attack //Attack of player
+	 *
+	 * @param skillP //Skills of player
+	 *
+         */
 	public Player(double health, double attack, int maxHealth, int skillP) {
 		super(50, 650, 80, 100, "Player", "player4.png");
 		// TODO Auto-generated constructor stub
@@ -34,43 +47,98 @@ public class Player extends Entities{
 	
 	// LOGIC CODES START HERE
 	
+	/**
+	 * The method getHealthCap returns the instance variable healthCap of type int.
+	 * 
+	 * @return instance variable healthCap
+	 */
+	
 	public int getHealthCap() {
 		return healthCap;
 	}
+	/**
+	 * The method setHealthCap takes the parameter healthCap of type int
+	 * and sets it to instance variable healthCap.
+	 *
+	 * @param healthCap set to instance variable healthCap.
+	 */
 	
 	public void setHealthCap(int healthCap) {
 		this.healthCap = healthCap;
 	}
+	/**
+	 * The method getStat takes the parameter index of type int and 
+	 * returns the instance variable stats of type int at that index. 
+	 *
+	 * @param index
+	 *
+	 * @return instance variable stats
+	 */
 	
 	public int getStat(int index) {
 		return this.stats[index];
 	}
-	
+	/**
+	 * The method getHealth returns the instance variable health of type double.
+	 * 
+	 * @return instance variable health
+	 */
 	public double getHealth() {
 		return health;
 	}
+	/**
+	 * The method setHealth takes the parameter d of type double
+	 * and sets it to instance variable health.
+	 *
+	 * @param d set to instance variable health.
+	 */
 	
 	public void setHealth(double d) {
 		this.health = d;
 	}
+	/**
+	 * The method addHealth takes the parameter d of type double
+	 * and adds it to instance variable health.
+	 *
+	 * @param d is added tovinstance variable health.
+	 */
 	
 	public void addHealth(double d) {
 		this.health += d;
 		System.out.println("Player health increased by +" + d);
 	}
-
+	/**
+	 * The method getAttack returns the instance variable attack of type double.
+	 * 
+	 * @return instance variable attack
+	 */
+	
 	public double getAttack() {
 		return attack;
 	}
-
+	/**
+	 * The method setAttack takes the parameter attack of type double
+	 * and sets it to instance variable attack.
+	 *
+	 * @param attack set to instance variable attack.
+	 */
 	public void setAttack(double attack) {
 		this.attack = attack;
 	}
-	
+	/**
+	 * The method setSkillP takes the parameter s of type int
+	 * and sets it to instance variable skillP.
+	 *
+	 * @param sset to instance variable skillP.
+	 */
 	public void setSkillP(int s) {
 		this.skillP = s;
 	}
-
+	/**
+	 * The method getSkillP returns the instance variable skillP of type int.
+	 * 
+	 * @return instance variable skillP
+	 */
 	public int getSkillP() {
 		return this.skillP;
 	}
@@ -135,15 +203,22 @@ public class Player extends Entities{
 	}
 	
 	/**
-	 * Add and item to the player's inventory.
+	 * This method takes the parameter cb of type Collectable and is added to the player's inventory.
 	 * 
-	 * @param item
+	 * @param cb
+	 * 	    cb is a collectable item the player adds to their inventory
 	 */
+	
 	public void addCollectableToInventory(Collectable cb) {
 		System.out.println("Added to inventory: " + cb.getName());
 		inventory.add(cb);
 	}
-	
+	/**
+	 * This method takes the parameter instant of type Instant and is used by the player as soon as it is picked up
+	 * 
+	 * @param instant
+	 * 	   instant is a instant item the player uses immediately
+	 */
 	public void interactWithItem(Instant instant) {
 		System.out.println("you used/picked up " + instant.getName());
 		System.out.println("You gained " +  instant.getDesc()  + "\n");
@@ -151,9 +226,9 @@ public class Player extends Entities{
 	}
 	
 	/**
-	 * Attack an enemy that is passed in.
-	 * @param enemy
-	 * 
+	 * This method takes the parameter enemy of type Enemy. The player attacks the enemy that is passed in.
+	 *
+	 * @param enemy 
 	 */
 	public void attack(Enemy enemy) {
 		// enemy.setHealth(getHealth() - );		
@@ -164,7 +239,8 @@ public class Player extends Entities{
 	}
 	
 	/**
-	 * Lower the test's defense.
+	 * This method takes the parameter enemy of type Enemy. This method lowers the test's defense making it easier for the player.
+	 *
 	 * @param enemy
 	 */
 	public void deepBreath(Enemy enemy) {
@@ -183,7 +259,7 @@ public class Player extends Entities{
 	}
 	
 	/**
-	 * Heal yourself for a small amount.
+	 * This method allows the player to heal themselves a small amount.
 	 */
 	public void stretch() {
 		int healMod = (int) ((this.getAttack() * 0.25) + (this.getHealthCap() * 0.15));
