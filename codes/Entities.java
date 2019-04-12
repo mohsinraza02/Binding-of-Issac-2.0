@@ -58,7 +58,7 @@ public abstract class Entities extends Rectangle {
 	}
 	/**
 	 * The method changeSprite takes the parameter imageName of type String. 
-	 * This method...
+	 * This method changes the sprite of the entity.
 	 * 
 	 * @param imageName
 	 */
@@ -70,7 +70,12 @@ public abstract class Entities extends Rectangle {
 			this.setFill(new ImagePattern(this.objectImage));
 		}
 	}
-	
+	/**
+	 * The method flipSprite takes the parameter direction of type String. 
+	 * This method reflects the image of the sprite on the y-axis.
+	 * 
+	 * @param direction
+	 */
 	public void flipSprite(String direction) {
 		if (direction == "left") {
 			this.setScaleX(-1);
@@ -78,12 +83,22 @@ public abstract class Entities extends Rectangle {
 			this.setScaleX(1);
 		}
 	}
-	
+	/**
+	 * The method setPosition takes 2 parameters; x and y of type int. 
+	 * This method sets the entity's position in the map.
+	 * 
+	 * @param x
+	 * 
+	 * @param y
+	 */
 	public void setPosition(int x, int y) {
 		setTranslateX(x);
 		setTranslateY(y);
 	}
-	
+	/**
+	 * The method getRandomPos generates a random position for the sprite in the map.
+	 * 
+	 */
 	public int[] getRandomPos() {
 		Random rand = new Random();
 		// size of the wall is roughly 25 pixels
