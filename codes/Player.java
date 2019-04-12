@@ -53,6 +53,11 @@ public class Player extends Entities{
 	public void setHealth(double d) {
 		this.health = d;
 	}
+	
+	public void addHealth(double d) {
+		this.health += d;
+		System.out.println("Player health increased by +" + d);
+	}
 
 	public double getAttack() {
 		return attack;

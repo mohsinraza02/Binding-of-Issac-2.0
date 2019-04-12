@@ -125,10 +125,10 @@ public class Enemy {
 	 * @param player
 	 */
 	public void enemyAttack(Player player) {
-		Scanner skip = new Scanner(System.in);
+		//Scanner skip = new Scanner(System.in);
 		// defense reduces the boss's base damage
 		System.out.println("The test inflicts its difficulty upon you!!");
-		skip.nextLine();
+		//skip.nextLine();
 		int attackMod = this.attack -= this.attack * (player.getStat(1) / 100);
 		
 		if (player.getStat(1) == 0) {

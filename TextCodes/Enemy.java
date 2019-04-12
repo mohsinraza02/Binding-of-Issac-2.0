@@ -1,3 +1,5 @@
+package TextCodes;
+
 import java.util.Scanner;
 
 public class Enemy {
