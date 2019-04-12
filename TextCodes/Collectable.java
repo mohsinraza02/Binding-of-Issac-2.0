@@ -1,10 +1,12 @@
+package TextCodes;
+
 
 public class Collectable {
 	
 	private String name; // display name on map
 	private String desc;
 	private double value; // value being appended in player array
-	private int type; // location in player array
+
 	/**
 	 * This is a 2D array called the "Collectable Item and Description" list which has 8 items and 8 descriptions in it.
 	 * These items are meant to be collected by the player when found in the map and can be used in the Final Battle.
@@ -26,11 +28,11 @@ public class Collectable {
 	 * @param type 
 	 *		   this parameter is set to the instance variable type
          */
-	public Collectable(int nameIndex, double value, int type){
+	public Collectable(int nameIndex, double value){
 		this.name = getItemNameFromListCollectable(nameIndex);
 		this.desc = getItemDescFromListCollectable(nameIndex);
 		this.value = value;
-		this.type = type;
+
 	}
 	
 	/**
@@ -80,15 +82,5 @@ public class Collectable {
 	 */
 	public double getValue() {
 		return this.value;
-	}
-
-	/**
-	 * The method getType returns the instance variable type which is an int.
-	 * 
-	 * @return instance variable type
-	 */
-	public int getType() {
-		return this.type;
-	}
-	
+	}	
 }

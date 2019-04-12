@@ -45,6 +45,7 @@ public class Battle extends Scene {
 	private EventHandler<KeyEvent> mainPrompt;
 	private EventHandler<KeyEvent> skillPrompt;
 	private EventHandler<KeyEvent> continuePrompt;
+	private EventHandler<KeyEvent> counterPrompt;
 	
 
 	/**
@@ -60,12 +61,16 @@ public class Battle extends Scene {
 			public void handle(KeyEvent e) {
 				switch (e.getCode()) {
 				case A:
-					attack();
-					changeListener(continuePrompt, mainPrompt);
+					attack();	
+					changeListener(counterPrompt, mainPrompt);
 					break;
 				case B:
 					skill();
 					changeListener(skillPrompt, mainPrompt);
+					break;
+				case C:
+					item();
+					changeListener(counterPrompt, mainPrompt);
 					break;
 				default:
 					break;
@@ -80,19 +85,19 @@ public class Battle extends Scene {
 				switch (e.getCode()) {
 				case A:
 					breathe();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case B:
 					stretch();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case C:
 					cheat();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 				case D:
 					cry();
-					changeListener(continuePrompt, skillPrompt);
+					changeListener(counterPrompt, skillPrompt);
 					break;
 
 				default:
@@ -100,6 +105,36 @@ public class Battle extends Scene {
 				}
 			}
 		};
+		
+		counterPrompt = new EventHandler<KeyEvent>() {
+			// Note: when a text shows up and the user needs to hit enter to continue
+			// remove the current listener and add this one
+
+			@Override
+			public void handle(KeyEvent e) {
+				switch (e.getCode()) {
+				case ENTER:
+					enemyAttack();
+					changeListener(continuePrompt, counterPrompt);
+					break;
+				default:
+					break;
+				}
+			}
+		};
+		
+		//Set up the items prompt listener
+		/*itemPrompt = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				switch (e.getCode()) {
+				case A:
+					
+				default:
+					break;
+				}
+			}
+		};*/
 
 		// SET UP THE CONTINUE PROMPT
 		continuePrompt = new EventHandler<KeyEvent>() {
@@ -152,8 +187,6 @@ public class Battle extends Scene {
 			changeListener(mainPrompt, continuePrompt);
 		}
 	}
-
-	
 	
 	/**
 	 * Remove text in the box.
@@ -184,7 +217,7 @@ public class Battle extends Scene {
 		
 		player.attack(enemy);
 		
-		enemy.setHealth(enemy.getHealth() - player.getAttack());
+		//enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
@@ -198,13 +231,11 @@ public class Battle extends Scene {
 		text1.setX(50);
 		text1.setY(665);
 		text1.setFill(Color.BLACK);
-		
-		
 
 	}
 
 	/**
-	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!!
+	 * Text prompting the player to use a skill - NOT DONE!! DO THIS!!! TODO
 	 */
 	private void skill() {
 		remove();
@@ -238,6 +269,22 @@ public class Battle extends Scene {
 			pick = true;
 			valid = true;
 		}
+	}
+	
+	private void item() {
+		player.addHealth(player.getStat(0));
+		remove();
+
+		text1.setText("You used "+ player.getStat(0)+" to restore your health.");
+		
+		bossHealth();
+		
+		root.getChildren().add(text1);
+
+		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
+		text1.setX(50);
+		text1.setY(665);
+		text1.setFill(Color.BLACK);
 	}
 
 	/**
@@ -350,7 +397,8 @@ public class Battle extends Scene {
 	 * When enemy attacks player - LOGIC DONE BUT ERROR HERE!!!
 	 */
 	private void enemyAttack() {
-
+		
+		enemy.enemyAttack(player);
 		remove();
 		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
 		root.getChildren().add(text1);
@@ -360,13 +408,6 @@ public class Battle extends Scene {
 		text1.setY(655);
 		text1.setFill(Color.BLACK);
 		
-		int attackMod = (enemy.getAttack() - (enemy.getAttack() * (player.getStat(1) / 100)));
-		
-		if (player.getStat(1) == 0) {
-			player.setHealth(player.getHealth() - enemy.getAttack());
-		} else {
-			player.setHealth(player.getHealth() - attackMod);
-		}
 	}
 
 	/**
@@ -486,7 +527,7 @@ public class Battle extends Scene {
 		text2.setX(50);
 		text2.setY(665);
 		text2.setFill(Color.BLACK);
-		text2.setText("What would you like to do?\n(a) Attack\n(b) Skills");
+		text2.setText("What would you like to do?\n(a) Attack		(c) Items\n(b) Skills");
 
 		// text1.setText(enemy.getName() + " has appeared. Good luck.");
 
