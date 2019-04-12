@@ -28,7 +28,7 @@ public class RerollScreen extends Scene {
 	private static Pane root;
 	private Text[] statsText = new Text[4];
 	private Text[] descText = new Text[4];
-	private HUDobjects stats = new HUDobjects(150, -100, 900, 900, "stats.png");
+//	private HUDobjects stats = new HUDobjects(150, -100, 900, 900, "logo.png");
 	private HUDobjects logo = new HUDobjects(530, 100, 150, 150, "logo.png");
 
 	public RerollScreen(Player p) {
@@ -37,7 +37,7 @@ public class RerollScreen extends Scene {
 		this.player = p; // ryan this is what changed. im referencing player to p (p is the player from
 							// gamescreen)
 		root.setPrefSize(WIDTH, HEIGHT);
-		root.getChildren().add(stats);
+//		root.getChildren().add(stats);
 		root.getChildren().add(logo);
 
 		changeBackground("");

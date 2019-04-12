@@ -24,6 +24,7 @@ public class GameScreen extends Scene {
 	private AnimationTimer timer;
 	private Battle battle;
 	private Button battleButton;
+	private Button backToMain;
 
 	// the following are used for event listeners
 	private boolean goLeft = false;
@@ -143,7 +144,6 @@ public class GameScreen extends Scene {
 			statsText[i].setTranslateX(900);
 			statsText[i].setTranslateY(460 + (i * 80)); // 30 is the gap between the stats
 		}
-		statsText = player.updateStatsText(statsText);
 		
 		// create backpack list
 		for (int i = 0; i < 8; i++) {
@@ -156,7 +156,6 @@ public class GameScreen extends Scene {
 		root.getChildren().add(player);
 
 		// add HUDS
-//		root.getChildren().add(statsUndropped);
 		root.getChildren().add(sidebarFrame);
 		root.getChildren().add(clock);
 		root.getChildren().add(timeLeftText);
@@ -282,10 +281,11 @@ public class GameScreen extends Scene {
 			// Check if the item is a collectable or an instant
 			if (item.getEntityType() == "Collectable") {
 				player.addCollectableToInventory((Collectable) item);
-				timeLeft -= 1;
+				
+				reduceTime(1.00);
+				
 				backpackList.add(new Text(item.getName()));
 				
-				System.out.println(backpackList);
 				backpackList.get(backpackList.size()-1).setX(600);
 				backpackList.get(backpackList.size()-1).setY(290 + ((backpackList.size()-1) * 30));
 				backpackList.get(backpackList.size()-1).setFont(Font.font("Comic Sans MS", 30));
@@ -293,17 +293,9 @@ public class GameScreen extends Scene {
 			} else {
 				Instant itemToInstant = (Instant) item;
 				player.interactWithItem(itemToInstant);
-				timeLeft -= itemToInstant.getTime() - (player.getStat(2) * 0.05);
 				
-				if (timeLeft <= 0.0) {
-					timeLeft = 0.00;
-					timeLeftText.setFill(Color.RED);
-					endGame();
-				} else {
-					timeLeft = Math.round(timeLeft * 100.0) / 100.0;
-				}
-				
-				timeLeftText.setText(Double.toString(timeLeft));
+				reduceTime(itemToInstant.getTime() - (player.getStat(2) * 0.05));
+
 			}
 
 			// update the player's stats after the interaction
@@ -318,6 +310,20 @@ public class GameScreen extends Scene {
 			// reset index of intersection
 			intersectingWith = -1;
 		}
+	}
+	
+	private void reduceTime(double d) {
+		timeLeft -= d;
+		
+		if (timeLeft <= 0.0) {
+			timeLeft = 0.00;
+			timeLeftText.setFill(Color.RED);
+			endGame();
+		} else {
+			timeLeft = Math.round(timeLeft * 100.0) / 100.0;
+		}
+		
+		timeLeftText.setText(Double.toString(timeLeft));
 	}
 
 	/**
@@ -379,6 +385,7 @@ public class GameScreen extends Scene {
 		goUp = false; goDown = false; goLeft = false; goRight = false;
 		
 		battle = new Battle(player);
+		battle.setBackToMain(this.backToMain);
 		root.getChildren().add(timesUpWindow);
 		root.getChildren().add(battleButton);
 	}
@@ -389,6 +396,10 @@ public class GameScreen extends Scene {
 	
 	public void setBattleButton(Button b) {
 		this.battleButton = b;
+	}
+	
+	public void setBackToMain(Button b) {
+		this.backToMain = b;
 	}
 	
 	public Player getPlayer() {

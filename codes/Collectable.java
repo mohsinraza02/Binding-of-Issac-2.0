@@ -88,8 +88,8 @@ public class Collectable extends Entities{
 	 * 
 	 * @return instance variable value
 	 */
-	public static double getValue() {
-		return value;
+	public double getValue() {
+		return this.value;
 	}
 
 	/**

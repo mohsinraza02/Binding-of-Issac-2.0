@@ -114,6 +114,7 @@ public class Main extends Application {
 
 	public void newGame() {
 		scenes.set(1, new GameScreen());
+		((GameScreen) scenes.get(1)).setBackToMain(backToMenuButton);
 		((GameScreen) scenes.get(1)).addNode(backToMenuButton);
 		((GameScreen) scenes.get(1)).setBattleButton(battleButton);
 		

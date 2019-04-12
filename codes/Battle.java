@@ -5,20 +5,20 @@ import java.util.Scanner;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class Battle extends Scene {
 
-	
 	Enemy enemy;
-	//= new Enemy("CPSC Test", 10, 10, 10, 10, true, 10);
+	// = new Enemy("CPSC Test", 10, 10, 10, 10, true, 10);
 	Player player;
-	
+
 	private static Pane root;
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
@@ -34,22 +34,25 @@ public class Battle extends Scene {
 	private Text bossPrompt = new Text(
 			"We'll use this universal text for when the player does something to the boss, to prompt the player.");
 
+	private Button backToMain;
+	
 	// HUD stuff
-	HUDobjects textBox = new HUDobjects(0, 600, 1200, 200, "textbox.PNG"); // Textbox
-	HUDobjects enemyText = new HUDobjects(375, 25, 400, 200, "textbox.PNG"); // Textbox
-	HUDobjects playerBattle = new HUDobjects(0, 300, 600, 400, "PC-battle.PNG"); // Player sprite in battle
-	HUDobjects testBoss = new HUDobjects(750, 25, 350, 400, "monsterboi2.png");
-	HUDobjects background = new HUDobjects(0, 0, 1200, 800, "background.png");
-	HUDobjects platform = new HUDobjects(730, 355, 400, 130, "label-small.png");
-	HUDobjects platform2 = new HUDobjects(150, 500, 450, 200, "label-small.png");
-	HUDobjects playerText = new HUDobjects(0, 242, 470, 100, "textbox.PNG");
+	private HUDobjects textBox = new HUDobjects(0, 600, 1200, 200, "textbox.PNG"); // Textbox
+	private HUDobjects enemyText = new HUDobjects(375, 25, 400, 200, "textbox.PNG"); // Textbox
+	private HUDobjects playerBattle = new HUDobjects(0, 300, 600, 400, "PC-battle.PNG"); // Player sprite in battle
+	private HUDobjects testBoss = new HUDobjects(750, 25, 350, 400, "monsterboi2.png");
+	private HUDobjects background = new HUDobjects(0, 0, 1200, 800, "background.png");
+	private HUDobjects platform = new HUDobjects(730, 355, 400, 130, "label-small.png");
+	private HUDobjects platform2 = new HUDobjects(150, 500, 450, 200, "label-small.png");
+	private HUDobjects playerText = new HUDobjects(0, 242, 470, 100, "textbox.PNG");
+	private HUDobjects passScreen = new HUDobjects(0, 0, 1200, 800, "pass.png");
+	private HUDobjects failScreen = new HUDobjects(0, 0, 1200, 800, "fail.png");
 
 	// Event Listeners
 	private EventHandler<KeyEvent> mainPrompt;
 	private EventHandler<KeyEvent> skillPrompt;
 	private EventHandler<KeyEvent> continuePrompt;
 	private EventHandler<KeyEvent> counterPrompt;
-	
 
 	/**
 	 * NOT FINISHED!!! IT'LL BREAK!!! Just saying. - Josh
@@ -58,18 +61,19 @@ public class Battle extends Scene {
 		super(root = new Pane());
 		this.player = player;
 		root = initialContent();
-		
-		//Initialize the enemy here because we need the player to be passed in first.
-		enemy = new Enemy("CPSC Test",(int)(25 * player.getAttack()) , (int) (1.5 * player.getStat(1)), (int)(0.5 * player.getAttack()), 35, true, 10);
+
+		// Initialize the enemy here because we need the player to be passed in first.
+		enemy = new Enemy("CPSC Test", (int) (25 * player.getAttack()), (int) (1.5 * player.getStat(1)),
+				(int) (0.5 * player.getAttack()), 35, true, 10);
 		text1.setText(enemy.getName() + " has appeared. Good luck.");
 		enemyHealth.setText("Boss Test\nHealth: " + enemy.getHealth());
-		
+
 		mainPrompt = new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				switch (e.getCode()) {
 				case A:
-					attack();	
+					attack();
 					changeListener(counterPrompt, mainPrompt);
 					break;
 				case B:
@@ -113,7 +117,7 @@ public class Battle extends Scene {
 				}
 			}
 		};
-		
+
 		counterPrompt = new EventHandler<KeyEvent>() {
 			// Note: when a text shows up and the user needs to hit enter to continue
 			// remove the current listener and add this one
@@ -130,19 +134,15 @@ public class Battle extends Scene {
 				}
 			}
 		};
-		
-		//Set up the items prompt listener
-		/*itemPrompt = new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				switch (e.getCode()) {
-				case A:
-					
-				default:
-					break;
-				}
-			}
-		};*/
+
+		// Set up the items prompt listener
+		/*
+		 * itemPrompt = new EventHandler<KeyEvent>() {
+		 * 
+		 * @Override public void handle(KeyEvent e) { switch (e.getCode()) { case A:
+		 * 
+		 * default: break; } } };
+		 */
 
 		// SET UP THE CONTINUE PROMPT
 		continuePrompt = new EventHandler<KeyEvent>() {
@@ -170,8 +170,12 @@ public class Battle extends Scene {
 		root.getChildren().remove(playerHealth);
 		playerHealth.setText("Your Health: " + player.getHealth());
 		root.getChildren().add(playerHealth);
+		
+		if (player.getHealth() <= 0) {
+			endGame(false);
+		}
 	}
-	
+
 	/**
 	 * Change the listeners
 	 */
@@ -186,31 +190,30 @@ public class Battle extends Scene {
 	private void changeSkippableText() {
 		// if text 1 is showing, remove it and show text2
 		if (root.getChildren().contains(text1)) {
-			
-			if(player.getHealth() <= 0 || enemy.getHealth() <= 0) {
-				
+
+			if (player.getHealth() <= 0 || enemy.getHealth() <= 0) {
+
 			}
 
 			root.getChildren().remove(text1);
 			root.getChildren().add(text2);
 
 			changeListener(mainPrompt, continuePrompt);
-			
 
 			// or the other way around
 		} else if (root.getChildren().contains(text2)) {
 
-			if(player.getHealth() <= 0 || enemy.getHealth() <= 0) {
-				
+			if (player.getHealth() <= 0 || enemy.getHealth() <= 0) {
+
 			}
-			
+
 			root.getChildren().remove(text2);
 			root.getChildren().add(text1);
 
 			changeListener(mainPrompt, continuePrompt);
 		}
 	}
-	
+
 	/**
 	 * Remove text in the box.
 	 */
@@ -218,15 +221,28 @@ public class Battle extends Scene {
 		root.getChildren().remove(text1);
 		root.getChildren().remove(text2);
 	}
-	
+
 	private void bossHealth() {
 		root.getChildren().remove(enemyHealth);
 		enemyHealth.setText("Boss Test\nHealth: " + enemy.getHealth());
 		root.getChildren().add(enemyHealth);
+		
+		if (enemy.getHealth() <= 0) {
+			endGame(true);
 		}
-	
-	
-	
+	}
+
+	private void endGame(boolean passed) {
+		root.getChildren().clear();
+		if(passed) {
+			root.getChildren().add(passScreen);
+		} else {
+			root.getChildren().add(failScreen);
+		}
+		root.getChildren().add(backToMain);
+		
+	}
+
 	/**
 	 * Remove the boss prompt
 	 */
@@ -238,18 +254,17 @@ public class Battle extends Scene {
 	 * When the player attacks - LOGIC DONE
 	 */
 	private void attack() {
-		
-		
+
 		player.attack(enemy);
-		
-		//enemy.setHealth(enemy.getHealth() - player.getAttack());
+
+		// enemy.setHealth(enemy.getHealth() - player.getAttack());
 		remove();
 
 		// root.getChildren().remove(current);
 		text1.setText("You attack the test. You have dealt\n" + player.getAttack() + " damage.");
-		
+
 		bossHealth();
-		
+
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
@@ -270,47 +285,48 @@ public class Battle extends Scene {
 		text1.setX(50);
 		text1.setY(665);
 		text1.setFill(Color.BLACK);
-		
+
 		String input = "c";
-		boolean pick = false; 
+		boolean pick = false;
 		boolean valid = false;
-		
+
 		if (input.toLowerCase().equals("a")) {
 			player.deepBreath(enemy);
 			pick = true;
 			valid = true;
-		} else if(input.toLowerCase().equals("b")) {
+		} else if (input.toLowerCase().equals("b")) {
 			player.stretch();
 			pick = true;
 			valid = true;
 
-		}else if (input.toLowerCase().equals("c")){
+		} else if (input.toLowerCase().equals("c")) {
 			player.cheat(enemy);
 			pick = true;
 			valid = true;
 
-		}else if (input.toLowerCase().equals("d")){
+		} else if (input.toLowerCase().equals("d")) {
 			player.cry(enemy);
 			pick = true;
 			valid = true;
 		}
 	}
-	
+
 	private void item() {
 		remove();
-		
+
 		if (player.getInventory().size() != 0) {
-			player.setHealth(player.getHealth()+ Collectable.getValue());
+			player.setHealth(
+					player.getHealth() + player.getInventory().get(player.getInventory().size() - 1).getValue());
 			if (player.getHealth() > 100) {
 				player.setHealth(100.0);
 			}
 			updatePlayerHealth();
-			text1.setText("You used "+ player.getLastItem() +" to restore your health.");			
+			text1.setText("You used " + player.getLastItem() + " to restore your health.");
 			bossHealth();
 		} else {
 			text1.setText("You open your backpack, but it is empty.");
 		}
-		
+
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
@@ -340,13 +356,12 @@ public class Battle extends Scene {
 		bossPrompt.setX(410);
 		bossPrompt.setY(170);
 		bossPrompt.setFill(Color.RED);
-		
-		int damageMod = (int)(player.getStat(1) * 0.20);
+
+		int damageMod = (int) (player.getStat(1) * 0.20);
 		enemy.setAttack(enemy.getAttack() - damageMod);
 		if (damageMod == 0) {
 			enemy.setAttack(enemy.getAttack() - 1);
-		}
-		else{
+		} else {
 
 		}
 	}
@@ -361,31 +376,32 @@ public class Battle extends Scene {
 		} else {
 			player.setHealth(player.getHealth() + healMod);
 		}
-		
+
 		remove();
-		text1.setText(
-				"You stretch a little, telling yourself\nit'll be okay. Hopefully.\nYou heal yourself for" + healMod + " health.");
+		text1.setText("You stretch a little, telling yourself\nit'll be okay. Hopefully.\nYou heal yourself for"
+				+ healMod + " health.");
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
 		text1.setX(50);
 		text1.setY(655);
 		text1.setFill(Color.BLACK);
-		
+
 	}
 
 	/**
 	 * Player uses cheat skill - LOGIC DONE
 	 */
 	private void cheat() {
-		
-		int attackMod = (int)(player.getAttack() * 2.5);
+
+		int attackMod = (int) (player.getAttack() * 2.5);
 		enemy.setHealth(enemy.getHealth() - attackMod);
 		bossHealth();
-		
+
 		remove();
 		text1 = new Text(
-				"You use the eagle vision technique,\nand look around with amazing accuracy.\nBOOM! Critical Strike!!\nYou have dealt " + attackMod + " damage to the test.");
+				"You use the eagle vision technique,\nand look around with amazing accuracy.\nBOOM! Critical Strike!!\nYou have dealt "
+						+ attackMod + " damage to the test.");
 		root.getChildren().add(text1);
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
@@ -398,16 +414,16 @@ public class Battle extends Scene {
 	 * Player uses breathe skill - LOGIC DONE
 	 */
 	private void breathe() {
-		
+
 		Scanner skip = new Scanner(System.in);
 		int defenseMod = (int) (player.getStat(1) * 0.20);
-		//System.out.println(defenseMod);
+		// System.out.println(defenseMod);
 		enemy.setDefense(enemy.getDefense() - defenseMod);
 		if (defenseMod == 0) {
 			enemy.setDefense(enemy.getDefense() - 1);
 		} else {
 		}
-		
+
 		root.getChildren().remove(text1);
 		bossPrompt = new Text("The test's defense was\nlowered.");
 		text1 = new Text("You take a deep breath, clearing your mind.");
@@ -429,7 +445,7 @@ public class Battle extends Scene {
 	 * When enemy attacks player - LOGIC DONE BUT ERROR HERE!!!
 	 */
 	private void enemyAttack() {
-		
+
 		enemy.enemyAttack(player);
 		remove();
 		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
@@ -440,17 +456,17 @@ public class Battle extends Scene {
 		text1.setX(50);
 		text1.setY(655);
 		text1.setFill(Color.BLACK);
-		
+
 	}
 
 	/**
 	 * Boss uses buff defense skill - LOGIC DONE
 	 */
 	private void hardQ() {
-		
+
 		int defenseMod = (int) (enemy.getMaxDefense() * 0.50);
 		enemy.setDefense(defenseMod + enemy.getDefense());
-		
+
 		remove();
 		bossPrompt = new Text("The test gained defense.");
 		text1 = new Text(
@@ -473,16 +489,17 @@ public class Battle extends Scene {
 	 * Boss hurts the player big time. - LOGIC DONE
 	 */
 	private void bigL() {
-		
+
 		enemy.setsCounter(0);
 		enemy.setHeavyAttack(false);
 		int attackMod = (int) ((enemy.getMaxAttack() * 0.50) + enemy.getMaxAttack());
 		player.setHealth(player.getHealth() - attackMod);
-		
+
 		remove();
 
 		text1.setText(
-				"The test suddenly reveals a hidden backside!!\nIT UNLEASHES IT'S WRITTEN RESPONSE ON YOU!!\nYou take " + attackMod + " damage.");
+				"The test suddenly reveals a hidden backside!!\nIT UNLEASHES IT'S WRITTEN RESPONSE ON YOU!!\nYou take "
+						+ attackMod + " damage.");
 		root.getChildren().add(text1);
 		root.getChildren().add(bossPrompt);
 
@@ -496,13 +513,13 @@ public class Battle extends Scene {
 	 * Boss raises own attack - LOGIC DONE
 	 */
 	private void intimidate() {
-		
-		int attackMod = (int)((enemy.getAttack() * 0.25) + enemy.getAttack());
+
+		int attackMod = (int) ((enemy.getAttack() * 0.25) + enemy.getAttack());
 		if (attackMod >= enemy.getMaxAttack()) {
 			attackMod = enemy.getMaxAttack();
 		}
 		enemy.setAttack(attackMod);
-		
+
 		remove();
 
 		bossPrompt.setText("Test attack has increased.");
@@ -532,21 +549,21 @@ public class Battle extends Scene {
 	 */
 	private Pane initialContent() {
 		root.setPrefSize(WIDTH, HEIGHT); // makes the screen 1200x800px
-		
+
 		playerHealth.setText("Your Health: " + player.getHealth());
-		
+
 		player.updateAttack();
 		enemyHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		enemyHealth.setX(410);
 		enemyHealth.setY(80);
 		enemyHealth.setFill(Color.RED);
-		
+
 		playerHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		playerHealth.setX(10);
 		playerHealth.setY(300);
 		playerHealth.setFill(Color.RED);
 
-		//text1.setText(enemy.getName() + " has appeared. Good luck.");
+		// text1.setText(enemy.getName() + " has appeared. Good luck.");
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 48.00));
 		text1.setX(50);
@@ -582,29 +599,7 @@ public class Battle extends Scene {
 		 * WHen creating an object, you can use the Entities class. Give it a look to
 		 * see how it works.
 		 */
-
-		// I created and started the animation here. but you can move it somewhere else
-		// This pretty much works the same way as a javascript timer
-		// the method "handle" gets called every frame of the animation timer
-		AnimationTimer timer = new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				// handle can call any # of methods. but for now it only calls update
-				// i used the "update" method to store all of the basic animations
-				// and i created separate functions for other animations
-				update();
-			}
-
-		};
-		timer.start();
 		return root;
-	}
-
-	/**
-	 * put all the basic animations here
-	 */
-	private void update() {
-
 	}
 
 	/**
@@ -618,38 +613,9 @@ public class Battle extends Scene {
 		imageName = "/src/sprites/" + imageName + ".png";
 		root.setStyle("-fx-background-image: url(" + imageName + "); " + "-fx-background-size: cover;");
 	}
-	
-	/**
-	 * This method shows a skippable text. It uses text1 or text2 depending on what
-	 * is currently being show in the textbox EDIT: realized that this isnt what
-	 * enter class needed, so i commented it out. sry josh pls ignore this
-	 * 
-	 * @param textToShow
-	 *            - the text that will be shown in the textbox
-	 */
-	// private void printContinueText(String textToShow) {
-	//
-	// // if text1 is currently showing, remove text1 and use text2 to show the text
-	// if (root.getChildren().contains(text1)) {
-	// text2.setText(textToShow);
-	//
-	// root.getChildren().remove(text1);
-	// root.getChildren().add(text2);
-	//
-	// // same thing but works the other way around
-	// } else if (root.getChildren().contains(text2)) {
-	// text1.setText(textToShow);
-	//
-	// root.getChildren().remove(text2);
-	// root.getChildren().add(text1);
-	//
-	// // if nothing is showing (i.e mainPrompt is showing). use Text1
-	// } else {
-	// text1.setText(textToShow);
-	//
-	// root.getChildren().add(text1);
-	// }
-	// }
 
+	public void setBackToMain(Button backToMain) {
+		this.backToMain = backToMain;
+	}
 
 }
