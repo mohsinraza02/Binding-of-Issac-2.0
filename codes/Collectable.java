@@ -5,7 +5,7 @@ public class Collectable extends Entities{
 	
 	private String name; // display name on map
 	private String desc;
-	private static double value; // value being appended in player array
+	private double value; // value being appended in player array
 	private int type; // location in player array
 	private int[] position;
 	
