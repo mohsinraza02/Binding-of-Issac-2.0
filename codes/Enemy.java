@@ -104,7 +104,7 @@ public class Enemy {
 	 * health, attack, defense, maxAttack, heavyAttack, sCounter
 	 * @return
 	 */
-	public static Enemy getRandomEnemy(Player player) {
+	public Enemy getRandomEnemy(Player player) {
 		int n = (int) (Math.random() * 3 + 1);
 		
 		int playerAttack = (int) player.getStat(0);
