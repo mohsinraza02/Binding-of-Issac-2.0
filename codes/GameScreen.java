@@ -282,7 +282,7 @@ public class GameScreen extends Scene {
 			// Check if the item is a collectable or an instant
 			if (item.getEntityType() == "Collectable") {
 				player.addCollectableToInventory((Collectable) item);
-				
+				timeLeft -= 1;
 				backpackList.add(new Text(item.getName()));
 				
 				System.out.println(backpackList);
