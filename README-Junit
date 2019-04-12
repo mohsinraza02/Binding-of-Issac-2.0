@@ -1,0 +1,24 @@
+How to Run testing
+
+Text based Junit:
+  1) Take all code from textCode;
+  2) run the 'test' files;
+  
+  Only logic based files have Junit tests.
+  
+ GUI based test:
+  No Junit, but here are the some play tests we did
+  1)New game should spawn the player in the bottom left corner in the bottom left room;
+  2)Load game should load the player and all items in the locations they were in from last save;
+  3)Usable items add stats to the right stat and the right value and timer decreses;
+  4)Collectable items are added to the backpack;
+  5)Payer is stopped by black walls;
+  6)when timer is 0.0 battle starts;
+  7)Attack - will damage the boss(boss health updates), Boss attacks back(Player health updates)
+  8)Item - will take an item and give the player 10 health(we fixed it)
+  9)Skill -Breath, lowers boss defence, next attack will do more damage
+          -Stretch, the player health will increase
+          -Cry, the boss attack should decreas on the next boss attack
+          -Cheat, player attack boss with an attck that does more damage then a normal attack
+  10)When Player or Boss health is >=0 the game should end
+  
