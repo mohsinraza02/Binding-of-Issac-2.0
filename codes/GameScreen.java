@@ -32,7 +32,7 @@ public class GameScreen extends Scene {
 	private boolean goDown = false;
 	private boolean moving;
 	private int intersectingWith = -1; // -1 means intersecting with nothing
-	private double timeLeft = 1;
+	private double timeLeft = 18.00;
 	private boolean timeUp = false;
 
 	// DECLARING NEW ENTITIES (What is shown in the game)
@@ -390,7 +390,19 @@ public class GameScreen extends Scene {
 	public void setBattleButton(Button b) {
 		this.battleButton = b;
 	}
-
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public void setPlayer(Player p) {
+		this.player = p;
+	}
+	
+	public void updateStats() {
+		this.statsText = player.updateStatsText(this.statsText);
+	}
+	
 	public void addNode(Node n) {
 		root.getChildren().add(n);
 	}

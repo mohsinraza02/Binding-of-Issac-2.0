@@ -15,23 +15,15 @@ public abstract class Entities extends Rectangle {
 	private String entityType;
 	private Image objectImage;
 	
-
 	/**
-         * This constructor takes 6 parameter values. The constructor creates an object
-	 * and sets its position in the map, size, its type, and its sprite. 
-	 * 
+	 * This constructor creates an object and sets its position in the map, size, its type, and its sprite. 
 	 * @param x - x position of the object
-	 *
 	 * @param y - y position of the object
-	 *
 	 * @param w - width of the object 
-	 *
 	 * @param h - height of the object
-	 *
 	 * @param type - type of the object (Player/Enemy/items(collectable/instant))
-	 *
 	 * @param image - filename of the object's sprite.
-         */
+	 */
 	public Entities(int x, int y, int w, int h, String type, String image) {
 		// creating a new rectangle
 		super(w, h);
@@ -44,24 +36,16 @@ public abstract class Entities extends Rectangle {
 	}
 		
 	/**
-	 * This constructor takes 3 parameter values. The constructor creates an object, 
-	 * but it doesn't set its position and its sprite at the time of its creation.
+	 * This constructor creates an object, except it doesn't set its position and its sprite at the time of its creation.
 	 * @param w
-	 * 
 	 * @param h
-	 *
 	 * @param type
 	 */
 	public Entities(int w, int h, String type) {
 		super(w, h);
 		this.entityType = type;
 	}
-	/**
-	 * The method changeSprite takes the parameter imageName of type String. 
-	 * This method changes the sprite of the entity.
-	 * 
-	 * @param imageName
-	 */
+	
 	public void changeSprite(String imageName) {
 		imageName = "/codes/sprites/" + imageName;
 		if (imageName != null) {
@@ -70,12 +54,7 @@ public abstract class Entities extends Rectangle {
 			this.setFill(new ImagePattern(this.objectImage));
 		}
 	}
-	/**
-	 * The method flipSprite takes the parameter direction of type String. 
-	 * This method reflects the image of the sprite on the y-axis.
-	 * 
-	 * @param direction
-	 */
+	
 	public void flipSprite(String direction) {
 		if (direction == "left") {
 			this.setScaleX(-1);
@@ -83,22 +62,12 @@ public abstract class Entities extends Rectangle {
 			this.setScaleX(1);
 		}
 	}
-	/**
-	 * The method setPosition takes 2 parameters; x and y of type int. 
-	 * This method sets the entity's position in the map.
-	 * 
-	 * @param x
-	 * 
-	 * @param y
-	 */
+	
 	public void setPosition(int x, int y) {
 		setTranslateX(x);
 		setTranslateY(y);
 	}
-	/**
-	 * The method getRandomPos generates a random position for the sprite in the map.
-	 * 
-	 */
+	
 	public int[] getRandomPos() {
 		Random rand = new Random();
 		// size of the wall is roughly 25 pixels
@@ -110,12 +79,6 @@ public abstract class Entities extends Rectangle {
 	
 	public abstract String getName();
 	public abstract String getDesc();
-	
-	/**
-	 * The method getEntityType returns the instance variable entityType of type String.
-	 * 
-	 * @return instance variable entityType
-	 */
 	
 	public String getEntityType() {
 		return entityType;

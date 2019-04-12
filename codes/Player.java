@@ -202,6 +202,14 @@ public class Player extends Entities{
 		return t;
 	}
 	
+	public Text[] descStat(Text[] t) {
+		t[0].setText("Increases Attack Power");
+		t[1].setText("Decreases Damage Taken");
+		t[2].setText("Decreases Time Consumed and \nIncreases Movement Speed");
+		t[3].setText("Increases Critical Strike Chance");
+		return t;
+	}
+	
 	/**
 	 * This method takes the parameter cb of type Collectable and is added to the player's inventory.
 	 * 

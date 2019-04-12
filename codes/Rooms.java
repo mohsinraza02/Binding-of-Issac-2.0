@@ -9,15 +9,7 @@ public class Rooms {
 	private int[] roomCoord = new int[2]; 
 	private ArrayList<Entities> roomContents = new ArrayList<Entities>();
 	
-	/**
-         * This constructor takes 2 parameter values. The constructor takes the parameters and creates the rooms
-	 * based on the coordinates. The generateItems() method is called in this constructor so that Items can be placed
-	 * in the rooms.
-	 *
-	 * @param x
-	 * 
-	 * @param y
-	 */ 
+
 	public Rooms(int x, int y) {
 		if (x < 3 && y < 3) {
 			roomCoord[0] = y;
@@ -28,38 +20,19 @@ public class Rooms {
 		}
 		generateItems();
 	}
-	/**
-	 * The method getRoomCoord returns the instance variable roomCoord of type int [].
-	 * 
-	 * @return instance variable roomCoord
-	 */
 	
 	public int[] getRoomCoord() {
 		return roomCoord;
 	}
-	/**
-	 * The method getRoomContents returns a copy of the instance variable roomContents of type ArrayList<Entities>.
-	 * 
-	 * @return roomContentsToCopy
-	 */
 	
 	public ArrayList<Entities> getRoomContents() {
 		ArrayList<Entities> roomContentsToCopy = roomContents;
 		return roomContentsToCopy;
 	}
-	/**
-	 * The method getImageName returns the instance variable roomNames of type String[][].
-	 * 
-	 * @return instance variable roomNames
-	 */
+	
 	public String getImageName() {
 		return roomNames[roomCoord[0]][roomCoord[1]];
 	}
-	
-	/**
-	 * The method generateItems randomly generates items from the
-	 * Instant class and Collectables class and adds them to the rooms randomly.
-	 */
 	
 	public void generateItems() {
 		Random rand = new Random();

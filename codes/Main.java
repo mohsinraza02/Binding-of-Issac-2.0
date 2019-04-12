@@ -23,18 +23,18 @@ public class Main extends Application {
 
 	private ArrayList<Scene> scenes = new ArrayList<>(); // 0 = menu screen, 1 = game screen.
 
-	private Button startGameButton = new Button("CONTINUE");
+	private Button continueGameButton = new Button("CONTINUE");
 	private Button newGameButton = new Button("NEW GAME");
 	private Button backToMenuButton = new Button("Main menu");
-	private Button startGame = new Button("START!");
 	private Button battleButton = new Button("Take the exam");
+	private Button rerollButton = new Button("Reroll");
+	private Button submitButton = new Button("Submit");
 
+	
 	private BackgroundImage bImage = new BackgroundImage(new Image("/codes/sprites/button.png"),
 			BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 			new BackgroundSize(newGameButton.getWidth(), newGameButton.getHeight(), true, true, true, false));
 	private Background buttonBg = new Background(bImage);
-	// private Background buttonbg = new Background(new BackgroundImage(new
-	// Image("/codes/sprites/button.png"), null, null, null, null));
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -42,19 +42,19 @@ public class Main extends Application {
 
 		stage.setScene(scenes.get(0));
 
-		((MenuScreen) scenes.get(0)).addNode(startGameButton);
-		startGameButton.setOnMouseClicked(e -> {
+		((MenuScreen) scenes.get(0)).addNode(continueGameButton);
+		continueGameButton.setOnMouseClicked(e -> {
 			stage.setScene(scenes.get(1));
 		});
-		startGameButton.setTranslateX(100);
-		startGameButton.setTranslateY(550);
-		startGameButton.setPrefSize(250, 100);
-		startGameButton.setBackground(buttonBg);
+		continueGameButton.setTranslateX(100);
+		continueGameButton.setTranslateY(550);
+		continueGameButton.setPrefSize(250, 100);
+		continueGameButton.setBackground(buttonBg);
 
 		((MenuScreen) scenes.get(0)).addNode(newGameButton);
 		newGameButton.setOnMouseClicked(e -> {
 			newGame();
-			stage.setScene(scenes.get(1));
+			stage.setScene(scenes.get(2));
 		});
 		newGameButton.setTranslateX(100);
 		newGameButton.setTranslateY(400);
@@ -78,15 +78,25 @@ public class Main extends Application {
 			stage.setScene(((GameScreen) scenes.get(1)).getBattle());
 		});
 
-//		// temporary
-//		Button debug = new Button("debugBattle");
-//		debug.setTranslateX(120);
-//		debug.setTranslateY(700);
-//		debug.setPrefSize(150, 40);
-//		debug.setOnMouseClicked(e -> {
-//			stage.setScene(scenes.get(3));
-//		});
-//		((MenuScreen) scenes.get(0)).addNode(debug);
+		rerollButton.setTranslateX(500);
+		rerollButton.setTranslateY(650);
+		rerollButton.setPrefSize(100, 60);
+		rerollButton.setBackground(buttonBg);
+		
+		submitButton.setTranslateX(600);
+		submitButton.setTranslateY(650);
+		submitButton.setPrefSize(100, 60);
+		submitButton.setBackground(buttonBg);
+		
+		
+		rerollButton.setOnMouseClicked(e ->{
+			((RerollScreen) scenes.get(2)).reroll();
+		});
+		
+		submitButton.setOnMouseClicked(e ->{
+			((GameScreen) scenes.get(1)).updateStats();
+			stage.setScene(scenes.get(1));
+		});
 
 		stage.setResizable(false);
 		stage.setTitle("CRAM before the EXAM");
@@ -96,15 +106,21 @@ public class Main extends Application {
 	public void createScreens() {
 		scenes.add(new MenuScreen(WIDTH, HEIGHT));
 		scenes.add(new GameScreen());
+		Player p = ((GameScreen) scenes.get(1)).getPlayer();
+		scenes.add(new RerollScreen(p));
+		((RerollScreen) scenes.get(2)).addNode(rerollButton);
+		((RerollScreen) scenes.get(2)).addNode(submitButton);
 	}
 
 	public void newGame() {
-		if (scenes.get(1) != null) {
-			// ask user if they want to overwrite save data
-		}
 		scenes.set(1, new GameScreen());
 		((GameScreen) scenes.get(1)).addNode(backToMenuButton);
 		((GameScreen) scenes.get(1)).setBattleButton(battleButton);
+		
+		Player p = ((GameScreen) scenes.get(1)).getPlayer();
+		scenes.set(2, new RerollScreen(p));
+		((RerollScreen) scenes.get(2)).addNode(rerollButton);
+		((RerollScreen) scenes.get(2)).addNode(submitButton);
 	}
 
 	public static void main(String[] args) {

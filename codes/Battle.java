@@ -297,10 +297,10 @@ public class Battle extends Scene {
 	}
 	
 	private void item() {
-		player.addHealth(player.getStat(0));
+		player.setHealth(player.getHealth()+ Collectable.getValue());
 		remove();
-
-		text1.setText("You used "+ player.getStat(0)+" to restore your health.");
+		updatePlayerHealth();
+		text1.setText("You used an item to restore your health.");
 		
 		bossHealth();
 		

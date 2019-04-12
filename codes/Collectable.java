@@ -5,7 +5,7 @@ public class Collectable extends Entities{
 	
 	private String name; // display name on map
 	private String desc;
-	private double value; // value being appended in player array
+	private static double value; // value being appended in player array
 	private int type; // location in player array
 	private int[] position;
 	
@@ -88,8 +88,8 @@ public class Collectable extends Entities{
 	 * 
 	 * @return instance variable value
 	 */
-	public double getValue() {
-		return this.value;
+	public static double getValue() {
+		return value;
 	}
 
 	/**
