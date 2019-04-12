@@ -15,15 +15,17 @@ import javafx.scene.text.FontWeight;
 public class Battle extends Scene {
 
 	
-	Enemy enemy = new Enemy("CPSC Test", 100, 10, 10, 10, true, 10);
+	Enemy enemy;
+	//= new Enemy("CPSC Test", 10, 10, 10, 10, true, 10);
 	Player player;
-
+	
 	private static Pane root;
 	private final int WIDTH = 1200;
 	private final int HEIGHT = 800;
 
 	// Texts
-	private Text enemyHealth = new Text("Boss Test\nHealth: " + enemy.getHealth());
+	private Text enemyHealth = new Text("");
+	private Text playerHealth = new Text("");
 
 	private Text text1 = new Text(
 			"This is the current text in the box. This will be universal so we can change it easier.");
@@ -40,6 +42,7 @@ public class Battle extends Scene {
 	HUDobjects background = new HUDobjects(0, 0, 1200, 800, "background.png");
 	HUDobjects platform = new HUDobjects(730, 355, 400, 130, "label-small.png");
 	HUDobjects platform2 = new HUDobjects(150, 500, 450, 200, "label-small.png");
+	HUDobjects playerText = new HUDobjects(0, 242, 470, 100, "textbox.PNG");
 
 	// Event Listeners
 	private EventHandler<KeyEvent> mainPrompt;
@@ -55,6 +58,11 @@ public class Battle extends Scene {
 		super(root = new Pane());
 		this.player = player;
 		root = initialContent();
+		
+		//Initialize the enemy here because we need the player to be passed in first.
+		enemy = new Enemy("CPSC Test",(int)(25 * player.getAttack()) , (int) (1.5 * player.getStat(1)), (int)(0.5 * player.getAttack()), 35, true, 10);
+		text1.setText(enemy.getName() + " has appeared. Good luck.");
+		enemyHealth.setText("Boss Test\nHealth: " + enemy.getHealth());
 		
 		mainPrompt = new EventHandler<KeyEvent>() {
 			@Override
@@ -158,6 +166,12 @@ public class Battle extends Scene {
 
 	}
 
+	private void updatePlayerHealth() {
+		root.getChildren().remove(playerHealth);
+		playerHealth.setText("Your Health: " + player.getHealth());
+		root.getChildren().add(playerHealth);
+	}
+	
 	/**
 	 * Change the listeners
 	 */
@@ -172,15 +186,24 @@ public class Battle extends Scene {
 	private void changeSkippableText() {
 		// if text 1 is showing, remove it and show text2
 		if (root.getChildren().contains(text1)) {
+			
+			if(player.getHealth() <= 0 || enemy.getHealth() <= 0) {
+				
+			}
 
 			root.getChildren().remove(text1);
 			root.getChildren().add(text2);
 
 			changeListener(mainPrompt, continuePrompt);
+			
 
 			// or the other way around
 		} else if (root.getChildren().contains(text2)) {
 
+			if(player.getHealth() <= 0 || enemy.getHealth() <= 0) {
+				
+			}
+			
 			root.getChildren().remove(text2);
 			root.getChildren().add(text1);
 
@@ -202,6 +225,8 @@ public class Battle extends Scene {
 		root.getChildren().add(enemyHealth);
 		}
 	
+	
+	
 	/**
 	 * Remove the boss prompt
 	 */
@@ -221,7 +246,7 @@ public class Battle extends Scene {
 		remove();
 
 		// root.getChildren().remove(current);
-		text1.setText("You attack the test. You have dealt\n" + player.getStat(1) + " damage.");
+		text1.setText("You attack the test. You have dealt\n" + player.getAttack() + " damage.");
 		
 		bossHealth();
 		
@@ -402,6 +427,7 @@ public class Battle extends Scene {
 		remove();
 		text1 = new Text("The boss inflicts its difficulty on you!\nYou take " + enemy.getAttack() + " damage.");
 		root.getChildren().add(text1);
+		updatePlayerHealth();
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 38.00));
 		text1.setX(50);
@@ -499,14 +525,21 @@ public class Battle extends Scene {
 	 */
 	private Pane initialContent() {
 		root.setPrefSize(WIDTH, HEIGHT); // makes the screen 1200x800px
-
+		
+		playerHealth.setText("Your Health: " + player.getHealth());
+		
 		player.updateAttack();
 		enemyHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		enemyHealth.setX(410);
 		enemyHealth.setY(80);
 		enemyHealth.setFill(Color.RED);
+		
+		playerHealth.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
+		playerHealth.setX(10);
+		playerHealth.setY(300);
+		playerHealth.setFill(Color.RED);
 
-		text1.setText(enemy.getName() + " has appeared. Good luck.");
+		//text1.setText(enemy.getName() + " has appeared. Good luck.");
 
 		text1.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 48.00));
 		text1.setX(50);
@@ -522,6 +555,8 @@ public class Battle extends Scene {
 		root.getChildren().add(testBoss);
 		root.getChildren().add(enemyText);
 		root.getChildren().add(enemyHealth);
+		root.getChildren().add(playerText);
+		root.getChildren().add(playerHealth);
 
 		text2.setFont(Font.font("Courier New", FontWeight.EXTRA_BOLD, 42.00));
 		text2.setX(50);
