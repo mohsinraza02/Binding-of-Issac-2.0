@@ -103,6 +103,20 @@ public class Player extends Entities{
 	 * @param d is added tovinstance variable health.
 	 */
 	
+	/**
+	 * Takes the last item's name and remove it from the inventory
+	 * @return last item's name
+	 */
+	public String getLastItem() {
+		String name = inventory.get(inventory.size()-1).getName();
+		inventory.remove(inventory.size()-1);
+		return name;
+	}
+	
+	public ArrayList<Collectable> getInventory() {
+		return inventory;
+	}
+
 	public void addHealth(double d) {
 		this.health += d;
 		System.out.println("Player health increased by +" + d);

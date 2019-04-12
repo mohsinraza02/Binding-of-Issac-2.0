@@ -297,12 +297,15 @@ public class Battle extends Scene {
 	}
 	
 	private void item() {
-		player.setHealth(player.getHealth()+ Collectable.getValue());
 		remove();
-		updatePlayerHealth();
-		text1.setText("You used an item to restore your health.");
 		
-		bossHealth();
+		if (player.getInventory().size() != 0) {
+			player.addHealth(player.getStat(0));
+			text1.setText("You used "+ player.getLastItem() +" to restore your health.");			
+			bossHealth();
+		} else {
+			text1.setText("You open your backpack, but it is empty.");
+		}
 		
 		root.getChildren().add(text1);
 
