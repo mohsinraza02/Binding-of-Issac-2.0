@@ -281,7 +281,7 @@ public class Player extends Entities{
 	}
 	
 	/**
-	 * This method allows the player to heal themselves a small amount.
+	 * This method allows the player to slightly heal themselves.
 	 */
 	public void stretch() {
 		int healMod = (int) ((this.getAttack() * 0.25) + (this.getHealthCap() * 0.15));
@@ -294,6 +294,13 @@ public class Player extends Entities{
 		System.out.println("You heal yourself for " + healMod + " health.");
 	}
 	
+	/**
+	 * The method cheat takes the parameter enemy of type Enemy. 
+	 * In this method the player 'cheats' on the test which allows the player to inflict damage on the enemy.
+	 * 
+	 * @param enemy
+	 */
+	
 	public void cheat(Enemy enemy) {
 		int attackMod = (int)(this.getAttack() * 2.5);
 		enemy.setHealth(enemy.getHealth() - attackMod);
@@ -302,6 +309,13 @@ public class Player extends Entities{
 		System.out.println("BOOM! Critical Strike!");
 		System.out.println("You dealt " + attackMod + " damage!");
 	}
+	/**
+	 * The method cry takes the parameter enemy of type Enemy. 
+	 * In this method the player 'cries' because of the test which allows the player to inflict damage on the enemy but the 
+	 * damage can be either low or high.
+	 *
+	 * @param enemy
+	 */
 	
 	public void cry(Enemy enemy) {
 		int damageMod = (int)(this.getAttack() * 0.20);
@@ -317,7 +331,13 @@ public class Player extends Entities{
 
 		}
 	}
-	
+	/**
+	 * The method skill takes the parameter enemy of type Enemy. 
+	 * In this method the player will either take a deepBreath, cheat, cry or stretch (which are all methods)
+	 * depending on user keyboard input.
+	 *
+	 * @param enemy
+	 */
 	public boolean skill(Enemy enemy) {
 		Scanner kb = new Scanner(System.in);
 		boolean pick = false; 
@@ -353,8 +373,9 @@ public class Player extends Entities{
 		}
 
 	/**
-	 * Update the attack with adding the item bonuses
+	 * In the method updateAttack it will update the attack with adding the item bonuses
 	 */
+	
 	public void updateAttack() {
 		// Adds damage depending on the stats that you get in the beginning
 		// int newAttack = attack + (stats[0]);
@@ -364,19 +385,30 @@ public class Player extends Entities{
 	// LOGIC CODES END
 	// GUI CODES START HERE
 	
-	// Getters for the room's coordinates
+	
+	/**
+	 * The method getCurrentRoomX returns the instance variable currentRoomX of type int.
+	 * 
+	 * @return instance variable currentRoomX
+	 */
+	
 	public int getCurrentRoomX() {
 		return currentRoomX;
 	}
+	/**
+	 * The method getCurrentRoomY returns the instance variable currentRoomY of type int.
+	 * 
+	 * @return instance variable currentRoomY
+	 */
 	
 	public int getCurrentRoomY() {
 		return currentRoomY;
 	}
 	
 	/**
-	 * Moves the to the left
-	 * TODO: Implement walking animation
+	 * The method moveLeft allows the player to move left into another room if there are no restrictions such as solid walls.
 	 */
+	
 	public void moveLeft() {
 		// check if the user is hitting the left edge
 		if (getTranslateX() < 0) {
@@ -395,9 +427,11 @@ public class Player extends Entities{
 		}
 	}
 	
+	
 	/**
-	 * Moves the player to the right
+	 * The method moveRight allows the player to move right into another room if there are no restrictions such as solid walls.
 	 */
+	
 	public void moveRight() {
 		if (getTranslateX() > 745) {
 			if (currentRoomX != 2) {
@@ -416,9 +450,11 @@ public class Player extends Entities{
 		}
 	}
 	
+	
 	/**
-	 * Moves the player up
+	 * The method moveUp allows the player to move up into another room if there are no restrictions such as solid walls.
 	 */
+	
 	public void moveUp() {
 		if (getTranslateY() < 0) {
 			if (currentRoomY != 2) {
@@ -430,10 +466,10 @@ public class Player extends Entities{
 			setTranslateY(getTranslateY() - speed);
 		}
 	}
-	
 	/**
-	 * Moves the player down
+	 * The method moveDown allows the player to move down into another room if there are no restrictions such as solid walls.
 	 */
+	
 	public void moveDown() {
 		if (getTranslateY() > 700) {
 			if (currentRoomY != 0) {
