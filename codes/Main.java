@@ -102,7 +102,10 @@ public class Main extends Application {
 		stage.setTitle("CRAM before the EXAM");
 		stage.show();
 	}
-
+	/**
+	 * This method creates the different screens in the GUI such as the main MenuScreen, GameScreen and RerollScreen.
+	 */
+	
 	public void createScreens() {
 		scenes.add(new MenuScreen(WIDTH, HEIGHT));
 		scenes.add(new GameScreen());
@@ -111,7 +114,9 @@ public class Main extends Application {
 		((RerollScreen) scenes.get(2)).addNode(rerollButton);
 		((RerollScreen) scenes.get(2)).addNode(submitButton);
 	}
-
+	/**
+	 * This method creates a new game.
+	 */
 	public void newGame() {
 		scenes.set(1, new GameScreen());
 		((GameScreen) scenes.get(1)).setBackToMain(backToMenuButton);
